@@ -65,7 +65,8 @@ class PremiumVisualTest {
     }
 
     private fun capture(name: String) {
-        // Native JVM rendering must repaint the full window after a state-changing click.
+        // Robolectric 4.17 / API35 native graphics can capture only the dirty region after a click.
+        // Remove this repaint when both interaction snapshots render the full window without it.
         compose.runOnIdle {
             ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).forEach {
                 it.window.decorView.requestLayout()
