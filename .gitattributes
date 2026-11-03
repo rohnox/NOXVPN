@@ -11,3 +11,5 @@ V2rayNG/app/src/main/assets/ispeed-engines/** -text -whitespace
 V2rayNG/app/src/main/assets/ispeed-font-OFL.txt -text -whitespace
 V2rayNG/app/src/main/assets/ISPEED-GPL-3.0.txt -text -whitespace
 branding/fonts/OFL.txt -text -whitespace
+
+docs/upstream-workflows/** -text -whitespace
