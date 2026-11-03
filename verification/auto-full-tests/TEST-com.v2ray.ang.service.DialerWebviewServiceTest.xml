@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.service.DialerWebviewServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T10:18:49.129Z" hostname="DESKTOP-3HVDMFH" time="2.398">
+  <properties/>
+  <testcase name="callbacksCannotResumeADestroyedViewOrRescheduleKeepAlive()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="1.252"/>
+  <testcase name="restartReplacesTheViewAndRepeatedStopDestroysItOnce()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.007"/>
+  <testcase name="workerStopCompletesCleanupBeforeReturning()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.008"/>
+  <testcase name="emptyAddressStopsThePreviousViewWithoutCreatingAnother()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.004"/>
+  <testcase name="rejectedMainThreadDispatchFailsWithoutWaiting()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.005"/>
+  <testcase name="interruptedWorkerCannotLeaveAQueuedStartBehind()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.005"/>
+  <testcase name="cleanupFailureStillDestroysTheViewAndReachesTheCaller()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="1.083"/>
+  <testcase name="setupFailureCleansUpAndReachesTheWorkerUnwrapped()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.009"/>
+  <testcase name="mainThreadStopInvalidatesAQueuedWorkerStart()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.005"/>
+  <testcase name="oldQueuedStopCannotDestroyANewerStart()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.009"/>
+  <testcase name="workerStartWaitsForMainThreadSetup()" classname="com.v2ray.ang.service.DialerWebviewServiceTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

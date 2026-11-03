@@ -1,0 +1,26 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+android {
+    namespace 'de.blinkt.openvpn'
+    compileSdk 37
+    defaultConfig {
+        minSdk 24
+        buildConfigField 'boolean', 'openvpn3', 'false'
+        buildConfigField 'String', 'FLAVOR', '"skeleton"'
+        buildConfigField 'String', 'APPLICATION_ID', '"com.ispeedtopvpn.app"'
+        buildConfigField 'String', 'VERSION_NAME', '"0.7.69"'
+        buildConfigField 'int', 'VERSION_CODE', '225'
+    }
+    buildFeatures { aidl true; buildConfig true }
+    sourceSets.main {
+        java.srcDirs '../../engines/openvpn/main/src/main/java', '../../engines/openvpn/main/src/skeleton/java'
+        res.srcDirs '../../engines/openvpn/main/src/main/res', '../../engines/openvpn/main/src/skeleton/res'
+        aidl.srcDirs '../../engines/openvpn/main/src/main/aidl'
+        assets.srcDirs '../../engines/openvpn/main/src/main/assets'
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    kotlinOptions { jvmTarget = '17' }
+}
+dependencies { implementation libs.androidx.core.ktx }

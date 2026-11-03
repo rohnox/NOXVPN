@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.ui.main.SessionDurationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-03T21:09:40.638Z" hostname="DESKTOP-3HVDMFH" time="0.003">
+  <properties/>
+  <testcase name="formats zero negative and long sessions()" classname="com.v2ray.ang.ui.main.SessionDurationTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

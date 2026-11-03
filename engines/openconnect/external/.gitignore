@@ -1,0 +1,10 @@
+arm/
+arm64/
+x86/
+x86_64/
+.build-stamps/
+.openconnect-sources
+*.jar
+curl/
+curl-*/
+curl-*.tar.*

@@ -22,6 +22,9 @@ data class SubscriptionUsageInfo(
     val supportUrl: String? = null,
     /** Validated `Profile-Web-Page-Url` header. */
     val webPageUrl: String? = null,
+    /** Null for older saved formats; false means the panel did not provide these counters. */
+    val trafficAvailable: Boolean? = null,
+    val quotaAvailable: Boolean? = null,
 ) {
     /** Bytes consumed so far (upload + download). */
     val used: Long get() = upload + download

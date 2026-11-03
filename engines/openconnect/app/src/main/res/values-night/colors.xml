@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_icon_background">#080A0D</color>
+    <color name="brand_icon_background_end">#15191E</color>
+    <color name="brand_icon_outline">#2C3745</color>
+    <color name="oc_primary">#2F80ED</color>
+    <color name="oc_on_primary">#FFFFFF</color>
+    <color name="oc_primary_container">#173A69</color>
+    <color name="oc_on_primary_container">#EAF2FF</color>
+    <color name="oc_secondary">#A8AFB8</color>
+    <color name="oc_on_secondary">#111317</color>
+    <color name="oc_secondary_container">#23272D</color>
+    <color name="oc_on_secondary_container">#F5F7FA</color>
+    <color name="oc_tertiary">#FFB95C</color>
+    <color name="oc_on_tertiary">#4A2800</color>
+    <color name="oc_tertiary_container">#6A3A00</color>
+    <color name="oc_on_tertiary_container">#FFDCB5</color>
+    <color name="oc_error">#FFB4AB</color>
+    <color name="oc_surface">#0B0D10</color>
+    <color name="oc_surface_container">#171A1F</color>
+    <color name="oc_on_surface">#F5F7FA</color>
+    <color name="oc_on_surface_variant">#A8AFB8</color>
+    <color name="oc_outline">#6B7280</color>
+    <color name="oc_outline_variant">#343941</color>
+</resources>

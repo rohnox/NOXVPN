@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:layout="@layout/preference_category_header"
+        android:title="@string/certificates_and_tokens">
+        <app.openconnect.ShowTextPreference
+            android:key="ca_certificate"
+            android:title="@string/ca_certificate"
+            android:layout="@layout/preference_standard_compact"
+            android:defaultValue="" />
+        <app.openconnect.ShowTextPreference
+            android:key="user_certificate"
+            android:title="@string/user_certificate"
+            android:layout="@layout/preference_standard_compact"
+            android:defaultValue="" />
+        <app.openconnect.ShowTextPreference
+            android:key="private_key"
+            android:title="@string/private_key"
+            android:layout="@layout/preference_standard_compact"
+            android:defaultValue="" />
+        <ListPreference
+            android:key="software_token"
+            android:title="@string/software_token"
+            android:layout="@layout/preference_standard_compact"
+            android:dialogTitle="@string/software_token"
+            android:entries="@array/software_token_entries"
+            android:entryValues="@array/software_token_values"
+            android:defaultValue="disabled" />
+        <app.openconnect.ShowTextPreference
+            android:key="token_string"
+            android:title="@string/token_string"
+            android:layout="@layout/preference_standard_compact"
+            android:defaultValue="" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_header"
+        android:title="@string/saved_credentials">
+        <ListPreference
+            android:key="batch_mode"
+            android:title="@string/batch_mode"
+            android:layout="@layout/preference_standard_compact"
+            android:summary="@string/batch_mode_disabled_summary"
+            android:dialogTitle="@string/batch_mode"
+            android:entries="@array/batch_mode_entries"
+            android:entryValues="@array/batch_mode_values"
+            android:defaultValue="disabled" />
+        <SwitchPreference
+            android:key="disable_username_caching"
+            android:title="@string/disable_username_caching"
+            android:layout="@layout/preference_standard_compact"
+            android:summary="@string/disable_username_caching_summary"
+            android:defaultValue="false" />
+        <app.openconnect.ClearPasswordPreference
+            android:key="clear_saved_passwords"
+            android:title="@string/clear_saved_passwords"
+            android:layout="@layout/preference_standard_compact"
+            android:dialogTitle="@string/clear_saved_passwords"
+            android:dialogMessage="@string/clear_saved_passwords_confirm"
+            android:negativeButtonText="@string/no"
+            android:positiveButtonText="@string/yes"
+            android:defaultValue="" />
+    </PreferenceCategory>
+</PreferenceScreen>

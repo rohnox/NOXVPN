@@ -1,0 +1,5 @@
+Redesigned VPN profile and general settings with clearer common and advanced sections while preserving every existing option.
+
+Authentication and advanced settings now open as titled pages with reliable Back navigation. Connection failures provide Retry, View log, and Close actions.
+
+This release also adds explicit unset certificate states, modern switches, log sharing and an empty state, collapsible FAQ answers, and installed/latest/last-checked update details.

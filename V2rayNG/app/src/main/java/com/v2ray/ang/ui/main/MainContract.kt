@@ -20,7 +20,16 @@ data class MainUiState(
     val groups: List<GroupMapItem> = emptyList(),
     val selectedGroupId: String = "",
     val selectedGuid: String? = null,
+    val selectedServerName: String = "",
+    val selectedSubscriptionId: String = "",
     val isRunning: Boolean = false,
+    val sessionTraffic: com.v2ray.ang.dto.SessionTraffic? = null,
+    val trafficHistory: List<com.v2ray.ang.dto.SessionTraffic> = emptyList(),
+    val isAutoSelecting: Boolean = false,
+    val autoCompleted: Int = 0,
+    val autoTotal: Int = 0,
+    val autoMessage: Int? = null,
+    val serverActivation: ServerActivation? = null,
     val isTesting: Boolean = false,
     val status: MainStatus = MainStatus.Disconnected,
     val locateTarget: LocateTarget? = null,
@@ -36,6 +45,8 @@ sealed interface MainAction {
     data object Initialize : MainAction
     data object RefreshGroups : MainAction
     data object ToggleService : MainAction
+    data object AutoConnect : MainAction
+    data object CancelAutoConnect : MainAction
     data object TestCurrentServer : MainAction
     data object TestAllServers : MainAction
     data object TestRealAllServers : MainAction

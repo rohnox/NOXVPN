@@ -1,0 +1,5 @@
+Choose the default VPN used by the Android Quick Settings tile, or keep the existing last-used behavior.
+
+VPN profile and general settings are now grouped into common, authentication, and advanced sections without removing any options.
+
+This release also fixes connection-switch races, large certificate and CSD file truncation, inaccessible-folder crashes, SecurID profile restoration, stale profile cleanup, Quick Settings refresh behavior, and several lifecycle and compatibility issues.

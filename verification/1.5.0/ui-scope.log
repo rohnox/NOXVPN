@@ -1,0 +1,8 @@
+PASS: unchanged 1.4.3 engine/launch file engines/openvpn/main/src/main/java/de/blinkt/openvpn/core/GlobalPreferences.java
+PASS: unchanged 1.4.3 engine/launch file engines/openvpn/main/src/main/java/de/blinkt/openvpn/core/StatusLogReader.java
+PASS: unchanged 1.4.3 engine/launch file engines/openvpn/main/src/main/java/de/blinkt/openvpn/core/StatusListener.java
+PASS: unchanged 1.4.3 engine/launch file engines/openvpn/main/src/main/java/de/blinkt/openvpn/core/OpenVPNStatusService.java
+PASS: unchanged 1.4.3 engine/launch file V2rayNG/app/src/main/java/com/v2ray/ang/ui/protocols/ProtocolsViewModel.kt
+PASS: unchanged 1.4.3 engine/launch file V2rayNG/app/src/main/java/com/v2ray/ang/core/LauncherManager.kt
+PASS: new localized labels occur exactly once in every packaged locale.
+PASS: no default/synthetic profile or graph data added; protocol screen observes actual ViewModel state.

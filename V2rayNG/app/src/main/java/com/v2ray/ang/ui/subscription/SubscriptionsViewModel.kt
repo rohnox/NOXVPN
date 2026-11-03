@@ -23,25 +23,68 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SubscriptionsViewModel(application: Application) : BaseViewModel(application) {
     private var qrCodeJob: Job? = null
+    private var reloadJob: Job? = null
     private val _qrCode = MutableStateFlow<Bitmap?>(null)
     internal val qrCode = _qrCode.asStateFlow()
     private val subscriptions: MutableList<SubscriptionCache> =
         MmkvManager.decodeSubscriptions().toMutableList()
 
     private val _subsFlow = MutableStateFlow(subscriptions.toList())
-    val subsFlow: StateFlow<List<SubscriptionCache>> = _subsFlow.asStateFlow()
+    val subsFlow: StateFlow<List<SubscriptionCache>> = _subsFlow.map { visibleSubscriptions(it) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, visibleSubscriptions(subscriptions))
+    private val reorderMutex = Mutex()
 
     fun getAll(): List<SubscriptionCache> = subscriptions.toList()
 
     fun reload() {
-        subscriptions.clear()
-        subscriptions.addAll(MmkvManager.decodeSubscriptions())
-        _subsFlow.value = subscriptions.toList()
+        reloadJob?.cancel()
+        reloadJob = viewModelScope.launch {
+            try {
+                val latest = withContext(Dispatchers.IO) { MmkvManager.decodeSubscriptions() }
+                val added = subscriptionsToFetch(subscriptions, latest)
+                subscriptions.clear()
+                subscriptions.addAll(latest)
+                _subsFlow.value = subscriptions.toList()
+                if (added.isNotEmpty()) {
+                    updateAddedSubscriptions(latest.filter { it.guid in added })
+                }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (e: Exception) {
+                LogUtil.e(AppConfig.TAG, "Subscription reload failed", IllegalStateException(e.javaClass.simpleName))
+                toastError(R.string.toast_failure)
+            }
+        }
+    }
+
+    private fun updateAddedSubscriptions(added: List<SubscriptionCache>) {
+        launchLoading {
+            try {
+                val results = withContext(Dispatchers.IO) { added.map { AngConfigManager.updateConfigViaSub(it) } }
+                SettingsChangeManager.makeSetupGroupTab()
+                reload()
+                val configs = results.sumOf { it.configCount }
+                val success = results.sumOf { it.successCount }
+                val failed = results.sumOf { it.failureCount }
+                val skipped = results.sumOf { it.skipCount }
+                toast(getString(R.string.title_update_subscription_result, configs, success, failed, skipped))
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (e: Exception) {
+                LogUtil.e(AppConfig.TAG, "New subscription fetch failed", IllegalStateException(e.javaClass.simpleName).apply { stackTrace = e.stackTrace })
+                toastError(R.string.toast_failure)
+            }
+        }
     }
 
     fun remove(subId: String): Boolean {
@@ -78,11 +121,26 @@ class SubscriptionsViewModel(application: Application) : BaseViewModel(applicati
         _qrCode.value = null
     }
 
-    fun move(fromPosition: Int, toPosition: Int) {
-        if (subscriptions.moveItem(fromPosition, toPosition)) {
-            MmkvManager.encodeSubsList(subscriptions.mapTo(mutableListOf()) { it.guid })
-            SettingsChangeManager.makeSetupGroupTab()
-            _subsFlow.value = subscriptions.toList()
+    fun move(fromGuid: String, toGuid: String) {
+        viewModelScope.launch {
+            reorderMutex.withLock {
+                try {
+                    val updated = withContext(Dispatchers.IO) {
+                        val items = reorderedSubscriptions(MmkvManager.decodeSubscriptions(), fromGuid, toGuid)
+                        MmkvManager.encodeSubsList(items.mapTo(mutableListOf()) { it.guid })
+                        items
+                    }
+                    subscriptions.clear()
+                    subscriptions.addAll(updated)
+                    _subsFlow.value = subscriptions.toList()
+                    SettingsChangeManager.makeSetupGroupTab()
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (e: Exception) {
+                    LogUtil.e(AppConfig.TAG, "Subscription reorder failed", e)
+                    toastError(R.string.toast_failure)
+                }
+            }
         }
     }
 

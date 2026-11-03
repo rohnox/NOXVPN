@@ -1,0 +1,28 @@
+plugins { id 'com.android.library' }
+android {
+    namespace 'app.openconnect'
+    compileSdk 37
+    defaultConfig {
+        minSdk 24
+        buildConfigField 'String', 'APPLICATION_ID', '"com.ispeedtopvpn.app"'
+        buildConfigField 'String', 'VERSION_NAME', '"1.17.0"'
+        buildConfigField 'int', 'VERSION_CODE', '1130'
+    }
+    buildFeatures { aidl true; buildConfig true }
+    sourceSets.main {
+        java.srcDirs '../../engines/openconnect/app/src/main/java', '../../engines/openconnect/external/openconnect/java/src/org/infradead/libopenconnect', '../../engines/openconnect/external/stoken/java/src/org/stoken'
+        java.exclude 'app/openconnect/Application.java', 'app/openconnect/Xposed.java', 'org/spongycastle/**'
+        res.srcDirs '../../engines/openconnect/app/src/main/res'
+        aidl.srcDirs '../../engines/openconnect/app/src/main/aidl'
+        assets.srcDirs '../../engines/openconnect/app/src/main/assets'
+        assets.exclude 'xposed_init'
+    }
+    compileOptions { coreLibraryDesugaringEnabled true; sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies {
+    // Both upstreams carry the same public PEM utility package. The host packages it once.
+    compileOnly project(':engine-openvpn')
+    implementation libs.androidx.core.ktx
+    implementation 'com.google.android.material:material:1.14.0'
+    coreLibraryDesugaring libs.desugar.jdk.libs
+}

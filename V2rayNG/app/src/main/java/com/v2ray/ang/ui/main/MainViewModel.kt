@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -41,6 +42,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.PatternSyntaxException
 
 private fun applyTestDelayResults(
@@ -69,12 +71,11 @@ private fun applyTestDelayResultsToRows(
 
 class MainViewModel(
     application: Application,
-    private val dataSource: MainDataSource
+    private val dataSource: MainDataSource,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : BaseViewModel(application) {
-
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
-    private val preloadDispatcher: CoroutineDispatcher = Dispatchers.IO.limitedParallelism(1)
+    private val preloadDispatcher: CoroutineDispatcher = ioDispatcher.limitedParallelism(1)
 
     // ---------- UI state ----------
     private val _uiState = MutableStateFlow(
@@ -109,12 +110,26 @@ class MainViewModel(
 
     private val testRequests = MainTestRequests()
     private var bulkTestJob: Job? = null
+    private val autoSelection = AutoConnectSelection()
+    private var autoProfiles = emptyMap<String, ProfileItem>()
+    private var autoPrepareJob: Job? = null
+    private var autoDeadlineJob: Job? = null
+    private var autoFinishJob: Job? = null
+    private var selectionJob: Job? = null
+    private val selectionGeneration = AtomicLong()
+    private val selectionMutex = Mutex()
 
     private val initialPageReady = CompletableDeferred<Unit>()
 
     // ---------- Service events ----------
     init {
         collectServiceEvents()
+        viewModelScope.launch {
+            uiState.map { it.selectedGuid }.distinctUntilChanged().collect { guid ->
+                val profile = withContext(ioDispatcher) { guid?.let { dataSource.decodeServerConfig(it) } }
+                _uiState.update { if (it.selectedGuid == guid) it.copy(selectedServerName = profile?.remarks.orEmpty(), selectedSubscriptionId = profile?.subscriptionId.orEmpty()) else it }
+            }
+        }
         setupGroupTab()
     }
 
@@ -128,6 +143,9 @@ class MainViewModel(
 
     private fun handleServiceEvent(event: MainServiceEvent) {
         when (event) {
+            is MainServiceEvent.Traffic -> {
+                _uiState.update { it.withTraffic(event.snapshot) }
+            }
             MainServiceEvent.StateRunning -> updateRunningState(true, clearTestingText = false)
             MainServiceEvent.StateNotRunning -> updateRunningState(false, clearTestingText = false)
             MainServiceEvent.StateStartSuccess -> {
@@ -144,7 +162,10 @@ class MainViewModel(
                 updateRunningState(false)
             }
 
-            MainServiceEvent.StateStopSuccess -> updateRunningState(false)
+            MainServiceEvent.StateStopSuccess -> {
+                cancelAutoConnect()
+                updateRunningState(false)
+            }
             is MainServiceEvent.MeasureDelayResult -> {
                 if (!uiState.value.isRunning || !testRequests.completeCurrent(event.requestId)) return
                 _uiState.update { it.copy(isTesting = testRequests.isTesting, status = MainStatus.ConnectionTest(event.result)) }
@@ -152,6 +173,9 @@ class MainViewModel(
 
             is MainServiceEvent.MeasureConfigSuccess -> {
                 val request = testRequests.bulk?.takeIf { it.id == event.requestId } ?: return
+                if (autoSelection.record(event.requestId, event.result.guid, event.result.delayMillis)) {
+                    _uiState.update { it.copy(autoCompleted = autoSelection.completedCount) }
+                }
                 queueTestResult(event.result, request)
             }
 
@@ -177,6 +201,11 @@ class MainViewModel(
             }
 
             is MainServiceEvent.MeasureConfigCancelled -> {
+                if (autoSelection.isActive(event.requestId)) {
+                    cancelAutoConnect(cancelBackend = false)
+                    _uiState.update { it.copy(autoMessage = R.string.top_auto_no_response) }
+                    return
+                }
                 if (testRequests.completeBulk(event.requestId) != null) {
                     cancelPendingTestResults()
                     resetTestStatus()
@@ -274,7 +303,10 @@ class MainViewModel(
 
     // ---------- Action handler ----------
     fun onAction(action: MainAction) {
+        prepareUserAction(action)
         when (action) {
+            MainAction.AutoConnect -> startAutoConnect()
+            MainAction.CancelAutoConnect -> cancelAutoConnect()
             MainAction.Initialize -> initialize()
             MainAction.RefreshGroups -> setupGroupTab(forceRefresh = true)
             MainAction.TestAllServers -> testAllRealPing(true)
@@ -455,7 +487,9 @@ class MainViewModel(
                 if (forceRefresh) {
                     cacheMutex.withLock { groupDataCache.clear() }
                 }
-                val groups = dataSource.getSubscriptions().map {
+                val groups = com.v2ray.ang.ui.subscription.visibleSubscriptions(
+                    dataSource.getSubscriptions(), dataSource.getServerGuidList(AppConfig.DEFAULT_SUBSCRIPTION_ID).isNotEmpty()
+                ).map {
                     GroupMapItem(
                         id = it.guid,
                         remarks = it.subscription.remarks,
@@ -481,6 +515,7 @@ class MainViewModel(
 
                 if (groups.isEmpty()) {
                     cacheMutex.withLock { groupDataCache.clear() }
+                    if (!initialPageReady.isCompleted) initialPageReady.complete(Unit)
                     return@launch
                 }
 
@@ -777,8 +812,8 @@ class MainViewModel(
     }
 
     fun updateSelectedGuid(guid: String) {
-        dataSource.setSelectServer(guid)
-        _uiState.update { it.copy(selectedGuid = guid) }
+        cancelAutoConnect()
+        commitServerSelection(guid, startIfStopped = false)
     }
 
     fun refreshSelectedGuid() {
@@ -814,8 +849,186 @@ class MainViewModel(
         }
     }
 
+    // Auto-connect uses the existing real-ping service, never cached ping values or a UI-process core.
+    fun prepareUserAction(action: MainAction) {
+        when (action) {
+            MainAction.ToggleService, MainAction.RestartService, MainAction.TestCurrentServer,
+            MainAction.TestAllServers, MainAction.TestRealAllServers, MainAction.RefreshGroups,
+            MainAction.ImportClipboard, MainAction.ImportQRcode, MainAction.ImportConfigLocal,
+            MainAction.RemoveAllServers, MainAction.RemoveDuplicateServers, MainAction.RemoveInvalidServers,
+            MainAction.UpdateSubscriptions, is MainAction.UpdateGroupSubscription,
+            is MainAction.SelectServer, is MainAction.SelectGroup, is MainAction.EditServer,
+            is MainAction.RemoveServer, is MainAction.ImportManually, is MainAction.ImportBatchConfig -> {
+                cancelAutoConnect()
+                selectionJob?.cancel()
+                selectionGeneration.incrementAndGet()
+                _uiState.update { it.copy(serverActivation = null, autoMessage = null) }
+            }
+            else -> Unit
+        }
+    }
+
+    private fun startAutoConnect() {
+        cancelAllPing()
+        selectionJob?.cancel()
+        selectionGeneration.incrementAndGet()
+        _uiState.update { it.copy(isAutoSelecting = true, autoCompleted = 0, autoTotal = 0, autoMessage = null, serverActivation = null) }
+        autoPrepareJob = viewModelScope.launch {
+            try {
+                val profiles = withContext(ioDispatcher) {
+                    dataSource.getServerGuidList("").distinct().mapNotNull { guid ->
+                        dataSource.decodeServerConfig(guid)?.copy()?.let { guid to it }
+                    }.toMap()
+                }
+                ensureActive()
+                if (profiles.isEmpty()) {
+                    _uiState.update { it.copy(isAutoSelecting = false, autoMessage = R.string.top_auto_empty) }
+                    return@launch
+                }
+                autoProfiles = profiles
+                val request = testRequests.beginBulk("")
+                autoSelection.begin(request.id, profiles.keys.toList())
+                _uiState.update { it.copy(isTesting = true, status = MainStatus.Testing, autoTotal = profiles.size) }
+                dataSource.sendMsg2TestService(TestServiceMessage(
+                    key = AppConfig.MSG_MEASURE_CONFIG_START,
+                    serverGuids = profiles.keys.toList(),
+                    onlyTcp = false,
+                ), request.id)
+                autoDeadlineJob = viewModelScope.launch {
+                    delay(120_000L)
+                    if (autoSelection.isActive(request.id)) {
+                        // Bound the user's wait; on timeout only completed real probes are eligible.
+                        dataSource.cancelAllPing()
+                        finishAutoConnect(request.id)
+                    }
+                }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                logSelectionFailure("prepare candidates or dispatch probe", error)
+                cancelAutoConnect()
+                _uiState.update { it.copy(autoMessage = R.string.top_auto_error) }
+            }
+        }
+    }
+
+    private fun finishAutoConnect(requestId: String) {
+        if (!autoSelection.isActive(requestId) || testRequests.completeBulk(requestId) == null) return
+        autoDeadlineJob?.cancel()
+        cancelPendingTestResults()
+        resetTestStatus()
+        val snapshot = autoProfiles
+        viewModelScope.launch(ioDispatcher) {
+            cacheMutex.withLock { groupDataCache.clear() }
+            reloadAllGroups(uiState.value.groups.map { it.id })
+        }
+        autoFinishJob = viewModelScope.launch {
+            try {
+                // A subscription refresh/edit/removal must not turn a tested GUID into an untested config.
+                val unchanged = withContext(ioDispatcher) {
+                    snapshot.filter { (guid, original) -> dataSource.decodeServerConfig(guid) == original }.keys
+                }
+                ensureActive()
+                val choice = autoSelection.finish(requestId, unchanged)
+                if (choice == null) {
+                    autoSelection.cancel()
+                    autoProfiles = emptyMap()
+                    _uiState.update { it.copy(isAutoSelecting = false, autoMessage = R.string.top_auto_no_response) }
+                } else {
+                    commitServerSelection(choice.guid, startIfStopped = true, autoRequestId = requestId)
+                }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                logSelectionFailure("revalidate probe candidates", error, requestId)
+                cancelAutoConnect()
+                _uiState.update { it.copy(autoMessage = R.string.top_auto_error) }
+            }
+        }
+    }
+
+    fun cancelAutoConnect(cancelBackend: Boolean = true) {
+        val requestId = autoSelection.requestId
+        if (!uiState.value.isAutoSelecting && requestId == null) return
+        autoPrepareJob?.cancel()
+        autoDeadlineJob?.cancel()
+        autoFinishJob?.cancel()
+        selectionJob?.cancel()
+        selectionGeneration.incrementAndGet()
+        autoSelection.cancel()
+        autoProfiles = emptyMap()
+        if (requestId != null) testRequests.completeBulk(requestId)
+        cancelPendingTestResults()
+        _uiState.update { it.copy(isAutoSelecting = false, autoCompleted = 0, autoTotal = 0, serverActivation = null) }
+        resetTestStatus()
+        if (cancelBackend) dataSource.cancelAllPing()
+    }
+
+    private fun commitServerSelection(guid: String, startIfStopped: Boolean, autoRequestId: String? = null) {
+        selectionJob?.cancel()
+        val generation = selectionGeneration.incrementAndGet()
+        val expected = if (autoRequestId != null) autoProfiles[guid] else null
+        _uiState.update { it.copy(serverActivation = null) }
+        selectionJob = viewModelScope.launch {
+            try {
+                val selected = withContext(ioDispatcher) {
+                    selectionMutex.withLock {
+                        if (selectionGeneration.get() != generation) return@withLock null
+                        val current = dataSource.decodeServerConfig(guid) ?: return@withLock null
+                        if (autoRequestId != null && current != expected) return@withLock null
+                        // All manual/automatic selection writes share this lock. A later manual choice wins.
+                        if (selectionGeneration.get() != generation) return@withLock null
+                        val changed = dataSource.getSelectServer() != guid
+                        dataSource.setSelectServer(guid)
+                        check(dataSource.getSelectServer() == guid) { "Selection persistence was not confirmed" }
+                        current to (changed || startIfStopped)
+                    }
+                }
+                ensureActive()
+                if (selectionGeneration.get() != generation) return@launch
+                val profile = selected?.first
+                if (profile == null) {
+                    if (autoRequestId != null) cancelAutoConnect()
+                    _uiState.update { it.copy(autoMessage = R.string.top_auto_config_gone) }
+                    return@launch
+                }
+                _uiState.update { it.copy(
+                    selectedGuid = guid, selectedServerName = profile.remarks,
+                    selectedSubscriptionId = profile.subscriptionId,
+                    serverActivation = if (selected.second) ServerActivation(generation, guid, startIfStopped, autoRequestId) else null,
+                ) }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                logSelectionFailure("validate and persist profile", error, guid)
+                if (autoRequestId != null) cancelAutoConnect()
+                _uiState.update { it.copy(autoMessage = R.string.top_auto_error) }
+            }
+        }
+    }
+
+    fun consumeServerActivation(generation: Long): ServerActivation? {
+        val activation = uiState.value.serverActivation?.takeIf { it.generation == generation } ?: return null
+        if (selectionGeneration.get() != generation || activation.guid != uiState.value.selectedGuid ||
+            (activation.autoRequestId != null && autoSelection.consume(activation.autoRequestId) == null)) {
+            cancelAutoConnect()
+            _uiState.update { if (it.serverActivation?.generation == generation) it.copy(serverActivation = null) else it }
+            return null
+        }
+        autoProfiles = emptyMap()
+        _uiState.update { it.copy(serverActivation = null, isAutoSelecting = false, autoMessage = null) }
+        return activation
+    }
+
+    private fun logSelectionFailure(phase: String, error: Exception, stableId: String? = null) {
+        // Decode/storage exceptions may embed configuration values in their message or cause.
+        val sanitized = Exception(error.javaClass.simpleName).apply { stackTrace = error.stackTrace }
+        LogUtil.e(AppConfig.TAG, "Main selection: $phase failed; id=${stableId.orEmpty()}", sanitized)
+    }
+
     // ---------- Testing ----------
     fun cancelAllPing() {
+        cancelAutoConnect(cancelBackend = false)
         bulkTestJob?.cancel()
         bulkTestJob = null
         testRequests.cancelBulk()
@@ -899,6 +1112,10 @@ class MainViewModel(
     }
 
     private fun onTestsFinished(requestId: String) {
+        if (autoSelection.isActive(requestId)) {
+            finishAutoConnect(requestId)
+            return
+        }
         if (testRequests.completeBulk(requestId) == null) return
         resetTestStatus()
         viewModelScope.launch(ioDispatcher) {
@@ -934,6 +1151,8 @@ class MainViewModel(
         _uiState.update { state ->
             state.copy(
                 isRunning = running,
+                sessionTraffic = if (running) state.sessionTraffic else null,
+                trafficHistory = if (running) state.trafficHistory else emptyList(),
                 isTesting = testRequests.isTesting,
                 status = if (!clearTestingText && state.isRunning == running) state.status
                 else if (running) MainStatus.Connected else MainStatus.Disconnected
@@ -942,6 +1161,8 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        cancelAutoConnect()
+        selectionJob?.cancel()
         setupGroupJob?.cancel()
         preloadJob?.cancel()
         selectedGroupLoadJob?.cancel()

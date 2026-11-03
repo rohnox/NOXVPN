@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.handler.ProfileReplacementTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-02T11:02:04.345Z" hostname="DESKTOP-3HVDMFH" time="0.012">
+  <properties/>
+  <testcase name="matches endpoint and password when remarks are unavailable()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.002"/>
+  <testcase name="prefers a full match over a remarks-only match()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.001"/>
+  <testcase name="falls back to the first replacement profile()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.001"/>
+  <testcase name="keeps an existing selection when it is outside the replaced group()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.001"/>
+  <testcase name="removes only unreferenced superseded payloads()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.001"/>
+  <testcase name="selects the first profile when there is no current selection()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.001"/>
+  <testcase name="uses a remarks match when no full match exists()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.001"/>
+  <testcase name="keeps all payloads when another group index is unreadable()" classname="com.v2ray.ang.handler.ProfileReplacementTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="software_token_entries">
+        <item>Disabled</item>
+        <item>RSA SecurID</item>
+        <item>TOTP</item>
+    </string-array>
+    <string-array name="software_token_values" translatable="false">
+        <item>disabled</item>
+        <item>securid</item>
+        <item>totp</item>
+    </string-array>
+
+    <string-array name="batch_mode_entries">
+        <item>Ask every time</item>
+        <item>Use saved credentials when available</item>
+        <item>Use saved credentials only</item>
+    </string-array>
+    <string-array name="batch_mode_values" translatable="false">
+        <item>disabled</item>
+        <item>empty_only</item>
+        <item>enabled</item>
+    </string-array>
+
+    <string-array name="reported_os_entries">
+        <item>Android</item>
+        <item>Linux (32-bit)</item>
+        <item>Linux (64-bit)</item>
+        <item>Windows</item>
+        <item>Mac</item>
+        <item>iOS</item>
+    </string-array>
+    <string-array name="reported_os_values" translatable="false">
+        <item>android</item>
+        <item>linux</item>
+        <item>linux-64</item>
+        <item>win</item>
+        <item>mac-intel</item>
+        <item>apple-ios</item>
+    </string-array>
+
+    <string-array name="split_tunnel_mode_entries">
+        <item>Auto</item>
+        <item>On - DNS uses VPN</item>
+        <item>On - DNS uses uplink</item>
+    </string-array>
+    <string-array name="split_tunnel_mode_values" translatable="false">
+        <item>auto</item>
+        <item>on_vpn_dns</item>
+        <item>on_uplink_dns</item>
+    </string-array>
+
+    <string-array name="log_timestamp_entries" translatable="false">
+        <item>@string/timestamp_short</item>
+        <item>@string/timestamp_long</item>
+        <item>@string/timestamp_none</item>
+    </string-array>
+    <string-array name="log_timestamp_values" translatable="false">
+        <item>short</item>
+        <item>long</item>
+        <item>none</item>
+    </string-array>
+
+    <string-array name="connection_states">
+        <item>Unknown</item>
+        <item>Authenticating</item>
+        <item>Prompting for user input</item>
+        <item>Authenticated</item>
+        <item>Connecting</item>
+        <item>Connected</item>
+        <item>Disconnected</item>
+    </string-array>
+
+    <string-array name="faq_text">
+        <item>How do I add a VPN profile?</item>
+        <item>Tap Add VPN profile, enter the gateway address from your school or company, then save. Most users only need the server address at first. Certificates, software tokens, and advanced network options can stay empty unless your VPN administrator asks for them.</item>
+
+        <item>What happens after I tap a profile?</item>
+        <item>The app asks Android for VPN permission, connects to the server, then shows the login fields sent by that server. Keep the app open until the username, password, certificate, or token prompts are complete.</item>
+
+        <item>How does Automatic login work?</item>
+        <item>Automatic login is the old Batch mode, renamed around the job it does: reusing saved credentials.\n\nAsk every time always shows the login prompt.\n\nUse saved credentials when available skips fields that were saved before and still asks for anything missing.\n\nUse saved credentials only never shows prompts. If a required value is missing or changed, the connection stops so you can update the profile.</item>
+
+        <item>Why does the login dialog ask to save my password?</item>
+        <item>If Save password stays checked, this profile can reuse the password on later connections. To avoid typing it again, save the password once, then set Automatic login to Use saved credentials when available.</item>
+
+        <item>Where do I check connection problems?</item>
+        <item>Open the Log tab. It shows DNS, certificate, authentication, and tunnel setup messages from the current connection attempt. If login fails before the VPN connects, the log usually explains which prompt or server step failed.</item>
+
+        <item>When should I edit certificate or token settings?</item>
+        <item>Only edit them when your VPN server requires them. User certificate is for client certificate authentication. Software token is for SecurID or TOTP flows. If your server only asks for username and password, leave these fields empty.</item>
+
+        <item>Can this app connect to every VPN?</item>
+        <item>No. This client is for OpenConnect-compatible SSL VPN servers such as Cisco AnyConnect-compatible gateways and ocserv. It does not connect to unrelated VPN protocols such as WireGuard, OpenVPN, or IPsec-only VPNs.</item>
+    </string-array>
+
+</resources>

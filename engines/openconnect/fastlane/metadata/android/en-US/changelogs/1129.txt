@@ -1,0 +1,3 @@
+Redesign the complete VPN experience around one consistent dashboard for disconnected, connecting, waiting-for-input, and connected states.
+
+Profiles, connection details, logs, settings, FAQ, About, and SecurID now share a cleaner visual system. Login prompts are wider and clearer, repeated password fields are distinguished, and common settings are more compact without removing advanced controls.

@@ -56,6 +56,8 @@ object SubscriptionInfoParser {
             title = title,
             supportUrl = support,
             webPageUrl = webPage,
+            trafficAvailable = fields?.containsKey("upload") == true && fields.containsKey("download"),
+            quotaAvailable = fields?.containsKey("total") == true,
         )
     }
 

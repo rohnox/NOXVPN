@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.extension.ListExtTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-02T10:58:14.845Z" hostname="DESKTOP-3HVDMFH" time="0.121">
+  <properties/>
+  <testcase name="moveItem_up_preservesRelativeOrder()" classname="com.v2ray.ang.extension.ListExtTest" time="0.116"/>
+  <testcase name="moveItem_down_preservesRelativeOrder()" classname="com.v2ray.ang.extension.ListExtTest" time="0.001"/>
+  <testcase name="moveItem_rejectsNoOpAndInvalidIndex()" classname="com.v2ray.ang.extension.ListExtTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

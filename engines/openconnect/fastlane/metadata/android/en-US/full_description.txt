@@ -1,0 +1,14 @@
+OConnect is a modern Android client for OpenConnect-compatible SSL VPN gateways, including Cisco AnyConnect-compatible servers and ocserv.
+
+It is a maintained fork of the original OpenConnect for Android codebase with a refreshed Android build, Material interface, clearer onboarding, saved-credential login, dark mode, and improved English and Chinese copy.
+
+Features:
+
+* OpenConnect-compatible SSL VPN connections without root
+* Profile-based setup for organization, school, and self-hosted VPN gateways
+* Saved credentials and automatic login for repeat connections
+* RSA SecurID and TOTP software token support
+* Connection log, status view, byte counters, and reconnect handling
+* Light and dark Material UI
+
+The app is useful only with a compatible VPN server and an account on that server.

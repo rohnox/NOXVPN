@@ -1,0 +1,12 @@
+# iSpeedTopVPN APP 1.3.0 — metallic black and gold
+
+- Empty internal Default subscription is hidden in Subscriptions and the main group list. Its stored records are retained; a configured URL remains visible, and a manual-config bucket with servers remains accessible on the main screen. User plans named Default are not hidden. No migration deletes subscriptions/configs.
+- On returning from adding an enabled URL subscription, SubscriptionsViewModel detects the new GUID and fetches it using the existing subscription import backend on IO, with existing progress and result messages. Empty/disabled/already-known subscriptions do not trigger an automatic fetch loop. This detects new additions while the subscription ViewModel remains alive; process death/recreation between saving and returning can require the Home refresh button. Real-provider runtime checks were not performed.
+- Reordering resolves stable GUIDs and preserves the hidden internal bucket in storage; disk persistence is moved to IO. Seven policy tests cover filtering, user-name preservation, manual access, stale reorder IDs and fetch eligibility.
+- Automatic theme mode now defaults to metallic black; an explicitly selected light mode remains available with gold/ivory colors. Dynamic wallpaper colors still take priority when enabled in Settings; disable dynamic colors to see the brand palette. Hero uses graphite gradient, gold controls and warm highlights. These are code-authored colors, not a fake metallic-texture image.
+- Launcher (adaptive/legacy), splash logo, editable SVG and TV banner use gold/black instead of blue/teal. Main information and service state remain real. No protocol/core/dependency upgrade.
+- Removed the subscription updater's direct full-URL info log; no user credentials/configuration were used in verification.
+
+Version 1.3.0; F-Droid universal code 5075800. Signed with the same dedicated Release key as 1.2.1. In-place update is supported by package/certificate/version properties; actual upgrade installation was not performed here. Keep backups.
+
+Not run: phone/emulator layout, themes/dynamic colors/RTL/accessibility and touch/keyboard/D-pad, drag-and-drop persistence, process death/recreation, empty-state/live-subscription fetch success/failure and immediate display, real VPN behavior or Play Protect scan on this exact APK. User confirmed 1.2.1 Release installed and opened after a scan; that is not a runtime test of 1.3.0.

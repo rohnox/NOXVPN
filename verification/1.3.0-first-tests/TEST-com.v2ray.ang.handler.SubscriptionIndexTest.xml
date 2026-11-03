@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.handler.SubscriptionIndexTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T10:58:18.022Z" hostname="DESKTOP-3HVDMFH" time="1.95">
+  <properties/>
+  <testcase name="missingBlankAndEmptyIndexesRemainEmpty()" classname="com.v2ray.ang.handler.SubscriptionIndexTest" time="0.988"/>
+  <testcase name="duplicateIdsKeepTheirFirstPositionWithoutWritingStorage()" classname="com.v2ray.ang.handler.SubscriptionIndexTest" time="0.063"/>
+  <testcase name="repeatedAndBlankNamesDoNotMergeDifferentSubscriptions()" classname="com.v2ray.ang.handler.SubscriptionIndexTest" time="0.026"/>
+  <testcase name="malformedIndexKeepsTheExistingEmptyFallback()" classname="com.v2ray.ang.handler.SubscriptionIndexTest" time="0.009"/>
+  <testcase name="duplicateIndexEntriesProduceOnlyOneSubscriptionRow()" classname="com.v2ray.ang.handler.SubscriptionIndexTest" time="0.005"/>
+  <testcase name="decodedIndexRemainsMutableAndCanBeSavedInANewOrder()" classname="com.v2ray.ang.handler.SubscriptionIndexTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

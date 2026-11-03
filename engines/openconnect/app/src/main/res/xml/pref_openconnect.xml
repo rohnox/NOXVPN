@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/basic_settings"
+        android:key="pref_key_server"
+        android:layout="@layout/preference_category_header">
+        <EditTextPreference
+            android:key="profile_name"
+            android:title="@string/profile_name"
+            android:layout="@layout/preference_standard_compact"
+            android:inputType="text|textNoSuggestions|textCapSentences"
+            android:defaultValue="" />
+        <EditTextPreference
+            android:key="server_address"
+            android:title="@string/server_address"
+            android:layout="@layout/preference_standard_compact"
+            android:dialogMessage="@string/add_profile_hostname_prompt"
+            android:inputType="textVisiblePassword|textNoSuggestions"
+            android:defaultValue="" />
+    </PreferenceCategory>
+
+    <Preference
+        android:key="pref_key_authentication"
+        android:icon="@drawable/ic_security_24"
+        android:layout="@layout/preference_navigation"
+        android:summary="@string/authentication_settings_summary"
+        android:title="@string/authentication" />
+
+    <Preference
+        android:key="pref_key_advanced"
+        android:icon="@drawable/ic_settings_24"
+        android:layout="@layout/preference_navigation"
+        android:summary="@string/advanced_profile_settings_summary"
+        android:title="@string/advanced" />
+</PreferenceScreen>

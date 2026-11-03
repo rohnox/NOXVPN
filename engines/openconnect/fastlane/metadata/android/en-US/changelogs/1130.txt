@@ -1,0 +1,3 @@
+OpenConnect Next is now OConnect, with app labels, localized copy, documentation, store metadata, themes, and project identifiers updated for the new name.
+
+The Android application ID is now io.pengyue.oconnect. This release installs as a separate app and does not automatically migrate profiles or settings from previous OpenConnect Next installations.

@@ -1,0 +1,25 @@
+// Opt-in visual checks only. No dependency or test activity is added to a normal APK build.
+allprojects { project ->
+    if (project.path == ':app' && project.findProperty('ispeed.visualChecks') == 'true') {
+        project.afterEvaluate {
+            def libs = project.extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension).named('libs')
+            project.android.testOptions.unitTests.includeAndroidResources = true
+            project.android.sourceSets.test.java.srcDir(new File(project.rootDir.parentFile, 'visual-tests'))
+            project.dependencies.add('testImplementation', project.dependencies.platform(libs.findLibrary('androidx-compose-bom').get()))
+            project.dependencies.add('testImplementation', 'org.robolectric:robolectric:4.17')
+            project.dependencies.add('testImplementation', 'androidx.compose.ui:ui-test-junit4')
+            project.dependencies.add('debugImplementation', 'androidx.compose.ui:ui-test-manifest')
+            project.dependencies.add('testRuntimeOnly', 'org.junit.vintage:junit-vintage-engine:6.1.3')
+            project.tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
+                maxHeapSize = '3g'
+                def visualHome = new File(project.layout.buildDirectory.get().asFile, 'visual-home')
+                visualHome.mkdirs()
+                systemProperty('user.home', visualHome.absolutePath)
+                systemProperty('maven.repo.local', new File(project.layout.buildDirectory.get().asFile, 'visual-maven').absolutePath)
+                def repo = System.getProperty('ispeed.visual.maven')
+                if (repo != null) systemProperty('robolectric.dependency.repo.url', repo)
+                systemProperty('ispeed.visual.output', new File(project.rootDir.parentFile, 'verification/1.5.1/renders').absolutePath)
+            }
+        }
+    }
+}

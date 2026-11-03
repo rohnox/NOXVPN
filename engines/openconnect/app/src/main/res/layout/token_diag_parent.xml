@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:orientation="vertical"
+    android:padding="@dimen/stdpadding" >
+
+    <LinearLayout
+        android:id="@+id/token_profile_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            android:paddingRight="10sp"
+            android:text="@string/profile_label" />
+
+        <Spinner
+            android:id="@+id/vpn_spinner"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <View
+    android:id="@+id/token_profile_divider"
+	android:layout_width="match_parent"
+	android:layout_height="1dp"
+	android:paddingTop="10dp"
+	android:paddingBottom="10dp"
+	android:background="@color/oc_outline_variant"/>
+
+    <RelativeLayout
+        android:id="@+id/frag_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

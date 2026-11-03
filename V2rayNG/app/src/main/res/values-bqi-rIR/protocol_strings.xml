@@ -1,0 +1,30 @@
+<resources>
+ <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_back">Back</string>
+ <string name="protocol_intro">پروفایل‌های OpenVPN و اتصال‌های سیسکو را اینجا مدیریت کنید. در هر لحظه فقط یک اتصال VPN می‌تواند فعال باشد.</string>
+ <string name="protocol_vpn_only">Select VPN mode in Settings before using these protocols. Proxy-only and root mode keep their existing Xray behavior.</string>
+ <string name="protocol_openvpn">OpenVPN</string>
+ <string name="protocol_cisco">Cisco-compatible / OpenConnect</string>
+ <string name="protocol_state_unknown">OpenVPN: no confirmed connection status</string>
+ <string name="protocol_state_connected">OpenVPN: connected</string>
+ <string name="protocol_state_stopped">OpenVPN: disconnected</string>
+ <string name="protocol_state_connecting">OpenVPN: connecting</string>
+ <string name="protocol_state_auth_failed">OpenVPN: authentication failed</string>
+ <string name="protocol_state_input">OpenVPN: additional input required</string>
+ <string name="protocol_import">Import .ovpn file</string>
+ <string name="protocol_import_hint">Import a self-contained .ovpn file (up to 2 MiB), including its certificates and keys. External certificate files and executable scripts are not imported. Username and password are requested when required.</string>
+ <string name="protocol_import_done">OpenVPN profile imported.</string>
+ <string name="protocol_import_failed">Cannot import this profile. Check its .ovpn format and include certificates/keys inside the file. External files, scripts or files over 2 MiB are not supported.</string>
+ <string name="protocol_connect_profile">Connect: %1$s</string>
+ <string name="protocol_disconnect">Disconnect OpenVPN</string>
+ <string name="protocol_no_profiles">No OpenVPN profiles imported yet.</string>
+ <string name="protocol_cisco_hint">Add your server address and port in the connection manager. The gateway supplies username, password, group and any additional authentication prompts. Certificate warnings must be reviewed; verification is not silently disabled.</string>
+ <string name="protocol_cisco_manage">Cisco profiles and connection</string>
+ <string name="protocol_unavailable">This engine could not initialize on this device.</string>
+ <string name="protocol_traffic">Received: %1$s · Sent: %2$s</string>
+<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
+<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_heading">اتصال‌های پیشرفته</string>
+<string name="protocol_cisco_short">Cisco</string>
+<string name="protocol_details">Connection guide</string>
+</resources>

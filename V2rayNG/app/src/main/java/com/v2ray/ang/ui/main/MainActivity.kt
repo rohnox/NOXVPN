@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.v2ray.ang.AngApplication
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.R
@@ -26,6 +28,9 @@ import com.v2ray.ang.handler.SettingsChangeManager
 import com.v2ray.ang.handler.SettingsManager
 import com.v2ray.ang.handler.SubscriptionInfoParser
 import com.v2ray.ang.ui.AboutActivity
+import com.v2ray.ang.ui.protocols.ProtocolsViewModel
+import com.v2ray.ang.ui.protocols.ProtocolsHost
+import com.v2ray.ang.ui.protocols.ProtocolsRoute
 import com.v2ray.ang.ui.backup.BackupActivity
 import com.v2ray.ang.ui.base.HelperBaseComponentActivity
 import com.v2ray.ang.ui.checkupdate.CheckUpdateActivity
@@ -52,12 +57,18 @@ import com.v2ray.ang.util.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class MainActivity : HelperBaseComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.Factory(application, MainRepository(application as AngApplication))
     }
+
+    private val protocolsModel: ProtocolsViewModel by viewModels()
+    private val protocolsHost = ProtocolsHost(this) { protocolsModel }
 
     private val requestVpnPermission =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -92,8 +103,21 @@ class MainActivity : HelperBaseComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppThemeDayNight_NoActionBar)
         super.onCreate(savedInstanceState)
         mainViewModel.onAction(MainAction.Initialize)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                mainViewModel.uiState.map { it.serverActivation }.filterNotNull().distinctUntilChanged().collect { pending ->
+                    val activation = mainViewModel.consumeServerActivation(pending.generation) ?: return@collect
+                    if (activation.startIfStopped) {
+                        LauncherManager.restartServiceOrStart(this@MainActivity, ::requestServiceStart)
+                    } else {
+                        LauncherManager.restartService(this@MainActivity)
+                    }
+                }
+            }
+        }
 
         checkAndRequestPermission(PermissionType.POST_NOTIFICATIONS) {}
     }
@@ -104,6 +128,7 @@ class MainActivity : HelperBaseComponentActivity() {
         MainScreen(
             mainViewModel = mainViewModel,
             onAction = { action ->
+                mainViewModel.prepareUserAction(action)
                 when (action) {
                     MainAction.ToggleService -> handleFabAction()
                     MainAction.TestCurrentServer -> handleLayoutTestClick()
@@ -122,6 +147,7 @@ class MainActivity : HelperBaseComponentActivity() {
                 }
             },
             onNavigate = { route -> navigateTo(route) },
+            protocolsContent = { modifier -> ProtocolsRoute(protocolsModel, modifier, protocolsHost::onAction) },
         )
     }
 
@@ -146,6 +172,7 @@ class MainActivity : HelperBaseComponentActivity() {
 
     private fun navigateTo(destination: MainDestination) {
         val intent = when (destination) {
+            MainDestination.Protocols -> Intent(this, com.v2ray.ang.ui.protocols.ProtocolsActivity::class.java)
             MainDestination.Subscriptions -> Intent(this, SubSettingActivity::class.java)
             MainDestination.PerAppProxy -> Intent(this, PerAppProxyActivity::class.java)
             MainDestination.Routing -> Intent(this, RoutingSettingActivity::class.java)
@@ -277,11 +304,7 @@ class MainActivity : HelperBaseComponentActivity() {
     }
 
     private fun setSelectServer(guid: String) {
-        val selected = mainViewModel.uiState.value.selectedGuid
-        if (guid != selected) {
-            mainViewModel.updateSelectedGuid(guid)
-            LauncherManager.restartService(this)
-        }
+        mainViewModel.updateSelectedGuid(guid)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -290,5 +313,11 @@ class MainActivity : HelperBaseComponentActivity() {
             return true
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onStop() {
+        // Do not defer an automatic VPN start until the user returns from another app/screen.
+        if (!isChangingConfigurations) mainViewModel.cancelAutoConnect()
+        super.onStop()
     }
 }

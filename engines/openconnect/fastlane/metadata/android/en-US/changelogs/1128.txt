@@ -1,0 +1,3 @@
+Upgrade the native VPN engine to official OpenConnect v9.21, stoken v0.93, and curl 8.21.0.
+
+This release fixes SSL response-read and cookie errors during authentication, adds 16 KiB page-size support, and restores CSD/HIP helper execution on modern Android.

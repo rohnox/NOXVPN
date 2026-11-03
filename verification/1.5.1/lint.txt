@@ -1,0 +1,1417 @@
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\main\MainViewModel.kt:1173: Warning: No need to call super.onCleared; the super method is defined to be empty [EmptySuperCall]
+        super.onCleared()
+              ~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\protocols\OpenVpnChallenge.kt:78: Warning: No need to call super.onCleared; the super method is defined to be empty [EmptySuperCall]
+        super.onCleared()
+              ~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\protocols\ProtocolsViewModel.kt:173: Warning: No need to call super.onCleared; the super method is defined to be empty [EmptySuperCall]
+        super.onCleared()
+              ~~~~~~~~~
+
+   Explanation for issues of type "EmptySuperCall":
+   For methods annotated with @EmptySuper, overriding methods should not also
+   call the super implementation, either because it is empty, or perhaps it
+   contains code not intended to be run when the method is overridden.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:6: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/app_widget_name"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:6: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/app_widget_name"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:7: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_switch"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:7: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_switch"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:8: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/app_widget_name"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:8: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/app_widget_name"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:9: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/app_widget_name">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:9: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/app_widget_name">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:20: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/menu_item_import_config_qrcode"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:21: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/menu_item_import_config_qrcode"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:21: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_scan"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:22: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_scan"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:22: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/menu_item_import_config_qrcode"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:23: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/menu_item_import_config_qrcode"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:23: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/menu_item_import_config_qrcode">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:24: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/menu_item_import_config_qrcode">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:34: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/acc_start"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:35: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_start"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:36: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/acc_start"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:36: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/acc_start"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:37: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_start"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:37: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/acc_start">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:38: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/acc_start"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:39: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/acc_start">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:48: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/acc_stop"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:49: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_stop"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:50: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/acc_stop"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:51: Warning: Attribute shortcutDisabledMessage is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutDisabledMessage="@string/acc_stop"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\shortcuts.xml:51: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/acc_stop">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:52: Warning: Attribute shortcutId is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutId="shortcuts_stop"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:53: Warning: Attribute shortcutLongLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutLongLabel="@string/acc_stop"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\fdroid\res\xml\shortcuts.xml:54: Warning: Attribute shortcutShortLabel is only used in API level 25 and higher (current min is 24) [UnusedAttribute]
+        android:shortcutShortLabel="@string/acc_stop">
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedAttribute":
+   This check finds attributes set in XML files that were introduced in a
+   version newer than the oldest version targeted by your application (with
+   the minSdkVersion attribute).
+
+   This is not an error; the application will simply ignore the attribute.
+   However, if the attribute is important to the appearance or functionality
+   of your application, you should consider finding an alternative way to
+   achieve the same result with only available attributes, and then you can
+   optionally create a copy of the layout in a layout-vNN folder which will be
+   used on API NN or higher where you can take advantage of the newer
+   attribute.
+
+   Note: This check does not only apply to attributes. For example, some tags
+   can be unused too, such as the new <tag> element in layouts introduced in
+   API 21.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\gradle\libs.versions.toml:12: Warning: A newer version of com.tencent:mmkv-static than 1.3.17 is available: 2.4.3 [NewerVersionAvailable]
+mmkvStatic = "1.3.17"
+             ~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\gradle\libs.versions.toml:13: Warning: A newer version of com.google.code.gson:gson than 2.14.0 is available: 2.15.0 [NewerVersionAvailable]
+gson = "2.14.0"
+       ~~~~~~~~
+
+   Explanation for issues of type "NewerVersionAvailable":
+   This detector checks with a central repository to see if there are newer
+   versions available for the dependencies used by this project. This is
+   similar to the GradleDependency check, which checks for newer versions
+   available in the Android SDK tools and libraries, but this works with any
+   MavenCentral dependency, and connects to the library every time, which
+   makes it more flexible but also much slower.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\Components.kt:239: Warning: Composable functions with a return type should start with a lowercase letter [ComposableNaming from androidx.compose.runtime]
+fun NavigationBarsBottomPadding(): PaddingValues {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ComposableNaming":
+   @Composable functions without a return type should use similar naming to
+   classes, starting with an uppercase letter and ending with a noun.
+   @Composable functions with a return type should be treated as normal Kotlin
+   functions, starting with a lowercase letter.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.runtime
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\main\MainTopBar.kt:48: Warning: Using Configuration.screenHeightDp instead of LocalWindowInfo.current.containerSize [ConfigurationScreenWidthHeight from androidx.compose.ui]
+    val maxMenuHeight = LocalConfiguration.current.screenHeightDp.dp - statusBarHeight - navBarHeight - 20.dp
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ConfigurationScreenWidthHeight":
+   Configuration.screenWidthDp and Configuration.screenHeightDp have different
+   insets behaviour depending on target SDK version, and are rounded to the
+   nearest Dp. This means that using these values in composition to size a
+   layout can result in issues, as these values do not accurately represent
+   the actual available window size. Instead it is recommended to use
+   WindowInfo.containerSize which accurately represents the window size.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.ui
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\Components.kt:271: Warning: Modifier factory functions should be extensions on Modifier [ModifierFactoryExtensionFunction from androidx.compose.ui]
+fun ReorderableCollectionItemScope.reorderableDragHandle(): Modifier {
+                                   ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ModifierFactoryExtensionFunction":
+   Modifier factory functions should be defined as extension functions on
+   Modifier to allow modifiers to be fluently chained.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.ui
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\Components.kt:248: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier
+    ~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\SettingsItem.kt:132: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier,
+    ~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\SettingsItem.kt:183: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier,
+    ~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\SettingsItem.kt:223: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier,
+    ~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\compose\SettingsItem.kt:243: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier,
+    ~~~~~~~~
+
+   Explanation for issues of type "ModifierParameter":
+   The first (or only) Modifier parameter in a Composable function should
+   follow the following rules:
+   - Be named modifier
+   - Have a type of Modifier
+   - Either have no default value, or have a default value of Modifier
+   - If optional, be the first optional parameter in the parameter list
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.ui
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\util\AppIconFetcher.kt:20: Warning: Use AppCompatResources.getDrawable() [UseCompatLoadingForDrawables from androidx.appcompat]
+                context.getDrawable(android.R.drawable.ic_menu_help)
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\util\AppIconFetcher.kt:21: Warning: Use AppCompatResources.getDrawable() [UseCompatLoadingForDrawables from androidx.appcompat]
+                    ?: context.getDrawable(android.R.drawable.sym_def_app_icon)
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UseCompatLoadingForDrawables":
+   Use Compat loading of drawables
+
+   Vendor: Android Open Source Project
+   Identifier: androidx.appcompat
+   Feedback: https://issuetracker.google.com/issues/new?component=460343
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:3: Warning: The resource string "app_name" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:84: Warning: The resource string "server_lab_stream_security" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_stream_security" translatable="false">TLS</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:86: Warning: The resource string "server_lab_stream_alpn" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_stream_alpn" translatable="false">ALPN</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:88: Warning: The resource string "server_lab_sni" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_sni" translatable="false">SNI</string>
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:100: Warning: The resource string "server_lab_spider_x" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_spider_x" translatable="false">SpiderX</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:101: Warning: The resource string "server_lab_mldsa65_verify" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_mldsa65_verify" translatable="false">mldsa65Verify</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:134: Warning: The resource string "server_lab_ech_config_list" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="server_lab_ech_config_list" translatable="false">echConfigList</string>
+                                              ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:150: Warning: The resource string "title_url" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="title_url" translatable="false">URL</string>
+                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:227: Warning: The resource string "summary_pref_remote_dns" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:238: Warning: The resource string "summary_pref_domestic_dns" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:244: Warning: The resource string "summary_pref_delay_test_url" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:248: Warning: The resource string "summary_pref_ip_api_url" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:257: Warning: The resource string "title_pref_socks_enable_udp" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="title_pref_socks_enable_udp" translatable="false">SOCKS5 UDP</string>
+                                               ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:322: Warning: The resource string "title_logcat" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="title_logcat" translatable="false">Logcat</string>
+                                ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:334: Warning: The resource string "sub_setting_user_agent" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="sub_setting_user_agent" translatable="false">User Agent</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:387: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:387: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:387: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:388: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:388: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:388: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:389: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:389: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:389: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:390: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:390: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:390: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:391: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:391: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:391: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:392: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:392: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:392: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:393: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:393: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:393: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:393: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:393: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:393: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:393: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:394: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:394: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:394: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:394: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:394: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:394: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:394: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:395: Warning: The resource string "routing_settings_outbound_tag_hint" has been marked as translatable="false" elsewhere (usually in the values folder), but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_outbound_tag_hint">proxy / direct / block / &lt;%1$s&gt;</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:395: Warning: The resource string "routing_settings_outbound_tag_hint" has been marked as translatable="false" elsewhere (usually in the values folder), but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_outbound_tag_hint">proxy / direct / block / &lt;%1$s&gt;</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:395: Warning: The resource string "routing_settings_outbound_tag_hint" has been marked as translatable="false" elsewhere (usually in the values folder), but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_outbound_tag_hint">proxy / direct / block / &lt;%1$s&gt;</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:395: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:395: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:395: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:396: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:396: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:396: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:396: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:396: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:396: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:397: Warning: The resource string "routing_settings_domain" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_domain" translatable="false">domain</string>
+                                           ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:397: Warning: The resource string "routing_settings_outbound_tag_hint" has been marked as translatable="false" elsewhere (usually in the values folder), but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_outbound_tag_hint">proxy / direct / block / &lt;%1$s&gt;</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:397: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:398: Warning: The resource string "routing_settings_ip" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_ip" translatable="false">ip</string>
+                                       ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:398: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:398: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:398: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:398: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:399: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:400: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:401: Warning: The resource string "routing_settings_outbound_tag_hint" has been marked as translatable="false" elsewhere (usually in the values folder), but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_outbound_tag_hint">proxy / direct / block / &lt;%1$s&gt;</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:401: Warning: The resource string "routing_settings_port" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_port" translatable="false">port</string>
+                                         ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:402: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:402: Warning: The resource string "routing_settings_protocol" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_protocol" translatable="false">protocol</string>
+                                             ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:403: Warning: The resource string "routing_settings_protocol_tip" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_protocol_tip" translatable="false">[http,tls,bittorrent]</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:404: Warning: The resource string "routing_settings_network" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_network" translatable="false">network</string>
+                                            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:406: Warning: The resource string "routing_settings_outbound_tag" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="routing_settings_outbound_tag" translatable="false">outboundTag</string>
+                                                 ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-vi\strings.xml:517: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "vi" (Vietnamese) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rCN\strings.xml:517: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-zh-rTW\strings.xml:517: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "zh" (Chinese) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:519: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bn\strings.xml:519: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "bn" (Bangla) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-fa\strings.xml:519: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "fa" (Persian) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ru\strings.xml:523: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "ru" (Russian) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-ar\strings.xml:527: Warning: The resource string "backup_location_webdav" is marked as translatable="false", but is translated to "ar" (Arabic) here [Untranslatable]
+    <string name="backup_location_webdav" translatable="false">WebDAV</string>
+                                          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-az\strings.xml:565: Warning: The resource string "sub_info_traffic" is marked as translatable="false", but is translated to "az" (Azerbaijani) here [Untranslatable]
+    <string name="sub_info_traffic" translatable="false">%1$s / %2$s</string>
+                                    ~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Untranslatable":
+   Strings can be marked with translatable=false to indicate that they are not
+   intended to be translated, but are present in the resource file for other
+   purposes (for example for non-display strings that should vary by some
+   other configuration qualifier such as screen size or API level).
+
+   There are cases where translators accidentally translate these strings
+   anyway, and lint will flag these occurrences with this lint check.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\auto_connect_strings.xml:10: Warning: Formatting %d followed by words ("completed"): This should probably be a plural rather than a string [PluralsCandidate]
+  <string name="top_auto_progress">Testing servers: %1$d of %2$d completed</string>
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:354: Warning: Formatting %d followed by words ("duplicate"): This should probably be a plural rather than a string [PluralsCandidate]
+    <string name="title_del_duplicate_config_count">Delete %d duplicate configs</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:355: Warning: Formatting %d followed by words ("configs"): This should probably be a plural rather than a string [PluralsCandidate]
+    <string name="title_del_config_count">Delete %d configs</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:356: Warning: Formatting %d followed by words ("configs"): This should probably be a plural rather than a string [PluralsCandidate]
+    <string name="title_import_config_count">Import %d configs</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:357: Warning: Formatting %d followed by words ("configs"): This should probably be a plural rather than a string [PluralsCandidate]
+    <string name="title_export_config_count">Export %d configs</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:366: Warning: Formatting %d followed by words ("configs"): This should probably be a plural rather than a string [PluralsCandidate]
+    <string name="title_update_subscription_result">Updated %1$d configs (%2$d success, %3$d failed, %4$d skipped)</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:402: Warning: Formatting %d followed by words ("configs"): This should probably be a plural rather than a string [PluralsCandidate]
+    <string name="connection_test_testing_count">Testing %d configs…</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "PluralsCandidate":
+   This lint check looks for potential errors in internationalization where
+   you have translated a message which involves a quantity and it looks like
+   other parts of the string may need grammatical changes.
+
+   For example, rather than something like this:
+     <string name="try_again">Try again in %d seconds.</string>
+   you should be using a plural:
+      <plurals name="try_again">
+           <item quantity="one">Try again in %d second</item>
+           <item quantity="other">Try again in %d seconds</item>
+       </plurals>
+   This will ensure that in other languages the right set of translations are
+   provided for the different quantity classes.
+
+   (This check depends on some heuristics, so it may not accurately determine
+   whether a string really should be a quantity. You can use tools:ignore to
+   filter out false positives.
+
+   https://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-bqi-rIR\strings.xml:56: Warning: Inconsistent number of arguments in formatting string confirm_delete_asset_file; found both 1 here and 0 in values/strings.xml [StringFormatCount]
+    <string name="confirm_delete_asset_file">فایل بونچک جوقرافیایی «%1$s» پاک ابۊ، هنی هم اخۊی پاکس کۊنی؟</string>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:56: Conflicting number of arguments (0) here
+
+   Explanation for issues of type "StringFormatCount":
+   When a formatted string takes arguments, it usually needs to reference the
+   same arguments in all translations (or all arguments if there are no
+   translations.
+
+   There are cases where this is not the case, so this issue is a warning
+   rather than an error by default. However, this usually happens when a
+   language is not translated or updated correctly.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\xml\network_security_config.xml:3: Warning: Insecure Base Configuration [InsecureBaseConfiguration]
+    <base-config cleartextTrafficPermitted="true">
+                                            ~~~~
+
+   Explanation for issues of type "InsecureBaseConfiguration":
+   Permitting cleartext traffic could allow eavesdroppers to intercept data
+   sent by your app, which impacts the privacy of your users. Consider only
+   allowing encrypted traffic by setting the cleartextTrafficPermitted tag to
+   false.
+
+   https://goo.gle/InsecureBaseConfiguration
+   https://developer.android.com/preview/features/security-config.html
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\AndroidManifest.xml:46: Warning: The attribute android:allowBackup is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute android:dataExtractionRules specifying an @xml resource which configures cloud backups and device transfers on Android 12 and higher. [DataExtractionRules]
+        android:allowBackup="false"
+                             ~~~~~
+
+   Explanation for issues of type "DataExtractionRules":
+   Before Android 12, the attributes android:allowBackup and
+   android:fullBackupContent were used to configure all forms of backup,
+   including cloud backups, device-to-device transfers and adb backup.
+
+   In Android 12 and higher, these attributes have been deprecated and will
+   only apply to cloud backups. You should instead use the attribute
+   android:dataExtractionRules, specifying an @xml resource that configures
+   which files to back up, for cloud backups and for device-to-device
+   transfers, separately. If your minSdkVersion supports older versions,
+   you'll still want to specify an android:fullBackupContent resource if the
+   default behavior is not right for your app.
+
+   https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   https://goo.gle/DataExtractionRules
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-sw360dp-v13: Warning: This folder configuration (v13) is unnecessary; minSdkVersion is 24. Merge all the resources in this folder into values-sw360dp. [ObsoleteSdkInt]
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\handler\NotificationManager.kt:49: Warning: Do not place Android context classes in static fields (static reference to Builder which has field mContext pointing to Context); this is a memory leak [StaticFieldLeak]
+    private var mBuilder: NotificationCompat.Builder? = null
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "StaticFieldLeak":
+   A static field will leak contexts.
+
+   Non-static inner classes have an implicit reference to their outer class.
+   If that outer class is for example a Fragment or Activity, then this
+   reference means that the long-running handler/loader/task will hold a
+   reference to the activity which prevents it from getting garbage
+   collected.
+
+   Similarly, direct field references to activities and fragments from these
+   longer running instances can cause leaks.
+
+   ViewModel classes should never point to Views or non-application Contexts.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\ui\shortcut\TaskerActivity.kt:52: Hint: Prefer mutableIntStateOf instead of mutableStateOf [AutoboxingStateCreation from androidx.compose.runtime]
+    private val selectedPosition = mutableStateOf(-1)
+                                   ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "AutoboxingStateCreation":
+   Calling mutableStateOf<T>() when T is either backed by a primitive type on
+   the JVM or is a value class results in a state implementation that requires
+   all state values to be boxed. This usually causes an additional allocation
+   for each state write, and adds some additional work to auto-unbox values
+   when reading the value of the state. Instead, prefer to use a specialized
+   primitive state implementation for Int, Long, Float, and Double when the
+   state does not need to track null values and does not override the default
+   SnapshotMutationPolicy. See mutableIntStateOf(), mutableLongStateOf(),
+   mutableFloatStateOf(), and mutableDoubleStateOf() for more information.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.runtime
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\arrays.xml:55: Warning: The resource R.array.streamsecuritys appears to be unused [UnusedResources]
+    <string-array name="streamsecuritys" translatable="false">
+                  ~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\arrays.xml:181: Warning: The resource R.array.outbound_tag appears to be unused [UnusedResources]
+    <string-array name="outbound_tag" translatable="false">
+                  ~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:6: Warning: The resource R.string.top_brand_sub appears to be unused [UnusedResources]
+  <string name="top_brand_sub">YOUR PERSONAL NETWORK</string>
+          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:7: Warning: The resource R.string.top_caption appears to be unused [UnusedResources]
+  <string name="top_caption">Connection controls and actual usage</string>
+          ~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:18: Warning: The resource R.string.top_group appears to be unused [UnusedResources]
+  <string name="top_group">Subscription groups</string>
+          ~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:23: Warning: The resource R.string.top_live appears to be unused [UnusedResources]
+  <string name="top_live">Actual samples from this connection</string>
+          ~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:30: Warning: The resource R.string.top_no_server appears to be unused [UnusedResources]
+  <string name="top_no_server">Add a configuration to get started</string>
+          ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:38: Warning: The resource R.string.top_quick appears to be unused [UnusedResources]
+  <string name="top_quick">Quick access</string>
+          ~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:39: Warning: The resource R.string.top_ready appears to be unused [UnusedResources]
+  <string name="top_ready">READY TO CONNECT</string>
+          ~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dashboard_strings.xml:43: Warning: The resource R.string.top_selected appears to be unused [UnusedResources]
+  <string name="top_selected">SELECTED SERVER</string>
+          ~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:3: Warning: The resource R.dimen.padding_spacing_dp4 appears to be unused [UnusedResources]
+    <dimen name="padding_spacing_dp4">4dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:4: Warning: The resource R.dimen.padding_spacing_dp8 appears to be unused [UnusedResources]
+    <dimen name="padding_spacing_dp8">8dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:5: Warning: The resource R.dimen.padding_spacing_dp16 appears to be unused [UnusedResources]
+    <dimen name="padding_spacing_dp16">16dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:6: Warning: The resource R.dimen.image_size_dp24 appears to be unused [UnusedResources]
+    <dimen name="image_size_dp24">24dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:7: Warning: The resource R.dimen.view_height_dp36 appears to be unused [UnusedResources]
+    <dimen name="view_height_dp36">36dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:8: Warning: The resource R.dimen.view_height_dp48 appears to be unused [UnusedResources]
+    <dimen name="view_height_dp48">48dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:9: Warning: The resource R.dimen.view_height_dp64 appears to be unused [UnusedResources]
+    <dimen name="view_height_dp64">64dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:10: Warning: The resource R.dimen.view_height_dp120 appears to be unused [UnusedResources]
+    <dimen name="view_height_dp120">120dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\dimens.xml:11: Warning: The resource R.dimen.view_height_dp160 appears to be unused [UnusedResources]
+    <dimen name="view_height_dp160">160dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_action_done.xml:1: Warning: The resource R.drawable.ic_action_done appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\mipmap-xhdpi\ic_banner.png: Warning: The resource R.mipmap.ic_banner appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\ic_banner_background.xml:3: Warning: The resource R.color.ic_banner_background appears to be unused [UnusedResources]
+    <color name="ic_banner_background">#FFFFFF</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\mipmap-xhdpi\ic_banner_foreground.png: Warning: The resource R.mipmap.ic_banner_foreground appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_description_24dp.xml:1: Warning: The resource R.drawable.ic_description_24dp appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\mipmap-hdpi\ic_launcher.png: Warning: The resource R.mipmap.ic_launcher appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\ic_launcher_background.xml:3: Warning: The resource R.color.ic_launcher_background appears to be unused [UnusedResources]
+    <color name="ic_launcher_background">#FFFFFF</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\mipmap-hdpi\ic_launcher_foreground.png: Warning: The resource R.mipmap.ic_launcher_foreground appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\mipmap-mdpi\ic_launcher_round.png: Warning: The resource R.mipmap.ic_launcher_round appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_outline_filter_alt_24.xml:1: Warning: The resource R.drawable.ic_outline_filter_alt_24 appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_save_24dp.xml:1: Warning: The resource R.drawable.ic_save_24dp appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_select_all_24dp.xml:2: Warning: The resource R.drawable.ic_select_all_24dp appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable-mdpi\ic_stat_name_black.png: Warning: The resource R.drawable.ic_stat_name_black appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_top_down.xml:1: Warning: The resource R.drawable.ic_top_down appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="@android:color/transparent" android:strokeColor="#FFFFFFFF" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M12,4 L12,20 M6,14 L12,20 L18,14"/></vector>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\ispeed_strings.xml:6: Warning: The resource R.string.ispeed_ready appears to be unused [UnusedResources]
+ <string name="ispeed_ready">Your configurations. Your connection.</string>
+         ~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\nav_header_bg.png: Warning: The resource R.drawable.nav_header_bg appears to be unused [UnusedResources]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\protocol_strings.xml:4: Warning: The resource R.string.protocol_intro appears to be unused [UnusedResources]
+ <string name="protocol_intro">Manage OpenVPN profiles and Cisco connections. Android allows only one active VPN connection at a time.</string>
+         ~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\protocol_strings.xml:25: Warning: The resource R.string.protocol_xray appears to be unused [UnusedResources]
+<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
+                                                                                                                                                                                                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\protocol_strings.xml:27: Warning: The resource R.string.protocol_heading appears to be unused [UnusedResources]
+<string name="protocol_heading">Advanced connections</string>
+        ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:7: Warning: The resource R.string.navigation_drawer_open appears to be unused [UnusedResources]
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:8: Warning: The resource R.string.navigation_drawer_close appears to be unused [UnusedResources]
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:9: Warning: The resource R.string.migration_success appears to be unused [UnusedResources]
+    <string name="migration_success">Data migration succeeded!</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:10: Warning: The resource R.string.action_stop_service appears to be unused [UnusedResources]
+    <string name="action_stop_service">Stop service</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:13: Warning: The resource R.string.migration_fail appears to be unused [UnusedResources]
+    <string name="migration_fail">Data migration failed!</string>
+            ~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:14: Warning: The resource R.string.pull_down_to_refresh appears to be unused [UnusedResources]
+    <string name="pull_down_to_refresh">Please pull down to refresh!</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:21: Warning: The resource R.string.toast_permission_denied appears to be unused [UnusedResources]
+    <string name="toast_permission_denied">Permission denied</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:22: Warning: The resource R.string.toast_permission_denied_notification appears to be unused [UnusedResources]
+    <string name="toast_permission_denied_notification">Notification permission denied</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:23: Warning: The resource R.string.notification_action_more appears to be unused [UnusedResources]
+    <string name="notification_action_more">Tap for more</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:25: Warning: The resource R.string.toast_services_stop appears to be unused [UnusedResources]
+    <string name="toast_services_stop">Stopping service</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:30: Warning: The resource R.string.title_server appears to be unused [UnusedResources]
+    <string name="title_server">Config</string>
+            ~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:31: Warning: The resource R.string.menu_item_add_config appears to be unused [UnusedResources]
+    <string name="menu_item_add_config">Add config</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:33: Warning: The resource R.string.menu_item_edit_config appears to be unused [UnusedResources]
+    <string name="menu_item_edit_config">Edit config</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:34: Warning: The resource R.string.menu_item_del_config appears to be unused [UnusedResources]
+    <string name="menu_item_del_config">Delete config</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:62: Warning: The resource R.string.server_lab_alterid appears to be unused [UnusedResources]
+    <string name="server_lab_alterid">alterId</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:65: Warning: The resource R.string.server_lab_more_function appears to be unused [UnusedResources]
+    <string name="server_lab_more_function">Transport</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:68: Warning: The resource R.string.server_lab_request_host appears to be unused [UnusedResources]
+    <string name="server_lab_request_host">host</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:71: Warning: The resource R.string.server_lab_request_host_httpupgrade appears to be unused [UnusedResources]
+    <string name="server_lab_request_host_httpupgrade">httpupgrade host</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:72: Warning: The resource R.string.server_lab_request_host_xhttp appears to be unused [UnusedResources]
+    <string name="server_lab_request_host_xhttp">xhttp host</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:73: Warning: The resource R.string.server_lab_request_host_h2 appears to be unused [UnusedResources]
+    <string name="server_lab_request_host_h2">h2 host</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:74: Warning: The resource R.string.server_lab_request_host_quic appears to be unused [UnusedResources]
+    <string name="server_lab_request_host_quic">QUIC security</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:81: Warning: The resource R.string.server_lab_path_quic appears to be unused [UnusedResources]
+    <string name="server_lab_path_quic">QUIC key</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:89: Warning: The resource R.string.server_lab_address3 appears to be unused [UnusedResources]
+    <string name="server_lab_address3">address</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:90: Warning: The resource R.string.server_lab_port3 appears to be unused [UnusedResources]
+    <string name="server_lab_port3">port</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:92: Warning: The resource R.string.server_lab_security3 appears to be unused [UnusedResources]
+    <string name="server_lab_security3">security</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:111: Warning: The resource R.string.toast_none_data appears to be unused [UnusedResources]
+    <string name="toast_none_data">No data available</string>
+            ~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:112: Warning: The resource R.string.toast_incorrect_protocol appears to be unused [UnusedResources]
+    <string name="toast_incorrect_protocol">Incorrect protocol</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:116: Warning: The resource R.string.server_customize_config appears to be unused [UnusedResources]
+    <string name="server_customize_config">Customize config</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:118: Warning: The resource R.string.server_lab_content appears to be unused [UnusedResources]
+    <string name="server_lab_content">Content</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:119: Warning: The resource R.string.toast_none_data_clipboard appears to be unused [UnusedResources]
+    <string name="toast_none_data_clipboard">There is no data in the clipboard</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:121: Warning: The resource R.string.toast_insecure_url_protocol appears to be unused [UnusedResources]
+    <string name="toast_insecure_url_protocol">Do not use an insecure HTTP subscription URL</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:122: Warning: The resource R.string.server_lab_need_inbound appears to be unused [UnusedResources]
+    <string name="server_lab_need_inbound">Make sure the inbound port matches the settings</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:138: Warning: The resource R.string.server_lab_browser_dialer_tip appears to be unused [UnusedResources]
+    <string name="server_lab_browser_dialer_tip">Only supports xhttp (packet-up) and ws outbound; TLS-related settings may be ignored or conflict</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:146: Warning: The resource R.string.menu_item_add_asset appears to be unused [UnusedResources]
+    <string name="menu_item_add_asset">Add asset</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:151: Warning: The resource R.string.menu_item_download_file appears to be unused [UnusedResources]
+    <string name="menu_item_download_file">Download files</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:158: Warning: The resource R.string.msg_dialog_progress appears to be unused [UnusedResources]
+    <string name="msg_dialog_progress">Loading</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:162: Warning: The resource R.string.msg_enter_keywords appears to be unused [UnusedResources]
+    <string name="msg_enter_keywords">Enter keywords</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:177: Warning: The resource R.string.title_pref_per_app_proxy appears to be unused [UnusedResources]
+    <string name="title_pref_per_app_proxy">Per-app proxy</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:227: Warning: The resource R.string.summary_pref_remote_dns appears to be unused [UnusedResources]
+    <string name="summary_pref_remote_dns" translatable="false">DNS</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:238: Warning: The resource R.string.summary_pref_domestic_dns appears to be unused [UnusedResources]
+    <string name="summary_pref_domestic_dns" translatable="false">DNS</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:241: Warning: The resource R.string.summary_pref_dns_hosts appears to be unused [UnusedResources]
+    <string name="summary_pref_dns_hosts">domain:address,…</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:244: Warning: The resource R.string.summary_pref_delay_test_url appears to be unused [UnusedResources]
+    <string name="summary_pref_delay_test_url" translatable="false">URL</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:248: Warning: The resource R.string.summary_pref_ip_api_url appears to be unused [UnusedResources]
+    <string name="summary_pref_ip_api_url" translatable="false">URL</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:259: Warning: The resource R.string.summary_pref_socks_port appears to be unused [UnusedResources]
+    <string name="summary_pref_socks_port">Local proxy port</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:263: Warning: The resource R.string.summary_pref_socks_username appears to be unused [UnusedResources]
+    <string name="summary_pref_socks_username">Username</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:265: Warning: The resource R.string.summary_pref_socks_password appears to be unused [UnusedResources]
+    <string name="summary_pref_socks_password">Password</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:267: Warning: The resource R.string.title_pref_local_dns_port appears to be unused [UnusedResources]
+    <string name="title_pref_local_dns_port">Local DNS port</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:268: Warning: The resource R.string.summary_pref_local_dns_port appears to be unused [UnusedResources]
+    <string name="summary_pref_local_dns_port">Local DNS port</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:285: Warning: The resource R.string.summary_pref_feedback appears to be unused [UnusedResources]
+    <string name="summary_pref_feedback">Suggest improvements or report bugs on GitHub</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:286: Warning: The resource R.string.summary_pref_tg_group appears to be unused [UnusedResources]
+    <string name="summary_pref_tg_group">Join the Telegram group</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:287: Warning: The resource R.string.toast_tg_app_not_found appears to be unused [UnusedResources]
+    <string name="toast_tg_app_not_found">Telegram app not found</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:289: Warning: The resource R.string.title_qr_code appears to be unused [UnusedResources]
+    <string name="title_qr_code">QR code</string>
+            ~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:299: Warning: The resource R.string.summary_pref_auto_update_subscription appears to be unused [UnusedResources]
+    <string name="summary_pref_auto_update_subscription">Update your subscriptions automatically at set intervals in the background. Depending on the device, this feature may not always work</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:323: Warning: The resource R.string.logcat_copy appears to be unused [UnusedResources]
+    <string name="logcat_copy">Copy</string>
+            ~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:324: Warning: The resource R.string.logcat_clear appears to be unused [UnusedResources]
+    <string name="logcat_clear">Clear</string>
+            ~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:351: Warning: The resource R.string.title_filter_config appears to be unused [UnusedResources]
+    <string name="title_filter_config">Filter configs</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:368: Warning: The resource R.string.toast_server_not_found_in_group appears to be unused [UnusedResources]
+    <string name="toast_server_not_found_in_group">Selected server not found in current group</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:372: Warning: The resource R.string.tasker_setting_confirm appears to be unused [UnusedResources]
+    <string name="tasker_setting_confirm">Confirm</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:379: Warning: The resource R.string.routing_settings_save appears to be unused [UnusedResources]
+    <string name="routing_settings_save">Save</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:380: Warning: The resource R.string.routing_settings_delete appears to be unused [UnusedResources]
+    <string name="routing_settings_delete">Clear</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:382: Warning: The resource R.string.routing_settings_add_rule appears to be unused [UnusedResources]
+    <string name="routing_settings_add_rule">Add rule</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:384: Warning: The resource R.string.routing_settings_import_rulesets_tip appears to be unused [UnusedResources]
+    <string name="routing_settings_import_rulesets_tip">Existing rulesets will be deleted. Continue?</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:400: Warning: The resource R.string.connection_test_pending appears to be unused [UnusedResources]
+    <string name="connection_test_pending">Check connectivity</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:402: Warning: The resource R.string.connection_test_testing_count appears to be unused [UnusedResources]
+    <string name="connection_test_testing_count">Testing %d configs…</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:406: Warning: The resource R.string.connection_test_fail appears to be unused [UnusedResources]
+    <string name="connection_test_fail">Internet unavailable</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:407: Warning: The resource R.string.connection_test_error_status_code appears to be unused [UnusedResources]
+    <string name="connection_test_error_status_code">Error code: #%d</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:434: Warning: The resource R.string.update_checking_for_update appears to be unused [UnusedResources]
+    <string name="update_checking_for_update">Checking for update…</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:443: Warning: The resource R.string.server_proxy_chain_pick_members appears to be unused [UnusedResources]
+    <string name="server_proxy_chain_pick_members">Tap here to pick a member</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\strings.xml:481: Warning: The resource R.array.browser_dialer_mode appears to be unused [UnusedResources]
+    <string-array name="browser_dialer_mode">
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values\themes.xml:15: Warning: The resource R.style.AppThemeDayNight appears to be unused [UnusedResources]
+    <style name="AppThemeDayNight" parent="AppThemeBase" />
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-sw360dp-v13\values-preference.xml:3: Warning: The resource R.bool.config_materialPreferenceIconSpaceReserved appears to be unused [UnusedResources]
+    <bool name="config_materialPreferenceIconSpaceReserved" tools:ignore="MissingDefaultResource,PrivateResource">false</bool>
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\values-sw360dp-v13\values-preference.xml:4: Warning: The resource R.dimen.preference_category_padding_start appears to be unused [UnusedResources]
+    <dimen name="preference_category_padding_start" tools:ignore="MissingDefaultResource,PrivateResource">0dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests=true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests=true.
+
+   Available options:
+
+   **skip-libraries** (default is true):
+   Whether the unused resource check should skip reporting unused resources in libraries.
+
+   Many libraries will declare resources that are part of the library surface; other modules depending on the library will also reference the resources. To avoid reporting all these resources as unused (in the context of a library), the unused resource check normally skips reporting unused resources in libraries. Instead, run the unused resource check on the consuming app module (along with `checkDependencies=true`).
+
+   However, there are cases where you want to check that all the resources declared in a library are used; in that case, you can disable the skip option.
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UnusedResources">
+           <option name="skip-libraries" value="true" />
+       </issue>
+   </lint>
+   ```
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ic_stat_name.xml: Warning: The following images appear both as density independent .xml files and as bitmap files: srcmainresdrawable-hdpiic_stat_name.png, srcmainresdrawableic_stat_name.xml [IconXmlAndPng]
+
+   Explanation for issues of type "IconXmlAndPng":
+   If a drawable resource appears as an .xml file in the drawable/ folder,
+   it's usually not intentional for it to also appear as a bitmap using the
+   same name; generally you expect the drawable XML file to define states and
+   each state has a corresponding drawable bitmap.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable-mdpi\ic_stat_name_black.png: Warning: Notification icons must be entirely white [IconColors]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable-xhdpi\ic_stat_name_black.png: Warning: Notification icons must be entirely white [IconColors]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable-xxhdpi\ic_stat_name_black.png: Warning: Notification icons must be entirely white [IconColors]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable-xxxhdpi\ic_stat_name_black.png: Warning: Notification icons must be entirely white [IconColors]
+
+   Explanation for issues of type "IconColors":
+   Notification icons and Action Bar icons should only white and shades of
+   gray. See the Android Design Guide for more details. Note that the way Lint
+   decides whether an icon is an action bar icon or a notification icon is
+   based on the filename prefix: ic_menu_ for action bar icons, ic_stat_ for
+   notification icons etc. These correspond to the naming conventions
+   documented in
+   https://d.android.com/r/studio-ui/designer/material/iconography
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\mipmap-anydpi-v26\ispeed_launcher.xml:1: Warning: The application adaptive icon is missing a monochrome tag [MonochromeLauncherIcon]
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"><background android:drawable="@color/ispeed_navy"/><foreground android:drawable="@drawable/ispeed_logo"/></adaptive-icon>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "MonochromeLauncherIcon":
+   The system may use the coloring of the user's chosen wallpaper and theme to
+   tint app icons. Providing a <monochrome> layer (which will be used for
+   tinting) for every adaptive icon is strongly recommended, otherwise Android
+   16 QPR 2 and above will simply tint the color version of the icon, which
+   may look unusual. Devices running earlier Android versions will (with no
+   monochrome layer) show the untinted color icon for your app, which will
+   look inconsistent.
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\ispeed_tv_banner.png: Warning: Found bitmap drawable res/drawable/ispeed_tv_banner.png in densityless folder [IconLocation]
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable\nav_header_bg.png: Warning: Found bitmap drawable res/drawable/nav_header_bg.png in densityless folder [IconLocation]
+
+   Explanation for issues of type "IconLocation":
+   The res/drawable folder is intended for density-independent graphics such
+   as shapes defined in XML. For bitmaps, move it to drawable-mdpi and
+   consider providing higher and lower resolution versions in drawable-ldpi,
+   drawable-hdpi and drawable-xhdpi. If the icon really is density independent
+   (for example a solid color) you can place it in drawable-nodpi.
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\res\drawable-hdpi: Warning: Missing the following drawables in drawable-hdpi: ic_stat_name_black.png (found in drawable-mdpi, drawable-xhdpi, drawable-xxhdpi, drawable-xxxhdpi) [IconDensities]
+
+   Explanation for issues of type "IconDensities":
+   Icons will look best if a custom version is provided for each of the major
+   screen density classes (low, medium, high, extra high). This lint check
+   identifies icons which do not have complete coverage across the densities.
+
+   Low density is not really used much anymore, so this check ignores the ldpi
+   density. To force lint to include it, set the environment variable
+   ANDROID_LINT_INCLUDE_LDPI=true. For more information on current density
+   usage, see https://developer.android.com/about/dashboards
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+C:\Users\EMpart\Documents\Codex\2026-11-02\ispeedtopvpn-app-v2rayng-v2rayng-ispeedtopvpn-app\outputs\iSpeedTopVPN\V2rayNG\app\src\main\java\com\v2ray\ang\util\QRCodeDecoder.kt:36: Warning: Use the KTX function createBitmap instead? [UseKtx]
+            Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888).apply {
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UseKtx":
+   The Android KTX libraries decorates the Android platform SDK as well as
+   various libraries with more convenient extension functions available from
+   Kotlin, allowing you to use default parameters, named parameters, and
+   more.
+
+   Available options:
+
+   **remove-defaults** (default is true):
+   Whether to skip arguments that match the defaults provided by the extension.
+
+   Extensions often provide default values for some of the parameters. For example:
+   ```kotlin
+   fun Path.readLines(charset: Charset = Charsets.UTF_8): List<String> { return Files.readAllLines(this, charset) }
+   ```
+   This lint check will by default automatically omit parameters that match the default, so if your code was calling
+
+   ```kotlin
+   Files.readAllLines(file, Charset.UTF_8)
+   ```
+   lint would replace this with
+   ```kotlin
+   file.readLines()
+   ```
+   rather than
+
+   ```kotlin
+   file.readLines(Charset.UTF_8
+   ```
+   You can turn this behavior off using this option.
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UseKtx">
+           <option name="remove-defaults" value="true" />
+       </issue>
+   </lint>
+   ```
+
+   **require-present** (default is true):
+   Whether to only offer extensions already available.
+
+   This option lets you only have lint suggest extension replacements if those extensions are already available on the class path (in other words, you're already depending on the library containing the extension method.)
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UseKtx">
+           <option name="require-present" value="true" />
+       </issue>
+   </lint>
+   ```
+
+0 errors, 369 warnings, 1 hint

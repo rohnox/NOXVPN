@@ -1,0 +1,38 @@
+PASS: lib/arm64-v8a/libgojni.so (33475728 bytes)
+PASS: lib/arm64-v8a/libhev-socks5-tunnel.so (352528 bytes)
+PASS: lib/arm64-v8a/libhevsockstun.so (249248 bytes)
+PASS: lib/armeabi-v7a/libgojni.so (32754404 bytes)
+PASS: lib/armeabi-v7a/libhev-socks5-tunnel.so (243880 bytes)
+PASS: lib/armeabi-v7a/libhevsockstun.so (170964 bytes)
+PASS: lib/x86/libgojni.so (32760420 bytes)
+PASS: lib/x86/libhev-socks5-tunnel.so (337180 bytes)
+PASS: lib/x86/libhevsockstun.so (244712 bytes)
+PASS: lib/x86_64/libgojni.so (35793552 bytes)
+PASS: lib/x86_64/libhev-socks5-tunnel.so (351224 bytes)
+PASS: lib/x86_64/libhevsockstun.so (247920 bytes)
+PASS: embedded GPL license.
+PASS: package com.ispeedtopvpn.app, min SDK 24, branded labels in every packaged locale.
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+V2 Signer: certificate DN: C=US, O=Android, CN=Android Debug
+V2 Signer: certificate SHA-256 digest: f99539d83f0d6fa82e111a8e1106aafed898c68684a53c24b3e2f4b77dcbcde8
+V2 Signer: certificate SHA-1 digest: e82862c88a485db618c21508185984ae39549ee8
+V2 Signer: certificate MD5 digest: adbc32f2bf4418a47337e38a8a8eb5a2
+V2 Signer: key algorithm: RSA
+V2 Signer: key size (bits): 2048
+V2 Signer: public key SHA-256 digest: a40ecc9b68beaed46d2f516298b6843ec944f1e506e274d5b9da4bf01fec6d8e
+V2 Signer: public key SHA-1 digest: 28a706c88cffecbdd37546f0c2e7d75f1ee2c8b6
+V2 Signer: public key MD5 digest: ab44196e032f4bc98f15ceb448a79193
+PASS: APK signature and ZIP alignment verified.
+
+Hash
+----
+75605CEDEC38BCF6C2E27F597D9A51B79513526684450E2329EAD6F0F559C7B9
+

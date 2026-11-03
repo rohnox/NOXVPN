@@ -67,3 +67,14 @@ V2rayNG/app/google-services.json
 # Ignore OS-specific files
 Thumbs.db
 .DS_Store
+
+# Release signing material must stay outside this source tree.
+*.jks
+*.keystore
+
+*.p12
+*.pfx
+.env
+.env.*
+*signing-password*
+private-signing/

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T14:33:13.673Z" hostname="DESKTOP-3HVDMFH" time="0.005">
+  <properties/>
+  <testcase name="reorder retains hidden bucket and uses ids()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.0"/>
+  <testcase name="actual configured default and manual servers remain accessible()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.001"/>
+  <testcase name="removed or duplicate targets do not mutate order()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.0"/>
+  <testcase name="empty disabled and removed subscriptions never trigger fetch()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.0"/>
+  <testcase name="new url subscription is fetched once by guid()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.001"/>
+  <testcase name="fresh install has no default plan()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.0"/>
+  <testcase name="user plans remain regardless of name or enabled state()" classname="com.v2ray.ang.ui.subscription.SubscriptionPresentationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

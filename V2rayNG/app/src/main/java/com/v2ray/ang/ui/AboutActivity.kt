@@ -112,6 +112,7 @@ fun AboutScreen(
                 title = stringResource(R.string.title_privacy_policy),
                 onClick = { Utils.openUri(context, AppConfig.APP_PRIVACY_POLICY) }
             )
+            Text(stringResource(R.string.ispeed_attribution), modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.bodySmall)
             VersionInfoBlock(
                 versionText = versionText,
                 appIdText = appIdText

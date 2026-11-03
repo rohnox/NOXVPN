@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.UtilsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-01T23:46:30.397Z" hostname="DESKTOP-3HVDMFH" time="0.05">
+  <properties/>
+  <testcase name="test_isIpAddress()" classname="com.v2ray.ang.UtilsTest" time="0.046"/>
+  <testcase name="test_parseInt()" classname="com.v2ray.ang.UtilsTest" time="0.001"/>
+  <testcase name="test_IsIpInCidr()" classname="com.v2ray.ang.UtilsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

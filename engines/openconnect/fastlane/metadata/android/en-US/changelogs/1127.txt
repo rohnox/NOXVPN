@@ -1,0 +1,3 @@
+Choose automatic-login behavior while creating a VPN profile, and manage it directly from password prompts.
+
+This release also adds a default-on setting for prominent background notifications when a VPN login, certificate, token, or error dialog needs your attention.

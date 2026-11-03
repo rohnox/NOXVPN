@@ -1,3 +1,57 @@
+# iSpeedTopVPN APP — 1.5.1
+
+نسخه اندروید با رابط مشکی و طلایی، پشتیبانی فارسی و انگلیسی، Xray و بخش مستقل OpenVPN/Cisco؛ بر پایه سورس واقعی v2rayNG 2.3.14 با حفظ تاریخچه و مجوزهای اصلی.
+
+- [دانلود APK و ZIP کامل سورس](https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.5.1)
+- [تغییرات نسخه](CHANGES-1.5.1.md) · [گزارش ساخت و محدودیت‌ها](VALIDATION.md)
+- [ساخت](BUILD-FA.md) · [امضای انتشار](RELEASE-FA.md) · [OpenVPN/Cisco](PROTOCOLS-FA.md) · [سورس و مجوز هسته‌ها](NATIVE-ENGINES.md)
+
+برای ساخت با همان ورودی‌های Native نسخه تحویلی، ZIP کامل سورسِ Release را دریافت کنید. درخت Git سورس و submoduleهای اصلی را نگه می‌دارد؛ فایل‌های تولیدشده AAR/SO/JAR که در Git نادیده گرفته می‌شوند، در ZIP کامل موجودند. ساخت دوباره هسته‌ها و محدودیت‌های آن در راهنماها مستند است. Workflows بالادستی حفظ شده‌اند؛ CI و امضای انتشار در حساب جدید تنظیم یا اجرا نشده‌اند و هیچ کلید خصوصی به گیت‌هاب فرستاده نشده است.
+
+
+برای کلون در ویندوز، مسیر کوتاه انتخاب کنید و پشتیبانی مسیرهای طولانی را فعال نگه دارید:
+
+```sh
+git clone -c core.longpaths=true --recurse-submodules https://github.com/sabialballa/iSpeedTopVPN.git
+```
+
+رندرهای کد در `verification/1.5.1/renders/` با داده آزمایشی ساخته شده‌اند و آزمون اتصال واقعی نیستند. برای بازتولید اختیاری رندرها، از پوشه V2rayNG اجرا کنید:
+
+```sh
+./gradlew -I ../scripts/visual-checks.init.gradle -Pispeed.visualChecks=true :app:testFdroidDebugUnitTest --tests '*PremiumVisualTest'
+```
+
+مخزن خصوصی است و دانلود فایل‌های Release به دسترسی همین مخزن نیاز دارد. یادداشت‌های نسخه‌های قبلی در ادامه تاریخی‌اند.
+
+# iSpeedTopVPN APP — 1.5.0
+
+Modern black/gold dashboard and an independent OpenVPN/Cisco bottom tab. Home, Servers, Subscriptions, Open/Cisco, Controls. See CHANGES-1.5.0.md and VALIDATION.md. Earlier notes below are historical.
+
+# iSpeedTopVPN APP — 1.4.3
+
+OpenVPN start initialization fix; only the two Home Quick Access Xray add/test buttons removed. OpenVPN/Cisco and .ovpn import remain. See CHANGES-1.4.3.md and VALIDATION.md. Prior notes below are historical.
+
+# iSpeedTopVPN APP — 1.4.1
+
+OpenVPN/Cisco entry freeze fix: initialize the status-service cache and move pipe/Binder reads off the UI callback. See CHANGES-1.4.1.md and VALIDATION.md. Prior notes below are historical.
+
+# iSpeedTopVPN APP — 1.4.0
+
+Embedded OpenVPN file import and an OpenConnect manager for AnyConnect-compatible servers, alongside the existing Xray dashboard. See [usage](PROTOCOLS-FA.md), [changes](CHANGES-1.4.0.md), [engine provenance/rebuild](NATIVE-ENGINES.md) and [actual verification](VALIDATION.md). Earlier notes below are historical.
+
+# iSpeedTopVPN APP — 1.3.0
+
+Metallic black and gold; empty internal Default plan hidden, immediate fetch for newly added subscriptions. See [changes](CHANGES-1.3.0.md) and [validation](VALIDATION.md). Earlier release notes below are historical.
+
+نسخه Release اختصاصی ۱٫۲٫۱ ساخته و امضا شد؛ راهنما: [RELEASE-FA.md](RELEASE-FA.md). هشدار Play Protect هنوز روی این فایل بررسی نشده است. گزارش فعلی: [VALIDATION.md](VALIDATION.md).
+
+# iSpeedTopVPN APP — 1.2.1
+
+Home one-tap subscription refresh and real-delay testing in Servers. Custom Compose dashboard, server cards, provider quota and live-device traffic chart. Adds one-button automatic connection: fresh real-ping tests of imported configurations, lowest successful latency, cancellation and stale-result protection. Based on GPL v2rayNG 2.3.14.
+
+Universal Debug APK built; signature, ABI, alignment, resources and F-Droid lint verified. No device or live-VPN success is claimed. See [auto-connect guide](AUTO-CONNECT-FA.md), [validation](VALIDATION.md) and [build/signing steps](BUILD-FA.md).
+
+---
 # v2rayNG
 
 A V2Ray client for Android, support [Xray core](https://github.com/XTLS/Xray-core) and [v2fly core](https://github.com/v2fly/v2ray-core)

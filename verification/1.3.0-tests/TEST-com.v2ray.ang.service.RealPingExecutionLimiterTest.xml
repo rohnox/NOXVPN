@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.service.RealPingExecutionLimiterTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-02T11:02:09.037Z" hostname="DESKTOP-3HVDMFH" time="0.419">
+  <properties/>
+  <testcase name="generatedConfigMeasurementsRemainConcurrent()" classname="com.v2ray.ang.service.RealPingExecutionLimiterTest" time="0.141"/>
+  <testcase name="customConfigMeasurementsAreSerializedAcrossWorkers()" classname="com.v2ray.ang.service.RealPingExecutionLimiterTest" time="0.277"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -21,6 +21,22 @@ import com.v2ray.ang.util.Utils
 
 object LauncherManager {
 
+    /** Embedded protocol entry points; the upstream activities retain VPN consent and service ownership. */
+    fun launchEmbeddedOpenVpn(context: Context, guid: String) {
+        context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
+            .setAction(Intent.ACTION_MAIN)
+            .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
+            .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
+    }
+
+    fun disconnectEmbeddedOpenVpn(context: Context) {
+        context.startActivity(Intent(context, de.blinkt.openvpn.activities.DisconnectVPN::class.java))
+    }
+
+    fun launchEmbeddedCisco(context: Context) {
+        context.startActivity(Intent(context, app.openconnect.MainActivity::class.java))
+    }
+
     fun startServiceFromToggle(context: Context): Boolean {
         if (MmkvManager.getSelectServer().isNullOrEmpty()) {
             context.toast(R.string.app_tile_first_use)

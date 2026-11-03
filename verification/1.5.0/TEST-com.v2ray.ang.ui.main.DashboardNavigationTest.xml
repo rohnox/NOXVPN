@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.ui.main.DashboardNavigationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-03T19:49:48.459Z" hostname="DESKTOP-3HVDMFH" time="0.147">
+  <properties/>
+  <testcase name="saved tabs restore by stable name with safe fallback()" classname="com.v2ray.ang.ui.main.DashboardNavigationTest" time="0.07"/>
+  <testcase name="subscriptions precede independent protocols tab()" classname="com.v2ray.ang.ui.main.DashboardNavigationTest" time="0.051"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

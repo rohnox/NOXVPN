@@ -1,0 +1,1 @@
+<resources><style name="ISpeedLaunch" parent="AppThemeDayNight.NoActionBar"><item name="android:windowSplashScreenBackground">@color/ispeed_navy</item><item name="android:windowSplashScreenAnimatedIcon">@drawable/ispeed_logo</item></style></resources>

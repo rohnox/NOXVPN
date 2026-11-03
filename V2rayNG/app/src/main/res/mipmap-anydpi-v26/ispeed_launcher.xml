@@ -1,0 +1,1 @@
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"><background android:drawable="@color/ispeed_navy"/><foreground android:drawable="@drawable/ispeed_logo"/></adaptive-icon>

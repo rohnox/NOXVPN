@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.ui.main.AutoConnectViewModelTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-02T10:33:18.686Z" hostname="DESKTOP-3HVDMFH" time="0.447">
+  <properties/>
+  <testcase name="same manual server has no restart and later power action cancels activation()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.261"/>
+  <testcase name="removed or edited configuration is revalidated before selection()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.064"/>
+  <testcase name="empty input never starts a test or fake connection()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.008"/>
+  <testcase name="manual selection cancels automatic intent and ignores late replies()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.011"/>
+  <testcase name="failed tests never use an old cached ping or activation()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.009"/>
+  <testcase name="external daemon stop cancels pending automatic connection()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.008"/>
+  <testcase name="deadline chooses completed responses and cancels outstanding probes()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.009"/>
+  <testcase name="unconfirmed selection persistence cannot request a connection()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.013"/>
+  <testcase name="cancel or leaving screen invalidates pending and future activation()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.011"/>
+  <testcase name="changed UI selection cannot leave a ready automatic intent waiting indefinitely()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.012"/>
+  <testcase name="repository failure does not pretend to connect()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.008"/>
+  <testcase name="no response before deadline remains disconnected()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.009"/>
+  <testcase name="probing preserves an existing daemon connection until activation()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.009"/>
+  <testcase name="fresh real probes persist fastest choice before single activation()" classname="com.v2ray.ang.ui.main.AutoConnectViewModelTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

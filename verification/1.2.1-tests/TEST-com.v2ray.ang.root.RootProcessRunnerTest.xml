@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.root.RootProcessRunnerTest" tests="4" skipped="0" failures="4" errors="0" timestamp="2026-11-02T10:33:12.747Z" hostname="DESKTOP-3HVDMFH" time="0.198">
+  <properties/>
+  <testcase name="failure status and diagnostic output survive()" classname="com.v2ray.ang.root.RootProcessRunnerTest" time="0.095">
+    <failure message="java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified" type="java.io.IOException">java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089)
+	at com.v2ray.ang.root.RootProcessRunner.run(RootProcessRunner.kt:11)
+	at com.v2ray.ang.root.RootProcessRunner.run$default(RootProcessRunner.kt:10)
+	at com.v2ray.ang.root.RootProcessRunnerTest.failure status and diagnostic output survive(RootProcessRunnerTest.kt:27)
+Caused by: java.io.IOException: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessImpl.create(Native Method)
+	at java.base/java.lang.ProcessImpl.&lt;init&gt;(ProcessImpl.java:506)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:159)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126)
+	... 4 more
+</failure>
+  </testcase>
+  <testcase name="inherited stdout cannot hold a completed command open()" classname="com.v2ray.ang.root.RootProcessRunnerTest" time="0.027">
+    <failure message="java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified" type="java.io.IOException">java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089)
+	at com.v2ray.ang.root.RootProcessRunner.run(RootProcessRunner.kt:11)
+	at com.v2ray.ang.root.RootProcessRunner.run$default(RootProcessRunner.kt:10)
+	at com.v2ray.ang.root.RootProcessRunnerTest.inherited stdout cannot hold a completed command open(RootProcessRunnerTest.kt:16)
+Caused by: java.io.IOException: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessImpl.create(Native Method)
+	at java.base/java.lang.ProcessImpl.&lt;init&gt;(ProcessImpl.java:506)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:159)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126)
+	... 4 more
+</failure>
+  </testcase>
+  <testcase name="a silent blocked command respects its deadline()" classname="com.v2ray.ang.root.RootProcessRunnerTest" time="0.015">
+    <failure message="java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified" type="java.io.IOException">java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089)
+	at com.v2ray.ang.root.RootProcessRunner.run(RootProcessRunner.kt:11)
+	at com.v2ray.ang.root.RootProcessRunner.run$default(RootProcessRunner.kt:10)
+	at com.v2ray.ang.root.RootProcessRunnerTest.a silent blocked command respects its deadline(RootProcessRunnerTest.kt:10)
+Caused by: java.io.IOException: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessImpl.create(Native Method)
+	at java.base/java.lang.ProcessImpl.&lt;init&gt;(ProcessImpl.java:506)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:159)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126)
+	... 4 more
+</failure>
+  </testcase>
+  <testcase name="large output is drained without unbounded retention()" classname="com.v2ray.ang.root.RootProcessRunnerTest" time="0.035">
+    <failure message="java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified" type="java.io.IOException">java.io.IOException: Cannot run program &quot;sh&quot;: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089)
+	at com.v2ray.ang.root.RootProcessRunner.run(RootProcessRunner.kt:11)
+	at com.v2ray.ang.root.RootProcessRunnerTest.large output is drained without unbounded retention(RootProcessRunnerTest.kt:22)
+Caused by: java.io.IOException: CreateProcess error=2, The system cannot find the file specified
+	at java.base/java.lang.ProcessImpl.create(Native Method)
+	at java.base/java.lang.ProcessImpl.&lt;init&gt;(ProcessImpl.java:506)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:159)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126)
+	... 3 more
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

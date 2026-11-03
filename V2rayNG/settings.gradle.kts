@@ -20,5 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "v2rayNG"
+rootProject.name = "iSpeedTopVPN"
 include(":app")
+include(":engine-openvpn", ":engine-openconnect")

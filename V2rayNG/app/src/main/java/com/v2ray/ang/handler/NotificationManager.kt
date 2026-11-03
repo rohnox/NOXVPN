@@ -8,6 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.os.SystemClock
+import com.v2ray.ang.dto.SessionTraffic
+import com.v2ray.ang.helper.MessageHelper
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.ensureActive
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.v2ray.ang.AppConfig
@@ -34,6 +40,11 @@ object NotificationManager {
     private const val NOTIFICATION_ICON_THRESHOLD = 3000
     private const val QUERY_INTERVAL_MS = 3000L
 
+    // This owner already samples and resets core counters. UI must never query them separately.
+    private val samplingScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private var session = SessionTraffic()
+    private var sessionStartedAt = 0L
+    @Volatile private var showSpeed = true
     private var lastQueryTime = 0L
     private var mBuilder: NotificationCompat.Builder? = null
     private var speedNotificationJob: Job? = null
@@ -44,14 +55,25 @@ object NotificationManager {
      * @param currentConfig The current profile configuration.
      */
     fun startSpeedNotification() {
-        if (MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) != true) return
+        showSpeed = true
         if (speedNotificationJob != null || CoreServiceManager.isRunning() == false) return
 
         var lastZeroSpeed = false
 
-        speedNotificationJob = CoroutineScope(Dispatchers.IO).launch {
+        session = SessionTraffic()
+        sessionStartedAt = SystemClock.elapsedRealtime()
+        speedNotificationJob = samplingScope.launch {
             while (isActive) {
-                lastZeroSpeed = updateSpeedNotificationOnce(lastZeroSpeed)
+                try {
+                    lastZeroSpeed = updateSpeedNotificationOnce(lastZeroSpeed)
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    LogUtil.e(AppConfig.TAG, "Daemon session sampling failed; outbound counters unavailable", e)
+                    getService()?.let {
+                        MessageHelper.sendMsg2UI(it, AppConfig.MSG_SESSION_TRAFFIC, session.copy(available = false))
+                    }
+                }
                 delay(QUERY_INTERVAL_MS)
             }
         }
@@ -65,7 +87,7 @@ object NotificationManager {
         val service = getService() ?: return
 
         // Reset last query time to avoid querying stats too soon after showing the notification
-        lastQueryTime = System.currentTimeMillis()
+        lastQueryTime = SystemClock.elapsedRealtime()
 
         val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
@@ -134,7 +156,7 @@ object NotificationManager {
         service.stopForeground(Service.STOP_FOREGROUND_REMOVE)
 
         mBuilder = null
-        speedNotificationJob?.cancel()
+        samplingScope.coroutineContext.cancelChildren()
         speedNotificationJob = null
         mNotificationManager = null
     }
@@ -143,11 +165,9 @@ object NotificationManager {
      * Stops the speed notification.
      */
     fun stopSpeedNotification() {
-        speedNotificationJob?.let {
-            it.cancel()
-            speedNotificationJob = null
-            updateNotification("", 0, 0)
-        }
+        // Screen-off suppresses notification updates but keeps session accounting intact.
+        showSpeed = false
+        updateNotification("", 0, 0)
     }
 
     /**
@@ -227,8 +247,8 @@ object NotificationManager {
      * @param lastZeroSpeed The previous zero speed state.
      * @return The current zero speed state.
      */
-    private fun updateSpeedNotificationOnce(lastZeroSpeed: Boolean): Boolean {
-        val queryTime = System.currentTimeMillis()
+    private suspend fun updateSpeedNotificationOnce(lastZeroSpeed: Boolean): Boolean {
+        val queryTime = SystemClock.elapsedRealtime()
         val sinceLastQueryIn = (queryTime - lastQueryTime)
 
         // If the query interval is too short, skip this round to avoid excessive CPU usage
@@ -244,7 +264,9 @@ object NotificationManager {
         var directUplink = 0L
         var directDownlink = 0L
 
-        CoreServiceManager.queryAllOutboundTrafficStats().forEach { stat ->
+        val enabled = MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) == true
+        val stats = if (enabled) CoreServiceManager.queryAllOutboundTrafficStats() else emptyList()
+        stats.forEach { stat ->
             when {
                 stat.tag == AppConfig.TAG_DIRECT -> {
                     when (stat.direction) {
@@ -263,10 +285,18 @@ object NotificationManager {
             }
         }
 
+        kotlin.coroutines.coroutineContext.ensureActive()
+        session = session.add(
+            proxyUplink + directUplink,
+            proxyDownlink + directDownlink,
+            (SystemClock.elapsedRealtime() - sessionStartedAt) / 1000,
+            enabled,
+        )
+        getService()?.let { MessageHelper.sendMsg2UI(it, AppConfig.MSG_SESSION_TRAFFIC, session) }
         val proxyTotal = proxyUplink + proxyDownlink
         val directTotal = directUplink + directDownlink
         val zeroSpeed = proxyTotal + directTotal == 0L
-        if (!zeroSpeed || !lastZeroSpeed) {
+        if (enabled && showSpeed && (!zeroSpeed || !lastZeroSpeed)) {
             val text = StringBuilder()
             appendSpeedString(
                 text, AppConfig.TAG_PROXY,

@@ -1,0 +1,83 @@
+/*
+ * Adapted from OpenVPN for Android
+ * Copyright (c) 2012-2013, Arne Schwabe
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
+ *
+ * In addition, as a special exception, the copyright holders give
+ * permission to link the code of portions of this program with the
+ * OpenSSL library.
+ */
+
+package app.openconnect.fragments;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import app.openconnect.R;
+
+public class AboutFragment extends Fragment  {
+
+	public static final String TAG = "OConnect";
+	private static final String REPO_URL = "https://github.com/pengyue-polaron/openconnect-next-android";
+	private static final String ISSUES_URL = REPO_URL + "/issues";
+	private static final String RELEASES_URL = REPO_URL + "/releases";
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		Activity activity = getActivity();
+
+		View v = inflater.inflate(R.layout.about, container, false);
+		TextView ver = (TextView) v.findViewById(R.id.version);
+
+		try {
+			PackageInfo packageinfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
+			ver.setText(getString(R.string.about_version, packageinfo.versionName));
+		} catch (NameNotFoundException e) {
+			Log.e(TAG, "can't retrieve package version");
+			ver.setText(R.string.app);
+		}
+
+		bindUrl(v, R.id.about_source_button, REPO_URL);
+		bindUrl(v, R.id.about_issues_button, ISSUES_URL);
+		bindUrl(v, R.id.about_releases_button, RELEASES_URL);
+
+		return v;
+	}
+
+	private void bindUrl(View root, int id, final String url) {
+		Button button = (Button)root.findViewById(id);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+			}
+		});
+	}
+
+}

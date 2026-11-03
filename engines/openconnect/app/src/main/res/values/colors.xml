@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_background">#080A0D</color>
+    <color name="launcher_background_end">#15191E</color>
+    <color name="brand_icon_background">#FFFFFF</color>
+    <color name="brand_icon_background_end">#F1F5FA</color>
+    <color name="brand_icon_outline">#D4DCE7</color>
+    <color name="oc_primary">#8A641D</color>
+    <color name="oc_on_primary">#FFFFFF</color>
+    <color name="oc_primary_container">#F5E4BA</color>
+    <color name="oc_on_primary_container">#3B2B0D</color>
+    <color name="oc_secondary">#536176</color>
+    <color name="oc_on_secondary">#FFFFFF</color>
+    <color name="oc_secondary_container">#D8E4F8</color>
+    <color name="oc_on_secondary_container">#101C2B</color>
+    <color name="oc_tertiary">#8B4F00</color>
+    <color name="oc_on_tertiary">#FFFFFF</color>
+    <color name="oc_tertiary_container">#FFDCB5</color>
+    <color name="oc_on_tertiary_container">#2C1600</color>
+    <color name="oc_error">#BA1A1A</color>
+    <color name="oc_surface">#F8FAFF</color>
+    <color name="oc_surface_container">#EEF3FA</color>
+    <color name="oc_on_surface">#181C20</color>
+    <color name="oc_on_surface_variant">#444A54</color>
+    <color name="oc_outline">#6F7785</color>
+    <color name="oc_outline_variant">#CBD3DF</color>
+    <color name="dashboard_background">#0B0D10</color>
+    <color name="dashboard_surface">#171A1F</color>
+    <color name="dashboard_surface_outline">#343941</color>
+    <color name="dashboard_icon_well">#23272D</color>
+    <color name="dashboard_primary_text">#F5F7FA</color>
+    <color name="dashboard_secondary_text">#A8AFB8</color>
+    <color name="dashboard_accent">#D4AF60</color>
+</resources>

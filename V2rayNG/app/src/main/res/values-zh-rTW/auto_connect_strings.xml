@@ -1,0 +1,11 @@
+<resources>
+  <string name="top_auto_cancel">Cancel automatic selection</string>
+  <string name="top_auto_config_gone">The selected configuration changed or was removed. Test again.</string>
+  <string name="top_auto_connect">Auto connect</string>
+  <string name="top_auto_empty">No configuration is available. Import a link, file or QR code first.</string>
+  <string name="top_auto_error">Automatic selection could not finish. Please try again.</string>
+  <string name="top_auto_hint">Test your imported configurations and connect to the responding server with the lowest measured real latency.</string>
+  <string name="top_auto_no_response">No unchanged configuration passed the real connection test. Check your network or refresh the subscription.</string>
+  <string name="top_auto_preparing">Preparing your configurations…</string>
+  <string name="top_auto_progress">Testing servers: %1$d of %2$d completed</string>
+</resources>

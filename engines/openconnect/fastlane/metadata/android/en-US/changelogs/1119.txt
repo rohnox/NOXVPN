@@ -1,0 +1,1 @@
+Refreshed the About page with project links, removed the legacy problem-report menu item, stabilized the status action button at the bottom of the screen, and expanded Chinese localization for settings, profile editing, FAQ, and connection states.

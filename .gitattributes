@@ -1,0 +1,13 @@
+# Normalize source text while preserving imported vendor formatting and raw evidence.
+* text=auto
+engines/** -whitespace
+verification/** -text -whitespace
+*.sh text eol=lf
+gradlew text eol=lf
+*.bat text eol=crlf
+
+# Keep third-party license notices byte-for-byte.
+V2rayNG/app/src/main/assets/ispeed-engines/** -text -whitespace
+V2rayNG/app/src/main/assets/ispeed-font-OFL.txt -text -whitespace
+V2rayNG/app/src/main/assets/ISPEED-GPL-3.0.txt -text -whitespace
+branding/fonts/OFL.txt -text -whitespace

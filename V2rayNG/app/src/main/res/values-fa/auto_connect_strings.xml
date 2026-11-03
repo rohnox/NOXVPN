@@ -1,0 +1,11 @@
+<resources>
+  <string name="top_auto_cancel">لغو اتصال خودکار</string>
+  <string name="top_auto_config_gone">کانفیگ انتخاب‌شده تغییر کرده یا حذف شده است. دوباره تست کن.</string>
+  <string name="top_auto_connect">اتصال خودکار</string>
+  <string name="top_auto_empty">کانفیگی موجود نیست. ابتدا لینک، فایل یا QR وارد کن.</string>
+  <string name="top_auto_error">اتصال خودکار کامل نشد. دوباره تلاش کن.</string>
+  <string name="top_auto_hint">کانفیگ‌های واردشده تست می‌شوند و سریع‌ترین سرور پاسخ‌گو بر اساس تأخیر واقعی انتخاب می‌شود.</string>
+  <string name="top_auto_no_response">هیچ کانفیگ معتبری از تست واقعی عبور نکرد. شبکه را بررسی کن یا ساب را به‌روز کن.</string>
+  <string name="top_auto_preparing">در حال آماده‌سازی کانفیگ‌ها…</string>
+  <string name="top_auto_progress">تست سرورها: %1$d از %2$d بررسی شد</string>
+</resources>

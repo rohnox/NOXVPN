@@ -1,0 +1,7 @@
+package: name='com.ispeedtopvpn.app' versionCode='5076200' versionName='1.4.3' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+minSdkVersion:'24'
+targetSdkVersion:'37'
+application-label:'iSpeedTopVPN APP'
+launchable-activity: name='com.v2ray.ang.ui.main.MainActivity'  label='' icon=''
+leanback-launchable-activity: name='com.v2ray.ang.ui.main.MainActivity'  label='' icon='' banner=''
+native-code: 'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'

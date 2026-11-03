@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.v2ray.ang.util.ZipUtilTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-03T19:52:46.807Z" hostname="DESKTOP-3HVDMFH" time="0.22">
+  <properties/>
+  <testcase name="extractArchiveRejectsPathTraversal()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.047"/>
+  <testcase name="extractArchiveRejectsExcessiveCompressionRatio()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.021"/>
+  <testcase name="extractArchiveRejectsOversizedArchive()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.01"/>
+  <testcase name="extractArchiveRejectsDuplicateCanonicalDestination()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.022"/>
+  <testcase name="extractArchiveRejectsOversizedEntry()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.021"/>
+  <testcase name="extractArchiveRejectsEntryBelowFile()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.023"/>
+  <testcase name="extractArchiveRejectsExcessiveTotalSize()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.025"/>
+  <testcase name="extractArchiveRejectsTooManyEntries()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.019"/>
+  <testcase name="unzipToFolderExtractsNestedFile()" classname="com.v2ray.ang.util.ZipUtilTest" time="0.032"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

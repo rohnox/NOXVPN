@@ -1,0 +1,11 @@
+# 1.5.0 — dashboard and independent OpenVPN/Cisco tab
+
+- Refine the black/gold Compose dashboard: outlined satin cards, theme-aware connection hero and power action, real session metrics, live transfer-rate area chart, horizontal subscription quota bar, automatic selection, and server cards. No generated image, sample IP, fake server, fake quota or fixed graph data is embedded.
+- Bottom destinations in logical start-to-end order: Home, Servers, Subscriptions, Open/Cisco, Controls. In Persian RTL, Home starts on the right; Subscriptions is the center item and Open/Cisco is next to Controls. Stable saved enum names are retained with an explicit fallback for unknown names.
+- Embed a dedicated OpenVPN/Cisco screen below the same bottom navigation, with separate OpenVPN and Cisco selectors. Remove the redundant Home quick shortcut. Retain ProtocolsActivity for existing notification/back-stack entry points; both routes share the same content and activity-owned platform actions.
+- OpenVPN lists the actual stored profiles by GUID, imports .ovpn files through the Android document picker, displays upstream status and measured byte counts, and launches/disconnects through the unchanged engine activities. Cisco retains the existing native profile/authentication manager. No unimplemented custom Cisco login form is shown.
+- Hide Xray import and advanced-management actions while viewing Open/Cisco. Xray import, subscriptions and real-delay testing remain in their own screens.
+- Correct and refine Persian labels written as Android string resources. New protocol labels exist in all packaged locales; legacy dashboard translations outside Persian retain the existing English fallback approach.
+- Add six JVM regression cases for tab ordering/restoration and protocol readiness, stale/missing profile IDs, busy/error states, engine isolation and non-VPN mode restrictions. Initialization remains lazy until the protocol tab or original entry point is opened.
+
+Existing native binaries, VPN consent/authentication, signing identity, stored configurations, package ID, permissions, protocols and 1.4.3 startup fixes remain unchanged. See VALIDATION.md for executed checks and Not run limitations.

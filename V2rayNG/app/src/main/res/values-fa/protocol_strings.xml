@@ -1,0 +1,30 @@
+<resources>
+ <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_back">بازگشت</string>
+ <string name="protocol_intro">پروفایل‌های OpenVPN و اتصال‌های سیسکو را اینجا مدیریت کنید. در هر لحظه فقط یک اتصال VPN می‌تواند فعال باشد.</string>
+ <string name="protocol_vpn_only">ابتدا در تنظیمات، حالت VPN را انتخاب کنید. حالت پروکسی و روت، عملکرد فعلی Xray را حفظ می‌کنند.</string>
+ <string name="protocol_openvpn">OpenVPN</string>
+ <string name="protocol_cisco">سیسکو سازگار با OpenConnect</string>
+ <string name="protocol_state_unknown">OpenVPN: وضعیت اتصال تأیید نشده</string>
+ <string name="protocol_state_connected">OpenVPN: متصل</string>
+ <string name="protocol_state_stopped">OpenVPN: قطع</string>
+ <string name="protocol_state_connecting">OpenVPN: در حال اتصال</string>
+ <string name="protocol_state_auth_failed">OpenVPN: خطای احراز هویت</string>
+ <string name="protocol_state_input">OpenVPN: نیاز به اطلاعات تکمیلی</string>
+ <string name="protocol_import">واردکردن فایل .ovpn</string>
+ <string name="protocol_import_hint">فایل مستقل .ovpn تا ۲ مگابایت، شامل گواهی‌ها و کلیدها را وارد کنید. فایل گواهی جداگانه و اسکریپت اجرایی وارد نمی‌شود. نام کاربری و رمز در صورت نیاز درخواست می‌شوند.</string>
+ <string name="protocol_import_done">پروفایل OpenVPN وارد شد.</string>
+ <string name="protocol_import_failed">فایل وارد نشد. قالب .ovpn و قرارداشتن گواهی و کلید داخل فایل را بررسی کنید. فایل‌های جداگانه، اسکریپت و حجم بیش از ۲ مگابایت پشتیبانی نمی‌شوند.</string>
+ <string name="protocol_connect_profile">اتصال: %1$s</string>
+ <string name="protocol_disconnect">قطع اتصال OpenVPN</string>
+ <string name="protocol_no_profiles">هنوز پروفایل OpenVPN وارد نشده است.</string>
+ <string name="protocol_cisco_hint">در مدیریت اتصال، آدرس و پورت سرور را اضافه کنید. نام کاربری، رمز، گروه و اطلاعات تکمیلی را سرور درخواست می‌کند. هشدار گواهی را بررسی کنید؛ اعتبارسنجی خودکار خاموش نمی‌شود.</string>
+ <string name="protocol_cisco_manage">پروفایل‌ها و اتصال سیسکو</string>
+ <string name="protocol_unavailable">راه‌اندازی این موتور روی دستگاه انجام نشد.</string>
+ <string name="protocol_traffic">دریافت: %1$s · ارسال: %2$s</string>
+<string name="protocol_challenge_title">احراز هویت OpenVPN</string><string name="protocol_challenge_response">پاسخ یا کد</string><string name="protocol_challenge_send">ارسال پاسخ</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
+<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_heading">اتصال‌های پیشرفته</string>
+<string name="protocol_cisco_short">Cisco</string>
+<string name="protocol_details">راهنمای اتصال</string>
+</resources>
