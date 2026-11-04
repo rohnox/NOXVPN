@@ -45,11 +45,11 @@ class PremiumVisualTest {
     private lateinit var inputModes: InputModeManager
     private val commands = mutableListOf<MainAction>()
 
-    private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null, plans: Boolean = false) {
+    private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null, plans: Boolean = false, exitIp: ExitIpState = ExitIpState.Address("198.51.100.24")) {
         val history = (0L..30L).map { t -> SessionTraffic(t, t * 10240L, t * t * 4096L, true) }
         val quota = SubscriptionUsageInfo(title = "iSpecialVPN", expire = System.currentTimeMillis() / 1000 + 7 * 86400, upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true, providerUsageUpdatedAt = System.currentTimeMillis() / 1000, providerUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (3L - day) * 104857600L) }, dailyUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (14L - day) shl 30) })
         val state = if (populated) MainUiState(groups = if (plans) listOf(GroupMapItem("plan", "iSpecialVPN", quota), GroupMapItem("family", "Family plan", quota.copy(title = "Family plan", upload = 1L shl 30, download = 6L shl 30, total = 30L shl 30, expire = System.currentTimeMillis() / 1000 + 18 * 86400)), GroupMapItem("work", "Work plan", quota.copy(title = "Work plan", upload = 1L shl 30, download = 3L shl 30, total = 20L shl 30, expire = System.currentTimeMillis() / 1000 + 9 * 86400))) else listOf(GroupMapItem("plan", "import sub", quota)), dashboardSubscriptionId = if (plans) "family" else "", selectedGuid = "a", selectedSubscriptionId = "plan",
-            selectedServerName = "Germany · Frankfurt", isRunning = true, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
+            selectedServerName = "Germany · Frankfurt", isRunning = true, exitIp = exitIp, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
         val rows = if (populated) listOf("Germany · Frankfurt", "Turkey · Istanbul").mapIndexed { i, name ->
             ServerRowUiModel(if (i == 0) "a" else "b", ProfileItem(configType = EConfigType.VLESS), name, "", "VLESS / TLS", 34L + i * 15L, "")
         } else emptyList()
@@ -169,7 +169,7 @@ class PremiumVisualTest {
         capture("subscriptions-work-selected")
         compose.onNodeWithText("Home").performClick()
         compose.onNodeWithText("Work plan").assertIsDisplayed()
-        compose.onNodeWithText("4.0 GB").assertIsDisplayed()
+        compose.onNodeWithText("4.0 GB").performScrollTo().assertIsDisplayed()
         capture("home-work-selected")
     }
     @Test fun deleteSubscriptionFromSameTabRequiresConfirmation() {
@@ -246,6 +246,62 @@ class PremiumVisualTest {
         compose.onNodeWithText("Settings").performClick()
         compose.onNodeWithContentDescription("Add configuration").assertDoesNotExist()
         capture("settings-clean-en")
+    }
+
+    @Test fun realDaemonSnapshotClockTicksBetweenThreeSecondSamples() {
+        val timestamp = android.os.SystemClock.elapsedRealtime().coerceAtLeast(1)
+        val snapshot = SessionTraffic(20, 100, 200, true, timestamp)
+        compose.setContent {
+            MaterialTheme {
+                val seconds = rememberSessionSeconds(snapshot, true)
+                Text(seconds?.toString() ?: "Unavailable")
+            }
+        }
+        compose.onNodeWithText("20").assertExists()
+        org.robolectric.shadows.ShadowSystemClock.advanceBy(java.time.Duration.ofSeconds(1))
+        compose.mainClock.advanceTimeBy(1000)
+        compose.waitForIdle()
+        compose.onNodeWithText("21").assertExists()
+    }
+
+    @Test fun selectedSpecialVpnLogoAndMonochromeIcon() {
+        compose.setContent {
+            MaterialTheme(colorScheme = staticAppColorScheme(true), typography = AppTypography) {
+                Surface(Modifier.fillMaxSize()) {
+                    Column(Modifier.padding(32.dp), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                        Text("Special VPN", style = MaterialTheme.typography.headlineMedium)
+                        androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(com.v2ray.ang.R.drawable.ispeed_logo), null, Modifier.size(260.dp))
+                        Icon(androidx.compose.ui.res.painterResource(com.v2ray.ang.R.drawable.ic_ispeed_notification), null, Modifier.size(32.dp))
+                    }
+                }
+            }
+        }
+        capture("special-vpn-branding")
+    }
+
+    @Test fun exitIpIsDisplayedAndRefreshUsesTheActionContract() {
+        render(populated = true)
+        compose.onNodeWithText("198.51.100.24").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Refresh exit IP").performClick()
+        org.junit.Assert.assertEquals(MainAction.RefreshExitIp, commands.last())
+        capture("home-exit-ip")
+    }
+
+    @Test fun exitIpLoadingDoesNotOfferConcurrentRefresh() {
+        render(populated = true, exitIp = ExitIpState.Loading)
+        compose.onNodeWithText("Checking…").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Refresh exit IP").assertDoesNotExist()
+    }
+
+    @Test fun exitIpUnavailableOffersRetry() {
+        render(populated = true, exitIp = ExitIpState.Unavailable)
+        compose.onNodeWithText("Unavailable").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Refresh exit IP").assertIsDisplayed()
+    }
+
+    @Test fun exitIpIsHiddenWhileDisconnected() {
+        render()
+        compose.onNodeWithText("Exit IP").assertDoesNotExist()
     }
 
 }

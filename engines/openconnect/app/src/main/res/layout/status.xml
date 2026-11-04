@@ -32,7 +32,7 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
-                android:text="@string/app"
+                android:text="@string/ispeed_cisco_name"
                 android:textColor="@color/dashboard_primary_text"
                 android:textSize="22sp"
                 tools:ignore="SelectableText" />

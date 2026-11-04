@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.v2ray.ang.R
 import com.v2ray.ang.dto.SessionTraffic
 import com.v2ray.ang.extension.toTrafficString
+import androidx.lifecycle.repeatOnLifecycle
 @Composable
 fun MainBottomBar(
     displayText: String,
@@ -29,6 +30,7 @@ fun MainBottomBar(
     selectedServerName: String,
     onAction: (MainAction) -> Unit
 ) {
+    val seconds = rememberSessionSeconds(traffic, isRunning)
     Surface(tonalElevation = 3.dp) {
         Column(
             Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 20.dp, vertical = 12.dp),
@@ -44,7 +46,7 @@ fun MainBottomBar(
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(stringResource(R.string.ispeed_duration, traffic?.elapsedSeconds?.let { formatSessionDuration(it) } ?: stringResource(R.string.ispeed_unavailable)),
+                Text(stringResource(R.string.ispeed_duration, seconds?.let { formatSessionDuration(it) } ?: stringResource(R.string.ispeed_unavailable)),
                     style = MaterialTheme.typography.bodySmall)
                 Text(stringResource(R.string.ispeed_data,
                     traffic?.takeIf { it.available }?.uploaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable),
@@ -70,4 +72,20 @@ fun MainBottomBar(
 internal fun formatSessionDuration(seconds: Long): String {
     val safe = seconds.coerceAtLeast(0)
     return String.format(java.util.Locale.ROOT, "%02d:%02d:%02d", safe / 3600, safe / 60 % 60, safe % 60)
+}
+
+/** Only the monotonic presentation clock ticks here; all traffic/state comes from the daemon. */
+@Composable
+internal fun rememberSessionSeconds(traffic: SessionTraffic?, running: Boolean): Long? {
+    val lifecycle = androidx.lifecycle.compose.LocalLifecycleOwner.current.lifecycle
+    val elapsed = androidx.compose.runtime.produceState<Long?>(if (running) traffic?.elapsedAt(android.os.SystemClock.elapsedRealtime()) else null, traffic, running, lifecycle) {
+        lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+            value = if (running) traffic?.elapsedAt(android.os.SystemClock.elapsedRealtime()) else null
+            while (running && traffic != null && traffic.sampledAtElapsedMillis > 0) {
+                kotlinx.coroutines.delay(1000)
+                value = traffic.elapsedAt(android.os.SystemClock.elapsedRealtime())
+            }
+        }
+    }
+    return elapsed.value
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+    <string name="app_name" translatable="false">Special VPN</string>
     <string name="app_widget_name">v2rayNG</string>
-    <string name="app_tile_name">v2rayNG</string>
+    <string name="app_tile_name">Special VPN</string>
     <string name="app_tile_first_use">Добавьте профиль в приложении перед использованием этой функции.</string>
     <string name="navigation_drawer_open">Открыть панель навигации</string>
     <string name="navigation_drawer_close">Закрыть панель навигации</string>
@@ -204,7 +204,7 @@
     </string-array>
 
     <string name="title_pref_speed_enabled">Показывать скорость</string>
-    <string name="summary_pref_speed_enabled">Показывать текущую скорость в уведомлении.\nЗначок указывает, какой трафик преобладает: через прокси или напрямую.</string>
+    <string name="summary_pref_speed_enabled">Show current speeds in the notification. Dashboard traffic totals remain available when this is off.</string>
 
     <string name="title_pref_sniffing_enabled">Анализировать трафик (sniffing)</string>
     <string name="summary_pref_sniffing_enabled">Определять домены назначения в трафике (по умолчанию включено)</string>

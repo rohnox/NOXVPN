@@ -28,11 +28,11 @@ try {
 } finally { $archive.Dispose() }
 $badging = & (Join-Path $tools 'aapt2.exe') dump badging $Apk
 if ($LASTEXITCODE -ne 0) { throw 'APK manifest analysis failed' }
-if (!($badging -match "package: name='com.ispeedtopvpn.app'")) { throw 'Unexpected application ID' }
+if (!($badging -match "package: name='com.specialvpn.app'")) { throw 'Unexpected application ID' }
 if (!($badging -match "sdkVersion:'24'")) { throw 'Unexpected minimum SDK' }
 $labels = $badging | Where-Object { $_ -match '^application-label' }
-if ($labels | Where-Object { $_ -notmatch 'iSpeedTopVPN APP' }) { throw 'Brand label differs by locale' }
-'PASS: package com.ispeedtopvpn.app, min SDK 24, branded labels in every packaged locale.'
+if ($labels | Where-Object { $_ -notmatch 'Special VPN' }) { throw 'Brand label differs by locale' }
+'PASS: package com.specialvpn.app, min SDK 24, branded labels in every packaged locale.'
 & (Join-Path $tools 'apksigner.bat') verify --verbose --print-certs $Apk
 if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed' }
 & (Join-Path $tools 'zipalign.exe') -c -P 16 4 $Apk

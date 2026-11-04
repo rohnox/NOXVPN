@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+    <string name="app_name" translatable="false">Special VPN</string>
     <string name="app_widget_name">開關</string>
-    <string name="app_tile_name">開關</string>
+    <string name="app_tile_name">Special VPN</string>
     <string name="app_tile_first_use">首次使用此功能，請使用此應用程式新增伺服器</string>
     <string name="navigation_drawer_open">開啟導覽匣</string>
     <string name="navigation_drawer_close">關閉導覽匣</string>
@@ -204,7 +204,7 @@
     </string-array>
 
     <string name="title_pref_speed_enabled">啟用速度顯示</string>
-    <string name="summary_pref_speed_enabled">在通知中顯示目前速度。\n圖示會指出代理流量或直接連線流量何者較多。</string>
+    <string name="summary_pref_speed_enabled">Show current speeds in the notification. Dashboard traffic totals remain available when this is off.</string>
 
     <string name="title_pref_sniffing_enabled">啟用流量探測 (Sniffing)</string>
     <string name="summary_pref_sniffing_enabled">從流量中探測目標網域（預設啟用）。</string>

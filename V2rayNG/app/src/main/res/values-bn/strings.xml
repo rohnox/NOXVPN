@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">iSpeedTopVPN APP</string>
+    <string name="app_name" translatable="false">Special VPN</string>
     <string name="app_widget_name">সুইচ</string>
-    <string name="app_tile_name">সুইচ</string>
+    <string name="app_tile_name">Special VPN</string>
     <string name="app_tile_first_use">এই ফিচারটি প্রথম ব্যবহার করা হচ্ছে, সার্ভার যোগ করতে অ্যাপটি ব্যবহার করুন</string>
     <string name="navigation_drawer_open">নেভিগেশন ড্রয়ার খোলুন</string>
     <string name="navigation_drawer_close">নেভিগেশন ড্রয়ার বন্ধ করুন</string>
@@ -204,7 +204,7 @@
     </string-array>
 
     <string name="title_pref_speed_enabled">গতি প্রদর্শন সক্রিয় করুন</string>
-    <string name="summary_pref_speed_enabled">বিজ্ঞপ্তিতে বর্তমান সংযোগের গতি দেখান।\nআইকনটি প্রক্সি বা সরাসরি ট্রাফিকের মধ্যে কোনটি বেশি তা দেখায়।</string>
+    <string name="summary_pref_speed_enabled">Show current speeds in the notification. Dashboard traffic totals remain available when this is off.</string>
 
     <string name="title_pref_sniffing_enabled">ট্রাফিকের গন্তব্য ডোমেইন শনাক্তকরণ চালু করুন (Sniffing)</string>
     <string name="summary_pref_sniffing_enabled">ট্রাফিক থেকে গন্তব্য ডোমেইন শনাক্ত করুন (ডিফল্টভাবে চালু)।</string>

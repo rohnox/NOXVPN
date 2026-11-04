@@ -98,29 +98,8 @@ object CoreConfigManager {
 
         val json = JsonUtil.parseString(raw)?.takeIf { it.isJsonObject }?.asJsonObject ?: return result
 
-        // Inject or remove traffic statistics configuration based on user preference
-        if (MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) == true) {
-            if (!json.has("stats")) {
-                json.add("stats", JsonObject())
-            }
-            if (!json.has("policy")) {
-                val policyObj = JsonObject()
-                val systemObj = JsonObject()
-                systemObj.addProperty("statsOutboundUplink", true)
-                systemObj.addProperty("statsOutboundDownlink", true)
-                policyObj.add("system", systemObj)
-                json.add("policy", policyObj)
-            }
-        } else {
-            json.remove("stats")
-            // Keep user-defined policy levels, only strip the stats-related system block
-            json.get("policy")?.takeIf { it.isJsonObject }?.asJsonObject?.let { policy ->
-                policy.remove("system")
-                if (policy.entrySet().isEmpty()) {
-                    json.remove("policy")
-                }
-            }
-        }
+        // Dashboard accounting is independent of the notification-speed preference.
+        enableOutboundAccounting(json)
 
         if (!needTun()) {
             return JsonUtil.toJsonPretty(json)?.let { ConfigResult(true, configContext.guid, it) } ?: result
@@ -229,7 +208,6 @@ object CoreConfigManager {
         }
 
         applyObservability(v2rayConfig, balancerStrategies)
-        applySpeedDisabled(v2rayConfig)
         resolveOutboundDomainsToHosts(v2rayConfig)
 
         return v2rayConfig
@@ -724,14 +702,17 @@ object CoreConfigManager {
         }
     }
 
-    /**
-     * Remove speed-test runtime sections when the feature is disabled.
-     */
-    private fun applySpeedDisabled(v2rayConfig: V2rayConfig) {
-        if (MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) != true) {
-            v2rayConfig.stats = null
-            v2rayConfig.policy?.system = null
+    /** Merge runtime counters without removing custom policy levels or system options. */
+    internal fun enableOutboundAccounting(json: JsonObject) {
+        fun objectAt(parent: JsonObject, key: String): JsonObject {
+            val old = parent.get(key)
+            require(old == null || old.isJsonNull || old.isJsonObject) { "Invalid runtime accounting object: $key" }
+            return old?.takeIf { it.isJsonObject }?.asJsonObject ?: JsonObject().also { parent.add(key, it) }
         }
+        objectAt(json, "stats")
+        val system = objectAt(objectAt(json, "policy"), "system")
+        system.addProperty("statsOutboundUplink", true)
+        system.addProperty("statsOutboundDownlink", true)
     }
 
     /*

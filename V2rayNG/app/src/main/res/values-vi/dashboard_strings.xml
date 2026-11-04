@@ -2,7 +2,7 @@
   <string name="top_add">Add configuration</string>
   <string name="top_advanced">Configuration tools</string>
   <string name="top_all_servers">View all</string>
-  <string name="top_brand">iSpeedTopVPN</string>
+  <string name="top_brand">Special VPN</string>
   <string name="top_brand_sub">YOUR PERSONAL NETWORK</string>
   <string name="top_caption">Connection controls and actual usage</string>
   <string name="top_choose">Choose a server</string>
@@ -81,4 +81,8 @@
     <string name="top_day_value">Usage on %1$s: %2$s</string>
     <string name="top_update_short">Update Sub</string>
     <string name="top_update_subscription">Update Subscription</string>
+    <string name="top_exit_ip">IP đầu ra</string>
+    <string name="top_exit_ip_unavailable">Không khả dụng</string>
+    <string name="top_exit_ip_loading">Đang kiểm tra…</string>
+    <string name="top_exit_ip_refresh">Làm mới IP đầu ra</string>
 </resources>

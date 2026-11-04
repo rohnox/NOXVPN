@@ -22,6 +22,51 @@ import org.mockito.kotlin.*
 // Existing coroutines-test virtual Main APIs; remove opt-in when those dispatcher APIs stabilize.
 @OptIn(ExperimentalCoroutinesApi::class)
 class DashboardSubscriptionsTest {
+    @Test fun exitIpUsesDaemonPortAndClearsOnStop() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            assertEquals(ExitIpState.Off, f.vm.uiState.value.exitIp)
+            f.vm.onAction(MainAction.RefreshExitIp); runCurrent()
+            verify(f.source, never()).fetchExitIp(any())
+            whenever(f.source.fetchExitIp(10809)).thenReturn("203.0.113.7")
+            f.events.emit(MainServiceEvent.StateRunning); runCurrent()
+            f.events.emit(MainServiceEvent.Traffic(com.v2ray.ang.dto.SessionTraffic(httpProxyPort = 10809))); runCurrent()
+            assertEquals(ExitIpState.Address("203.0.113.7"), f.vm.uiState.value.exitIp)
+            f.events.emit(MainServiceEvent.StateNotRunning); runCurrent()
+            assertEquals(ExitIpState.Off, f.vm.uiState.value.exitIp)
+        }
+    }
+
+    @Test fun exitIpMissingPortAndLookupFailureAreUnavailableAndCanRetry() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent(); f.events.emit(MainServiceEvent.StateRunning); runCurrent()
+            f.events.emit(MainServiceEvent.Traffic(com.v2ray.ang.dto.SessionTraffic())); runCurrent()
+            assertEquals(ExitIpState.Unavailable, f.vm.uiState.value.exitIp)
+            verify(f.source, never()).fetchExitIp(any())
+            whenever(f.source.fetchExitIp(10809)).thenThrow(IllegalStateException("test failure"))
+            f.events.emit(MainServiceEvent.Traffic(com.v2ray.ang.dto.SessionTraffic(httpProxyPort = 10809))); runCurrent()
+            f.vm.onAction(MainAction.RefreshExitIp); runCurrent()
+            assertEquals(ExitIpState.Unavailable, f.vm.uiState.value.exitIp)
+            doReturn("203.0.113.8").whenever(f.source).fetchExitIp(10809)
+            f.vm.onAction(MainAction.RefreshExitIp); runCurrent()
+            assertEquals(ExitIpState.Address("203.0.113.8"), f.vm.uiState.value.exitIp)
+        }
+    }
+
+    @Test fun exitIpInFlightLookupIsCancelledWhenDaemonStops() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            val reply = kotlinx.coroutines.CompletableDeferred<String?>()
+            whenever(f.source.fetchExitIp(10809)).thenAnswer { null }
+            doSuspendableAnswer { reply.await() }.whenever(f.source).fetchExitIp(10809)
+            f.events.emit(MainServiceEvent.StateRunning); runCurrent()
+            f.events.emit(MainServiceEvent.Traffic(com.v2ray.ang.dto.SessionTraffic(httpProxyPort = 10809))); runCurrent()
+            assertEquals(ExitIpState.Loading, f.vm.uiState.value.exitIp)
+            f.events.emit(MainServiceEvent.StateStopSuccess); runCurrent()
+            reply.complete("203.0.113.9"); runCurrent()
+            assertEquals(ExitIpState.Off, f.vm.uiState.value.exitIp)
+        }
+    }
     private class Fixture(scheduler: TestCoroutineScheduler, initial: String? = null) : AutoCloseable {
         val dispatcher = StandardTestDispatcher(scheduler)
         val source = mock<MainDataSource>()

@@ -4,7 +4,7 @@ android {
     compileSdk 37
     defaultConfig {
         minSdk 24
-        buildConfigField 'String', 'APPLICATION_ID', '"com.ispeedtopvpn.app"'
+        buildConfigField 'String', 'APPLICATION_ID', '"com.specialvpn.app"'
         buildConfigField 'String', 'VERSION_NAME', '"1.17.0"'
         buildConfigField 'int', 'VERSION_CODE', '1130'
     }

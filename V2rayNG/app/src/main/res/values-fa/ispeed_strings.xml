@@ -4,5 +4,5 @@
  <string name="ispeed_duration">زمان نشست: %1$s</string>
  <string name="ispeed_data">↑ %1$s · ↓ %2$s</string>
  <string name="ispeed_ready">کانفیگ شما، اتصال شما</string>
- <string name="ispeed_attribution">iSpeedTopVPN APP — فورک تغییریافته v2rayNG 2.3.14. حقوق اثر اصلی متعلق به مشارکت‌کنندگان v2rayNG است. مجوز GNU GPL v3 و سورس همراه برنامه ارائه می‌شوند.</string>
+ <string name="ispeed_attribution">Special VPN — فورک تغییریافته v2rayNG 2.3.14. حقوق اثر اصلی متعلق به مشارکت‌کنندگان v2rayNG است. مجوز GNU GPL v3 و سورس همراه برنامه ارائه می‌شوند.</string>
  <string name="ispeed_unavailable">—</string></resources>

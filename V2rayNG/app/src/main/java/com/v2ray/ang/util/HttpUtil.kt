@@ -261,6 +261,56 @@ object HttpUtil {
         }
     }
 
+    /** Strictly uses the daemon's local HTTP proxy. Never retries over the device's direct network. */
+    suspend fun getExitIpViaProxy(httpPort: Int, username: String?, password: String?): String? =
+        kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+            if (httpPort !in 1..65535) {
+                continuation.resumeWith(Result.success(null))
+                return@suspendCancellableCoroutine
+            }
+            val call = exitIpClient(httpPort, username, password).newCall(Request.Builder()
+                .url("https://api64.ipify.org?format=json").header("Accept", "application/json").get().build())
+            continuation.invokeOnCancellation { call.cancel() }
+            call.enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, error: IOException) {
+                    if (continuation.isActive) continuation.resumeWith(Result.success(null))
+                }
+                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                    val address = try {
+                        response.use {
+                            if (!it.isSuccessful || !it.header("Content-Type").orEmpty().contains("json", true)) null
+                            else it.body.byteStream().use { input ->
+                                val buffer = ByteArray(257)
+                                var size = 0
+                                while (size < buffer.size) {
+                                    val count = input.read(buffer, size, buffer.size - size)
+                                    if (count < 0) break
+                                    size += count
+                                }
+                                if (size > 256) null else parseExitIpResponse(String(buffer, 0, size, Charsets.UTF_8))
+                            }
+                        }
+                    } catch (_: Exception) { null }
+                    if (continuation.isActive) continuation.resumeWith(Result.success(address))
+                }
+            })
+        }
+
+    internal fun exitIpClient(httpPort: Int, username: String?, password: String?): OkHttpClient {
+        require(httpPort in 1..65535)
+        return buildOkHttpClient(6000, httpPort, username, password, false).newBuilder()
+            .callTimeout(6000, TimeUnit.MILLISECONDS).retryOnConnectionFailure(false).build()
+    }
+
+    internal fun parseExitIpResponse(text: String): String? {
+        if (text.length > 256) return null
+        return try {
+            val json = com.google.gson.JsonParser.parseString(text).takeIf { it.isJsonObject }?.asJsonObject ?: return null
+            val value = json.get("ip")?.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isString }?.asString?.trim() ?: return null
+            value.takeIf { it.length <= 45 && it.none { c -> c == '%' || c == '[' || c == ']' } && Utils.isPureIpAddress(it) }
+        } catch (_: Exception) { null }
+    }
+
     private fun buildOkHttpClient(
         timeout: Int,
         httpPort: Int,

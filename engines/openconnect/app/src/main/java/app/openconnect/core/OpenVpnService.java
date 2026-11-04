@@ -408,7 +408,8 @@ public class OpenVpnService extends VpnService {
 				? new Notification.Builder(this, channelId)
 				: new Notification.Builder(this);
 
-		String title = getString(R.string.app);
+		String title = getString(mConnectionState == OpenConnectManagementThread.STATE_CONNECTED
+                ? R.string.ispeed_cisco_connected : R.string.ispeed_cisco_name);
 		String text;
 		if (inputNeeded) {
 			title = getString(R.string.notification_input_needed);
@@ -422,7 +423,7 @@ public class OpenVpnService extends VpnService {
 			text = getString(R.string.notification_vpn_active);
 		}
 
-		return builder.setSmallIcon(R.drawable.ic_stat_vpn)
+		return builder.setSmallIcon(R.drawable.ic_ispeed_notification)
 				.setContentTitle(title)
 				.setContentText(text)
 				.setContentIntent(getMainActivityIntent())

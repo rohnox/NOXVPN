@@ -94,7 +94,7 @@ public class StatusFragment extends Fragment {
 
 	private void styleWordmark() {
 		TextView wordmarkView = (TextView)mView.findViewById(R.id.dashboard_wordmark);
-		String wordmarkText = getString(R.string.app);
+		String wordmarkText = getString(R.string.ispeed_cisco_name);
 		SpannableString wordmark = new SpannableString(wordmarkText);
 		int accentStart = wordmarkText.lastIndexOf("Next");
 		if (accentStart >= 0) {

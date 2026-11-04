@@ -301,10 +301,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         else
             priority = PRIORITY_DEFAULT;
 
-        if (mProfile != null)
-            nbuilder.setContentTitle(getString(R.string.notification_title, mProfile.mName));
-        else
-            nbuilder.setContentTitle(getString(R.string.notification_title_notconnect));
+        nbuilder.setContentTitle(getString(status == LEVEL_CONNECTED
+                ? R.string.ispeed_openvpn_connected : R.string.ispeed_openvpn_name));
 
         nbuilder.setContentText(msg);
         nbuilder.setOnlyAlertOnce(true);
@@ -381,25 +379,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     }
 
     private int getIconByConnectionStatus(ConnectionStatus level) {
-        switch (level) {
-            case LEVEL_CONNECTED:
-                return R.drawable.ic_stat_vpn;
-            case LEVEL_AUTH_FAILED:
-            case LEVEL_NONETWORK:
-            case LEVEL_NOTCONNECTED:
-                return R.drawable.ic_stat_vpn_offline;
-            case LEVEL_CONNECTING_NO_SERVER_REPLY_YET:
-            case LEVEL_WAITING_FOR_USER_INPUT:
-                return R.drawable.ic_stat_vpn_outline;
-            case LEVEL_CONNECTING_SERVER_REPLIED:
-                return R.drawable.ic_stat_vpn_empty_halo;
-            case LEVEL_VPNPAUSED:
-                return android.R.drawable.ic_media_pause;
-            case UNKNOWN_LEVEL:
-            default:
-                return R.drawable.ic_stat_vpn;
-
-        }
+        return R.drawable.ic_ispeed_notification;
     }
 
     private void jbNotificationExtras(int priority,

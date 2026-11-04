@@ -7,6 +7,13 @@ import com.v2ray.ang.dto.LocateTarget
 /** Locale-neutral state formatted only when it reaches the main UI. */
 enum class SubscriptionRefreshNotice { Success, Partial, Failed }
 
+sealed interface ExitIpState {
+    data object Off : ExitIpState
+    data object Loading : ExitIpState
+    data object Unavailable : ExitIpState
+    data class Address(val value: String) : ExitIpState
+}
+
 sealed interface MainStatus {
     data object Disconnected : MainStatus
     data object Connected : MainStatus
@@ -28,6 +35,7 @@ data class MainUiState(
     val dashboardSubscriptionId: String = "",
     val dashboardMessage: Int? = null,
     val isRunning: Boolean = false,
+    val exitIp: ExitIpState = ExitIpState.Off,
     val sessionTraffic: com.v2ray.ang.dto.SessionTraffic? = null,
     val trafficHistory: List<com.v2ray.ang.dto.SessionTraffic> = emptyList(),
     val isAutoSelecting: Boolean = false,
@@ -49,6 +57,7 @@ data class MainUiState(
 sealed interface MainAction {
     data object Initialize : MainAction
     data object AppEntered : MainAction
+    data object RefreshExitIp : MainAction
     data object RefreshGroups : MainAction
     data object ToggleService : MainAction
     data object AutoConnect : MainAction

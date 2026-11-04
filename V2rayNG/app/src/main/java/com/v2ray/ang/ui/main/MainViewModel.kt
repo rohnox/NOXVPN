@@ -76,6 +76,9 @@ class MainViewModel(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
     private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
+    private var exitIpJob: Job? = null
+    private val exitIpGeneration = AtomicLong()
+    @Volatile private var exitIpPort = 0
     private var subscriptionNoticeJob: Job? = null
     private val dashboardChoiceMutex = Mutex()
     private var dashboardSelectionJob: Job? = null
@@ -151,11 +154,18 @@ class MainViewModel(
     private fun handleServiceEvent(event: MainServiceEvent) {
         when (event) {
             is MainServiceEvent.Traffic -> {
-                _uiState.update { it.withTraffic(event.snapshot) }
+                if (_uiState.value.isRunning) {
+                    if (event.snapshot.elapsedSeconds < (_uiState.value.sessionTraffic?.elapsedSeconds ?: 0) ||
+                        (event.snapshot.httpProxyPort in 1..65535 && event.snapshot.httpProxyPort != exitIpPort)) resetExitIp()
+                    exitIpPort = event.snapshot.httpProxyPort
+                    _uiState.update { it.withTraffic(event.snapshot) }
+                    if (_uiState.value.exitIp == ExitIpState.Off) refreshExitIp()
+                }
             }
             MainServiceEvent.StateRunning -> updateRunningState(true, clearTestingText = false)
             MainServiceEvent.StateNotRunning -> updateRunningState(false, clearTestingText = false)
             MainServiceEvent.StateStartSuccess -> {
+                resetExitIp()
                 toastSuccess(R.string.toast_services_success)
                 updateRunningState(true)
             }
@@ -320,6 +330,7 @@ class MainViewModel(
                     importConfigViaSub("", quiet = true)
                 }
             }
+            MainAction.RefreshExitIp -> refreshExitIp()
             MainAction.RefreshGroups -> setupGroupTab(forceRefresh = true)
             MainAction.TestAllServers -> testAllRealPing(true)
             MainAction.TestRealAllServers -> testAllRealPing()
@@ -1238,8 +1249,41 @@ class MainViewModel(
         _uiState.update { it.copy(locateTarget = null) }
     }
 
+    private fun resetExitIp() {
+        exitIpGeneration.incrementAndGet()
+        exitIpJob?.cancel()
+        exitIpPort = 0
+        _uiState.update { it.copy(exitIp = ExitIpState.Off) }
+    }
+
+    private fun refreshExitIp() {
+        if (!_uiState.value.isRunning) return
+        val port = exitIpPort
+        val generation = exitIpGeneration.incrementAndGet()
+        exitIpJob?.cancel()
+        if (port !in 1..65535) {
+            _uiState.update { it.copy(exitIp = ExitIpState.Unavailable) }
+            return
+        }
+        _uiState.update { it.copy(exitIp = ExitIpState.Loading) }
+        exitIpJob = viewModelScope.launch(ioDispatcher) {
+            val value = try { dataSource.fetchExitIp(port) }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (error: Exception) {
+                    LogUtil.e(AppConfig.TAG, "Exit IP mode=proxy phase=connected operation=lookup", IllegalStateException(error.javaClass.simpleName))
+                    null
+                }
+            currentCoroutineContext().ensureActive()
+            if (exitIpGeneration.get() == generation && _uiState.value.isRunning) {
+                if (value == null) LogUtil.w(AppConfig.TAG, "Exit IP mode=proxy phase=connected operation=lookup unavailable")
+                _uiState.update { it.copy(exitIp = value?.let { ExitIpState.Address(it) } ?: ExitIpState.Unavailable) }
+            }
+        }
+    }
+
     // ---------- Running state ----------
     private fun updateRunningState(running: Boolean, clearTestingText: Boolean = true) {
+        if (!running) resetExitIp()
         if (!running || clearTestingText) testRequests.invalidateCurrent()
         _uiState.update { state ->
             state.copy(
@@ -1254,6 +1298,8 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        exitIpGeneration.incrementAndGet()
+        exitIpJob?.cancel()
         cancelAutoConnect()
         selectionJob?.cancel()
         setupGroupJob?.cancel()

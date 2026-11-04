@@ -115,6 +115,10 @@ class MainRepository(
         MmkvManager.encodeSettings(AppConfig.CACHE_SUBSCRIPTION_ID, id)
     }
 
+    override suspend fun fetchExitIp(httpPort: Int): String? = com.v2ray.ang.util.HttpUtil.getExitIpViaProxy(
+        httpPort, SettingsManager.getSocksUsername(), SettingsManager.getSocksPassword()
+    )
+
     override fun getSelectServer(): String? = MmkvManager.getSelectServer()
 
     override fun getDashboardSubscriptionId(): String? = MmkvManager.decodeSettingsString(AppConfig.CACHE_DASHBOARD_SUBSCRIPTION_ID)

@@ -21,7 +21,7 @@ class OpenVpnStatusClientTest {
     @Test fun directDaemonSnapshotAndSubsequentDisconnectReachHostWithoutUiCache() {
         val app = mock<Context>()
         whenever(app.applicationContext).thenReturn(app)
-        whenever(app.packageName).thenReturn("com.ispeedtopvpn.app")
+        whenever(app.packageName).thenReturn("com.specialvpn.app")
         var link: ServiceConnection? = null
         doAnswer { link = it.getArgument(1); true }.whenever(app).bindService(any<Intent>(), any<ServiceConnection>(), eq(Context.BIND_AUTO_CREATE))
         val remote = mock<IServiceStatus>()

@@ -18,6 +18,8 @@ interface MainDataSource : Closeable {
     fun setDashboardSubscriptionId(id: String)
     fun removeSubscription(id: String)
 
+    suspend fun fetchExitIp(httpPort: Int): String?
+
     fun getSelectServer(): String?
     fun setSelectServer(guid: String)
 

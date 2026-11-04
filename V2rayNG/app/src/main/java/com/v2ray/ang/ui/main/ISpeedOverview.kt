@@ -70,7 +70,7 @@ internal fun ISpeedOverview(
 ) {
     val plan = dashboardPlan(state)
     LazyColumn(modifier, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item { ConnectionHero(state, status, onToggle, onServers) }
+        item { ConnectionHero(state, status, onToggle, onServers) { onAction(MainAction.RefreshExitIp) } }
         item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
             if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id))
@@ -112,7 +112,8 @@ private fun AutoConnectPanel(state: MainUiState, onAction: (MainAction) -> Unit)
 }
 
 @Composable
-private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> Unit, onServers: () -> Unit) {
+private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> Unit, onServers: () -> Unit, onRefreshExitIp: () -> Unit) {
+    val sessionSeconds = rememberSessionSeconds(state.sessionTraffic, state.isRunning)
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
         Box(Modifier.background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.colorScheme.surfaceContainerLow)))) {
@@ -142,9 +143,21 @@ private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> U
                         Text(stringResource(if (state.isRunning) R.string.top_disconnect else if (state.selectedGuid == null) R.string.top_add else R.string.top_connect), style = MaterialTheme.typography.labelMedium)
                     }
                 }
+                if (state.isRunning) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.top_exit_ip), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    androidx.compose.foundation.text.selection.SelectionContainer(Modifier.weight(1f)) {
+                        Text(when (val value = state.exitIp) {
+                            is ExitIpState.Address -> value.value
+                            ExitIpState.Unavailable -> stringResource(R.string.top_exit_ip_unavailable)
+                            else -> stringResource(R.string.top_exit_ip_loading)
+                        }, style = MaterialTheme.typography.labelMedium.copy(textDirection = TextDirection.Ltr), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    }
+                    if (state.exitIp == ExitIpState.Loading) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+                    else IconButton(onRefreshExitIp) { Icon(painterResource(R.drawable.ic_refresh_24dp), stringResource(R.string.top_exit_ip_refresh), Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary) }
+                }
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .4f))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    HeroMetric(stringResource(R.string.top_session), state.sessionTraffic?.let { formatSessionDuration(it.elapsedSeconds) } ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
+                    HeroMetric(stringResource(R.string.top_session), sessionSeconds?.let { formatSessionDuration(it) } ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
                     HeroMetric(stringResource(R.string.top_upload), state.sessionTraffic?.takeIf { it.available }?.uploaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
                     HeroMetric(stringResource(R.string.top_download), state.sessionTraffic?.takeIf { it.available }?.downloaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
                 }
@@ -159,7 +172,7 @@ private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> U
 @Composable
 private fun HeroMetric(label: String, value: String, modifier: Modifier) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, minLines = 2, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Text(value, style = MaterialTheme.typography.labelLarge.copy(textDirection = TextDirection.Ltr), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }

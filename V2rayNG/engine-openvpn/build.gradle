@@ -9,7 +9,7 @@ android {
         minSdk 24
         buildConfigField 'boolean', 'openvpn3', 'false'
         buildConfigField 'String', 'FLAVOR', '"skeleton"'
-        buildConfigField 'String', 'APPLICATION_ID', '"com.ispeedtopvpn.app"'
+        buildConfigField 'String', 'APPLICATION_ID', '"com.specialvpn.app"'
         buildConfigField 'String', 'VERSION_NAME', '"0.7.69"'
         buildConfigField 'int', 'VERSION_CODE', '225'
     }

@@ -30,4 +30,22 @@ class SessionTrafficTest {
         assertEquals(0L, state.elapsedSeconds)
         assertFalse(state.available)
     }
+    @Test fun monotonicPresentationAdvancesEachSecondWithoutInventingBytes() {
+        val sample = SessionTraffic(3, 40, 90, true, 10000)
+        assertEquals(3L, sample.elapsedAt(10000))
+        assertEquals(4L, sample.elapsedAt(11000))
+        assertEquals(5L, sample.elapsedAt(12000))
+        assertEquals(6L, sample.elapsedAt(13000))
+        assertEquals(40L, sample.uploaded)
+        assertEquals(90L, sample.downloaded)
+        assertEquals(3, sample.elapsedAt(9000))
+    }
+    @Test fun legacySnapshotAndMissingCountersStillHaveAnHonestClock() {
+        assertEquals(7L, SessionTraffic(7).elapsedAt(99999))
+        val unavailable = SessionTraffic(7, available = false, sampledAtElapsedMillis = 1000)
+        assertEquals(8L, unavailable.elapsedAt(2000))
+        assertFalse(unavailable.available)
+        assertEquals(Long.MAX_VALUE, SessionTraffic(Long.MAX_VALUE, sampledAtElapsedMillis = 1).elapsedAt(5000))
+    }
+
 }

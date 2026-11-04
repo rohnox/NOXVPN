@@ -107,7 +107,7 @@ public final class GitHubUpdateChecker {
 
 	public static void check(Activity activity, boolean manual, Listener listener) {
         // This library is shipped inside the host APK, not as the upstream standalone app.
-        if ("com.ispeedtopvpn.app".equals(BuildConfig.APPLICATION_ID)) {
+        if ("com.specialvpn.app".equals(BuildConfig.APPLICATION_ID)) {
             if (manual) Toast.makeText(activity, R.string.embedded_host_updates, Toast.LENGTH_LONG).show();
             if (listener != null) listener.onFinished(null, new IOException(activity.getString(R.string.embedded_host_updates)));
             return;

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,7 +16,7 @@
     <activity android:name="app.openconnect.TokenImportActivity" android:exported="false" android:theme="@style/Theme.OConnect">
     </activity>
     <activity android:name="app.openconnect.FileSelect" android:exported="false" android:theme="@style/Theme.OConnect" />
-    <activity android:name="app.openconnect.MainActivity" android:exported="false" android:uiOptions="splitActionBarWhenNarrow" tools:ignore="ExportedActivity" android:theme="@style/Theme.OConnect">
+    <activity android:label="@string/ispeed_cisco_name" android:name="app.openconnect.MainActivity" android:exported="false" android:uiOptions="splitActionBarWhenNarrow" tools:ignore="ExportedActivity" android:theme="@style/Theme.OConnect">
     </activity>
     <service android:name="app.openconnect.core.OpenVpnService" android:exported="false" android:foregroundServiceType="systemExempted" android:permission="android.permission.BIND_VPN_SERVICE" tools:ignore="ForegroundServicePermission">
       <intent-filter>
@@ -24,7 +24,7 @@
       </intent-filter>
       <meta-data android:name="android.net.VpnService.SUPPORTS_ALWAYS_ON" android:value="false" />
     </service>
-    <service android:name="app.openconnect.core.QuickSettingsTileService" android:exported="false" android:icon="@drawable/ic_stat_vpn" android:label="@string/quick_settings_label" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+    <service android:name="app.openconnect.core.QuickSettingsTileService" android:exported="false" android:icon="@drawable/ic_ispeed_notification" android:label="@string/quick_settings_label" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
       <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="true" />
     </service>
     <!--

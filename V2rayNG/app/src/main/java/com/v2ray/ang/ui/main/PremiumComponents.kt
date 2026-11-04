@@ -59,9 +59,12 @@ internal fun DashboardHeader(onRefresh: (() -> Unit)?) {
         Row(Modifier.fillMaxWidth().heightIn(min = 62.dp).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Image(painterResource(R.drawable.ispeed_logo), null, Modifier.size(32.dp))
             Text(stringResource(R.string.top_brand), Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontStyle = FontStyle.Italic, fontWeight = FontWeight.Bold, maxLines = 1)
-            if (onRefresh != null) Button(onClick = onRefresh, modifier = Modifier.heightIn(min = 48.dp),
-                shape = RoundedCornerShape(14.dp), contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary)) {
+            if (onRefresh != null) OutlinedButton(onClick = onRefresh, modifier = Modifier.heightIn(min = 40.dp),
+                shape = CircleShape, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .55f)),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .18f), contentColor = MaterialTheme.colorScheme.primary)) {
+                Icon(painterResource(R.drawable.ic_refresh_24dp), null, Modifier.size(16.dp))
+                Spacer(Modifier.width(6.dp))
                 Text(stringResource(R.string.top_update_subscription), style = MaterialTheme.typography.labelSmall)
             }
         }

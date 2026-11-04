@@ -37,7 +37,6 @@ object NotificationManager {
     private const val NOTIFICATION_PENDING_INTENT_CONTENT = 0
     private const val NOTIFICATION_PENDING_INTENT_STOP_V2RAY = 1
     private const val NOTIFICATION_PENDING_INTENT_RESTART_V2RAY = 2
-    private const val NOTIFICATION_ICON_THRESHOLD = 3000
     private const val QUERY_INTERVAL_MS = 3000L
 
     // This owner already samples and resets core counters. UI must never query them separately.
@@ -60,16 +59,18 @@ object NotificationManager {
 
         var lastZeroSpeed = false
 
-        session = SessionTraffic()
         sessionStartedAt = SystemClock.elapsedRealtime()
+        session = SessionTraffic(sampledAtElapsedMillis = sessionStartedAt)
         speedNotificationJob = samplingScope.launch {
+            session = session.copy(httpProxyPort = SettingsManager.getHttpPort())
+            getService()?.let { MessageHelper.sendMsg2UI(it, AppConfig.MSG_SESSION_TRAFFIC, session) }
             while (isActive) {
                 try {
                     lastZeroSpeed = updateSpeedNotificationOnce(lastZeroSpeed)
                 } catch (e: kotlinx.coroutines.CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    LogUtil.e(AppConfig.TAG, "Daemon session sampling failed; outbound counters unavailable", e)
+                    LogUtil.e(AppConfig.TAG, "Session sampling mode=daemon phase=running operation=query-outbound-counters", IllegalStateException(e.javaClass.simpleName))
                     getService()?.let {
                         MessageHelper.sendMsg2UI(it, AppConfig.MSG_SESSION_TRAFFIC, session.copy(available = false))
                     }
@@ -114,7 +115,7 @@ object NotificationManager {
             }
 
         mBuilder = NotificationCompat.Builder(service, channelId)
-            .setSmallIcon(R.drawable.ic_stat_name)
+            .setSmallIcon(R.drawable.ic_ispeed_notification)
             .setContentTitle(currentConfig?.remarks ?: service.getString(R.string.app_name))
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
@@ -167,7 +168,7 @@ object NotificationManager {
     fun stopSpeedNotification() {
         // Screen-off suppresses notification updates but keeps session accounting intact.
         showSpeed = false
-        updateNotification("", 0, 0)
+        updateNotification("")
     }
 
     /**
@@ -192,20 +193,12 @@ object NotificationManager {
     }
 
     /**
-     * Updates the notification with the given content text and traffic data.
+     * Updates notification text while retaining the app-owned monochrome icon.
      * @param contentText The content text.
-     * @param proxyTraffic The proxy traffic.
-     * @param directTraffic The direct traffic.
      */
-    private fun updateNotification(contentText: String?, proxyTraffic: Long, directTraffic: Long) {
+    private fun updateNotification(contentText: String?) {
         if (mBuilder != null) {
-            if (proxyTraffic < NOTIFICATION_ICON_THRESHOLD && directTraffic < NOTIFICATION_ICON_THRESHOLD) {
-                mBuilder?.setSmallIcon(R.drawable.ic_stat_name)
-            } else if (proxyTraffic > directTraffic) {
-                mBuilder?.setSmallIcon(R.drawable.ic_stat_proxy)
-            } else {
-                mBuilder?.setSmallIcon(R.drawable.ic_stat_direct)
-            }
+            mBuilder?.setSmallIcon(R.drawable.ic_ispeed_notification)
             mBuilder?.setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
             mBuilder?.setContentText(contentText)
             getNotificationManager()?.notify(NOTIFICATION_ID, mBuilder?.build())
@@ -264,8 +257,8 @@ object NotificationManager {
         var directUplink = 0L
         var directDownlink = 0L
 
-        val enabled = MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) == true
-        val stats = if (enabled) CoreServiceManager.queryAllOutboundTrafficStats() else emptyList()
+        val speedInNotification = MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) == true
+        val stats = CoreServiceManager.queryAllOutboundTrafficStats()
         stats.forEach { stat ->
             when {
                 stat.tag == AppConfig.TAG_DIRECT -> {
@@ -286,17 +279,19 @@ object NotificationManager {
         }
 
         kotlin.coroutines.coroutineContext.ensureActive()
+        val sampledAt = SystemClock.elapsedRealtime()
         session = session.add(
             proxyUplink + directUplink,
             proxyDownlink + directDownlink,
-            (SystemClock.elapsedRealtime() - sessionStartedAt) / 1000,
-            enabled,
+            (sampledAt - sessionStartedAt) / 1000,
+            true,
+            sampledAt,
         )
         getService()?.let { MessageHelper.sendMsg2UI(it, AppConfig.MSG_SESSION_TRAFFIC, session) }
         val proxyTotal = proxyUplink + proxyDownlink
         val directTotal = directUplink + directDownlink
         val zeroSpeed = proxyTotal + directTotal == 0L
-        if (enabled && showSpeed && (!zeroSpeed || !lastZeroSpeed)) {
+        if (speedInNotification && showSpeed && (!zeroSpeed || !lastZeroSpeed)) {
             val text = StringBuilder()
             appendSpeedString(
                 text, AppConfig.TAG_PROXY,
@@ -309,7 +304,7 @@ object NotificationManager {
                 directUplink / sinceLastQueryInSeconds,
                 directDownlink / sinceLastQueryInSeconds
             )
-            updateNotification(text.toString(), proxyTotal, directTotal)
+            updateNotification(text.toString())
         }
         lastQueryTime = queryTime
         return zeroSpeed
