@@ -17,46 +17,36 @@ object PasarGuardUsage {
     }
 
     fun merge(previous: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?, current: com.v2ray.ang.dto.entities.SubscriptionUsageInfo,
-              sourceUrl: String, history: List<SubscriptionUsageSample>?, nowSeconds: Long, historyZone: String = "UTC"): com.v2ray.ang.dto.entities.SubscriptionUsageInfo {
+              sourceUrl: String, history: List<SubscriptionUsageSample>?, nowSeconds: Long): com.v2ray.ang.dto.entities.SubscriptionUsageInfo {
         val key = sourceKey(sourceUrl)
         val matches = key != null && key == previous?.providerUsageSource
         return current.copy(providerUsage = history ?: previous?.providerUsage?.takeIf { matches },
             providerUsageUpdatedAt = if (history != null) nowSeconds else previous?.providerUsageUpdatedAt?.takeIf { matches },
-            providerUsageSource = key,
-            providerUsageZone = if (history != null) historyZone else previous?.providerUsageZone?.takeIf { matches })
+            providerUsageSource = key)
     }
 
-    fun endpoint(subscriptionUrl: String, nowSeconds: Long, zone: java.time.ZoneId = java.time.ZoneId.systemDefault()): String? {
+    fun endpoint(subscriptionUrl: String, nowSeconds: Long): String? {
         val url = subscriptionUrl.toHttpUrlOrNull() ?: return null
         val parts = url.pathSegments.filter { it.isNotEmpty() }
         if (!url.isHttps || url.username.isNotEmpty() || url.password.isNotEmpty() || parts.size < 2 || parts[parts.lastIndex - 1] != "sub") return null
         return url.newBuilder().encodedPath(url.encodedPath.trimEnd('/') + "/usage")
-            .removeAllQueryParameters("start").removeAllQueryParameters("end").removeAllQueryParameters("period").fragment(null)
-            .addQueryParameter("start", periodStart(nowSeconds, zone).toString())
-            .addQueryParameter("end", Instant.ofEpochSecond(nowSeconds.coerceAtLeast(0)).atOffset(offset(nowSeconds, zone)).toString())
+            .removeAllQueryParameters("start").removeAllQueryParameters("period").fragment(null)
+            .addQueryParameter("start", Instant.ofEpochSecond(nowSeconds.coerceAtLeast(0) - 30 * 86400L).toString())
             .addQueryParameter("period", "day").build().toString()
     }
 
-    fun offset(nowSeconds: Long, zone: java.time.ZoneId): java.time.ZoneOffset = zone.rules.getOffset(Instant.ofEpochSecond(nowSeconds.coerceAtLeast(0)))
-
-    fun periodStart(nowSeconds: Long, zone: java.time.ZoneId): OffsetDateTime {
-        val offset = offset(nowSeconds, zone)
-        return Instant.ofEpochSecond(nowSeconds.coerceAtLeast(0)).atOffset(offset).toLocalDate().minusDays(29).atStartOfDay().atOffset(offset)
-    }
-
     /** The page selects one aggregate series; never add aggregate and per-node rows together. */
-    fun parse(json: String, nowSeconds: Long, expectedOffset: java.time.ZoneOffset? = null): List<SubscriptionUsageSample>? = runCatching {
+    fun parse(json: String, nowSeconds: Long): List<SubscriptionUsageSample>? = runCatching {
         require(json.length <= 1_048_576)
         val root = JsonParser.parseString(json).asJsonObject
         require(root["period"]?.asString == "day")
         val stats = root["stats"]?.asJsonObject ?: return null
         val selected = stats["-1"] ?: stats.entrySet().firstOrNull { it.value.isJsonArray }?.value ?: return null
         require(selected.isJsonArray && selected.asJsonArray.size() <= 32)
-        val minimum = if (expectedOffset != null) periodStart(nowSeconds, expectedOffset).toEpochSecond() else (nowSeconds.coerceAtLeast(0) - 30 * 86400L) / 86400 * 86400
+        val minimum = (nowSeconds.coerceAtLeast(0) - 30 * 86400L) / 86400 * 86400
         val rows = selected.asJsonArray.map { element ->
             val row = element.asJsonObject
             val timestamp = OffsetDateTime.parse(row["period_start"].asString).toEpochSecond()
-            if (expectedOffset != null) require(Instant.ofEpochSecond(timestamp).atOffset(expectedOffset).toLocalTime() == java.time.LocalTime.MIDNIGHT)
             val bytes = row["total_traffic"].asBigDecimal.longValueExact()
             require(bytes >= 0 && timestamp in minimum..nowSeconds)
             SubscriptionUsageSample(timestamp, bytes)
@@ -66,9 +56,9 @@ object PasarGuardUsage {
         rows
     }.getOrNull()
 
-    fun fetch(request: UrlContentRequest, nowSeconds: Long, zone: java.time.ZoneId = java.time.ZoneId.systemDefault()): List<SubscriptionUsageSample>? {
-        val target = endpoint(request.url.orEmpty(), nowSeconds, zone) ?: return null
-        return HttpUtil.getBoundedSubscriptionJson(request.copy(url = target, timeout = 8000))?.let { parse(it, nowSeconds, offset(nowSeconds, zone)) }
+    fun fetch(request: UrlContentRequest, nowSeconds: Long): List<SubscriptionUsageSample>? {
+        val target = endpoint(request.url.orEmpty(), nowSeconds) ?: return null
+        return HttpUtil.getBoundedSubscriptionJson(request.copy(url = target, timeout = 8000))?.let { parse(it, nowSeconds) }
     }
 
     fun total(points: List<SubscriptionUsageSample>): Long? = runCatching {

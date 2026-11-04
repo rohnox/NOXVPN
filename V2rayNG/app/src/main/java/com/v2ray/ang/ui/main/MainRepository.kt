@@ -126,19 +126,18 @@ class MainRepository(
         val item = MmkvManager.decodeSubscription(id) ?: return null
         if (!item.enabled) return null
         val now = System.currentTimeMillis() / 1000
-        val zone = java.time.ZoneId.systemDefault()
         val request = com.v2ray.ang.dto.UrlContentRequest(url = item.url, httpPort = httpPort,
             proxyUsername = SettingsManager.getSocksUsername(), proxyPassword = SettingsManager.getSocksPassword(),
             userAgent = item.userAgent, requestHeaders = item.requestHeaders)
-        val history = com.v2ray.ang.handler.PasarGuardUsage.fetch(request, now, zone)
-            ?: if (httpPort != 0) com.v2ray.ang.handler.PasarGuardUsage.fetch(request.copy(httpPort = 0), now, zone) else null
+        val history = com.v2ray.ang.handler.PasarGuardUsage.fetch(request, now)
+            ?: if (httpPort != 0) com.v2ray.ang.handler.PasarGuardUsage.fetch(request.copy(httpPort = 0), now) else null
         if (history == null) return null
         val latest = MmkvManager.decodeSubscription(id) ?: return null
         if (latest.url != item.url || !latest.enabled) return null
         // Presentation refresh only: never rewrite configs, account fields, or another editor's record.
         return com.v2ray.ang.handler.PasarGuardUsage.merge(latest.usageInfo,
             latest.usageInfo ?: com.v2ray.ang.dto.entities.SubscriptionUsageInfo(trafficAvailable = false, quotaAvailable = false),
-            item.url, history, now, com.v2ray.ang.handler.PasarGuardUsage.offset(now, zone).id)
+            item.url, history, now)
     }
 
     override fun copySubscriptionLink(url: String) = Utils.setClipboard(app, url)
