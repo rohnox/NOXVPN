@@ -46,10 +46,11 @@ class PremiumVisualTest {
     private val commands = mutableListOf<MainAction>()
 
     private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null, plans: Boolean = false, exitIp: ExitIpState = ExitIpState.Address("198.51.100.24")) {
+        val visualIp = if (exitIp is ExitIpState.Address && exitIp.countryCode != null) exitIp.copy(flagBitmap = kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) { com.v2ray.ang.util.CountryFlagImages.load(org.robolectric.RuntimeEnvironment.getApplication(), exitIp.countryCode.orEmpty()) }) else exitIp
         val history = (0L..30L).map { t -> SessionTraffic(t, t * 10240L, t * t * 4096L, true) }
         val quota = SubscriptionUsageInfo(title = "iSpecialVPN", expire = System.currentTimeMillis() / 1000 + 7 * 86400, upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true, providerUsageUpdatedAt = System.currentTimeMillis() / 1000, providerUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (3L - day) * 104857600L) }, dailyUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (14L - day) shl 30) })
         val state = if (populated) MainUiState(groups = if (plans) listOf(GroupMapItem("plan", "iSpecialVPN", quota), GroupMapItem("family", "Family plan", quota.copy(title = "Family plan", upload = 1L shl 30, download = 6L shl 30, total = 30L shl 30, expire = System.currentTimeMillis() / 1000 + 18 * 86400)), GroupMapItem("work", "Work plan", quota.copy(title = "Work plan", upload = 1L shl 30, download = 3L shl 30, total = 20L shl 30, expire = System.currentTimeMillis() / 1000 + 9 * 86400))) else listOf(GroupMapItem("plan", "import sub", quota)), dashboardSubscriptionId = if (plans) "family" else "", selectedGuid = "a", selectedSubscriptionId = "plan",
-            selectedServerName = "Germany · Frankfurt", isRunning = true, exitIp = exitIp, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
+            selectedServerName = "Germany · Frankfurt", isRunning = true, exitIp = visualIp, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
         val rows = if (populated) listOf("Germany · Frankfurt", "Turkey · Istanbul").mapIndexed { i, name ->
             ServerRowUiModel(if (i == 0) "a" else "b", ProfileItem(configType = EConfigType.VLESS), name, "", "VLESS / TLS", 34L + i * 15L, "")
         } else emptyList()
@@ -177,6 +178,7 @@ class PremiumVisualTest {
     }
     @Test fun deleteSubscriptionFromSameTabRequiresConfirmation() {
         render(plans = true, populated = true)
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasContentDescription("Delete subscription Family plan"))
         compose.onAllNodesWithContentDescription("Delete subscription Family plan").onFirst().performClick()
         compose.onNodeWithText("Delete subscription “Family plan” and its configurations?").assertIsDisplayed()
         capture("subscription-delete-confirmation")
@@ -210,7 +212,7 @@ class PremiumVisualTest {
     @Test fun addSubscriptionUsesImportDialogAndTrimsInput() {
         render(plans = true, populated = true)
         compose.onNodeWithText("Manage").assertDoesNotExist()
-        compose.onNodeWithText("Update Sub").assertIsDisplayed()
+        compose.onNodeWithText("Update Sub").assertDoesNotExist()
         compose.onNodeWithText("Add subscription").performClick()
         compose.onNodeWithText("Add configuration").assertIsDisplayed()
         compose.onNodeWithText("Import").assertIsNotEnabled()
@@ -328,14 +330,14 @@ class PremiumVisualTest {
 
     @Test fun subscriptionEditAndShareUseTheChosenId() {
         render(plans = true, populated = true)
-        compose.onAllNodesWithContentDescription("Edit").onFirst().performClick()
-        org.junit.Assert.assertEquals(MainAction.EditSubscription("family"), commands.last())
-        compose.onAllNodesWithContentDescription("Share subscription link").onFirst().performClick()
+        compose.onAllNodesWithContentDescription("Edit").onFirst().performScrollTo().performClick()
+        org.junit.Assert.assertEquals(MainAction.EditSubscription("plan"), commands.last())
+        compose.onAllNodesWithContentDescription("Share subscription link").onFirst().performScrollTo().performClick()
         compose.onNodeWithText("QR code").performClick()
-        org.junit.Assert.assertEquals(MainAction.ShareSubscription("family", true), commands.last())
-        compose.onAllNodesWithContentDescription("Share subscription link").onFirst().performClick()
+        org.junit.Assert.assertEquals(MainAction.ShareSubscription("plan", true), commands.last())
+        compose.onAllNodesWithContentDescription("Share subscription link").onFirst().performScrollTo().performClick()
         compose.onNodeWithText("Export to clipboard").performClick()
-        org.junit.Assert.assertEquals(MainAction.ShareSubscription("family", false), commands.last())
+        org.junit.Assert.assertEquals(MainAction.ShareSubscription("plan", false), commands.last())
         capture("subscriptions-edit-share")
     }
 

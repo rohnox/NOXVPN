@@ -1,5 +1,8 @@
 package com.v2ray.ang.ui.main
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.BorderStroke
@@ -119,14 +122,10 @@ private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> U
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
         Box(Modifier.background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.colorScheme.surfaceContainerLow)))) {
-            val flag = if (state.isRunning) countryFlag((state.exitIp as? ExitIpState.Address)?.countryCode) else ""
-            if (flag.isNotEmpty()) {
+            val flag = if (state.isRunning) (state.exitIp as? ExitIpState.Address)?.flagBitmap else null
+            if (flag != null) {
                 val light = MaterialTheme.colorScheme.surface.luminance() > .5f
-                BoxWithConstraints(Modifier.matchParentSize().clearAndSetSemantics {}) {
-                    val flagSize = with(androidx.compose.ui.platform.LocalDensity.current) { (maxWidth * .9f).toSp() }
-                    Text(flag, fontSize = flagSize, lineHeight = flagSize, maxLines = 1, softWrap = false, overflow = TextOverflow.Visible,
-                        modifier = Modifier.align(Alignment.Center).wrapContentSize(unbounded = true).alpha(if (light) .23f else .38f))
-                }
+                Image(flag.asImageBitmap(), null, Modifier.matchParentSize().alpha(if (light) .23f else .38f), contentScale = ContentScale.Crop)
                 Box(Modifier.matchParentSize().background(Brush.verticalGradient(listOf(
                     MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (light) .25f else .12f),
                     MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = if (light) .5f else .65f)))))

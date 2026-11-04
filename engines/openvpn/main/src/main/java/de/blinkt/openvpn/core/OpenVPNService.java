@@ -134,7 +134,14 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
         @Override
         public boolean stopVPN(boolean replaceConnection) throws RemoteException {
-            return OpenVPNService.this.stopVPN(replaceConnection);
+            // Binder callers include DisconnectVPN's UI thread. Queue native/socket work on
+            // the service-owned command thread; daemon status remains the stop authority.
+            Handler commands = mCommandHandler;
+            return commands != null && commands.post(() -> {
+                try {
+                    if (!OpenVPNService.this.stopVPN(replaceConnection)) forceStopOpenVpnProcess();
+                } catch (RemoteException error) { VpnStatus.logException(error); }
+            });
         }
 
         @Override

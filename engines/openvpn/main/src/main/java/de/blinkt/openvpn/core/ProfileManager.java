@@ -50,7 +50,9 @@ public class ProfileManager {
 
         if (instance == null)
             return null;
-        return instance.profiles.get(key);
+        synchronized (instance) {
+            return instance.profiles.get(key);
+        }
     }
 
     private synchronized static void checkInstance(Context context) {
@@ -193,19 +195,11 @@ public class ProfileManager {
     public static VpnProfile get(Context context, String profileUUID, int version, int tries) {
         checkInstance(context);
         VpnProfile profile = get(profileUUID);
-        int tried = 0;
-        while ((profile == null || profile.mVersion < version) && (tried++ < tries)) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ignored) {
-            }
-            instance.loadVPNList(context);
+        if (profile == null || profile.mVersion < version) {
+            // The daemon may have cached VPNList before a SAF import in the UI process.
+            // Read the committed profile by UUID rather than polling stale SharedPreferences.
+            if (isStoredProfileKey(profileUUID)) instance.loadVpnEntry(context, profileUUID);
             profile = get(profileUUID);
-        }
-
-        if (tried > 5) {
-            int ver = profile == null ? -1 : profile.mVersion;
-            VpnStatus.logError(String.format(Locale.US, "Used x %d tries to get current version (%d/%d) of the profile", tried, ver, version));
         }
         return profile;
     }
@@ -238,13 +232,13 @@ public class ProfileManager {
          * to reload the profile from storage */
 
         VpnProfile loadedProfile = get(c, uuid, version, 100);
-        if (loadedProfile != null & loadedProfile.mVersion >= version) {
+        if (loadedProfile != null && loadedProfile.mVersion >= version) {
             VpnStatus.notifyProfileVersionChanged(uuid, version, false);
         }
     }
 
-    public Collection<VpnProfile> getProfiles() {
-        return profiles.values();
+    public synchronized Collection<VpnProfile> getProfiles() {
+        return new java.util.ArrayList<>(profiles.values());
     }
 
     public VpnProfile getProfileByName(String name) {
@@ -256,7 +250,7 @@ public class ProfileManager {
         return null;
     }
 
-    public void saveProfileList(Context context) {
+    public synchronized void saveProfileList(Context context) {
         SharedPreferences sharedprefs = Preferences.getSharedPreferencesMulti(PREFS_NAME, context);
         Editor editor = sharedprefs.edit();
         /* preference saving might be asynchronous*/
@@ -282,35 +276,28 @@ public class ProfileManager {
      */
     public synchronized void refreshVPNList(Context context)
     {
-        SharedPreferences listpref = Preferences.getSharedPreferencesMulti(PREFS_NAME, context);
-        Set<String> vlist = listpref.getStringSet("vpnlist", null);
-        if (vlist == null)
-            return;
+        loadVPNList(context);
+    }
 
-        for (String vpnentry : vlist) {
-            if (!profiles.containsKey(vpnentry))
-                loadVpnEntry(context, vpnentry);
-        }
+    private static boolean isStoredProfileKey(String key) {
+        if (TEMPORARY_PROFILE_FILENAME.equals(key)) return true;
+        if (key == null) return false;
+        try { return java.util.UUID.fromString(key).toString().equalsIgnoreCase(key); }
+        catch (IllegalArgumentException invalid) { return false; }
+    }
 
-        Vector<String> removeUuids = new Vector<>();
-        for (String profileuuid:profiles.keySet())
-        {
-            if (!vlist.contains(profileuuid))
-                removeUuids.add(profileuuid);
-        }
-        for (String uuid: removeUuids)
-        {
-            profiles.remove(uuid);
-        }
+    /** Verify a just-written profile through the same serialized format used after process death. */
+    public synchronized VpnProfile reloadStoredProfile(Context context, String uuid) {
+        if (!isStoredProfileKey(uuid)) return null;
+        profiles.remove(uuid);
+        loadVpnEntry(context, uuid);
+        return profiles.get(uuid);
     }
 
     private synchronized void loadVPNList(Context context) {
         profiles = new HashMap<>();
         SharedPreferences listpref = Preferences.getSharedPreferencesMulti(PREFS_NAME, context);
-        Set<String> vlist = listpref.getStringSet("vpnlist", null);
-        if (vlist == null) {
-            vlist = new HashSet<>();
-        }
+        Set<String> vlist = new HashSet<>(listpref.getStringSet("vpnlist", java.util.Collections.emptySet()));
         // Always try to load the temporary profile
         vlist.add(TEMPORARY_PROFILE_FILENAME);
 
@@ -318,9 +305,9 @@ public class ProfileManager {
             loadVpnEntry(context, vpnentry);
         }
 
+        recoverProfiles(context);
         if (!listpref.getBoolean("didrecover", false))
         {
-            recoverProfiles(context);
             Editor listprefedit = listpref.edit();
             listprefedit.putBoolean("didrecover", true);
             listprefedit.apply();

@@ -123,7 +123,7 @@ fun SubEditScreen(
     onDelete: () -> Unit
 ) {
     //val context = LocalContext.current
-    var remarks by rememberSaveable { mutableStateOf(initial.remarks.orEmpty()) }
+    var remarks by rememberSaveable { mutableStateOf(com.v2ray.ang.ui.main.subscriptionTitle(initial.usageInfo, initial.remarks)) }
     var isRemarksError by rememberSaveable { mutableStateOf(false) }
     var url by rememberSaveable { mutableStateOf(initial.url.orEmpty()) }
     var isUrlError by rememberSaveable { mutableStateOf(false) }

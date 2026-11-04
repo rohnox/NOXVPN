@@ -32,6 +32,7 @@ import de.blinkt.openvpn.core.VpnStatus;
 public class DisconnectVPN extends Activity implements DialogInterface.OnClickListener, DialogInterface.OnCancelListener {
     private IOpenVPNServiceInternal mService;
     private boolean disconnectPending = false;
+    private boolean bound = false;
     private final ServiceConnection mConnection = new ServiceConnection() {
 
 
@@ -69,13 +70,17 @@ public class DisconnectVPN extends Activity implements DialogInterface.OnClickLi
         } else {
             showDisconnectDialog();
         }
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        bound = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        if (!bound) finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(mConnection);
+        if (bound) {
+            unbindService(mConnection);
+            bound = false;
+        }
     }
 
     private void showDisconnectDialog() {
@@ -103,6 +108,8 @@ public class DisconnectVPN extends Activity implements DialogInterface.OnClickLi
                 }
             } else {
                 disconnectPending = true;
+                // Keep the binding alive until the pending stop can actually be delivered.
+                return;
             }
         } else if (which == DialogInterface.BUTTON_NEUTRAL) {
             Intent intent = new Intent(this, LaunchVPN.class);

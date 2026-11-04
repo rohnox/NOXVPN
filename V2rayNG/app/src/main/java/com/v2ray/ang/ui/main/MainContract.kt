@@ -11,7 +11,7 @@ sealed interface ExitIpState {
     data object Off : ExitIpState
     data object Loading : ExitIpState
     data object Unavailable : ExitIpState
-    data class Address(val value: String, val countryCode: String? = null) : ExitIpState
+    data class Address(val value: String, val countryCode: String? = null, val flagBitmap: android.graphics.Bitmap? = null) : ExitIpState
 }
 
 sealed interface MainStatus {

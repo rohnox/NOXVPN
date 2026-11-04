@@ -1316,7 +1316,14 @@ class MainViewModel(
                     currentCoroutineContext().ensureActive()
                     if (exitIpGeneration.get() == generation && _uiState.value.isRunning) {
                         if (country == null) LogUtil.w(AppConfig.TAG, "Exit country mode=proxy operation=lookup unavailable")
-                        _uiState.update { it.copy(exitIp = ExitIpState.Address(value, country)) }
+                        val flag = if (country != null) try { dataSource.loadCountryFlag(country) }
+                            catch (error: Exception) {
+                                LogUtil.w(AppConfig.TAG, "Exit country operation=load-bundled-art unavailable")
+                                null
+                            } else null
+                        currentCoroutineContext().ensureActive()
+                        if (exitIpGeneration.get() == generation && _uiState.value.isRunning)
+                            _uiState.update { it.copy(exitIp = ExitIpState.Address(value, country, flag)) }
                     }
                 }
             }

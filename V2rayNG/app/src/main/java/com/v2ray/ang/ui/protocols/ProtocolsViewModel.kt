@@ -88,7 +88,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                 if (!_state.value.openVpnReady) return@withLock
                 try {
                     val profiles = withContext(Dispatchers.IO) {
-                        ProfileManager.getInstance(app).profiles.map { OpenVpnRow(it.getUUIDString(), it.getName()) }.sortedBy { it.name }
+                        ProfileManager.getInstance(app).apply { refreshVPNList(app) }.profiles.map { OpenVpnRow(it.getUUIDString(), it.getName()) }.sortedBy { it.name }
                     }
                     _state.update { it.copy(profiles = profiles) }
                 } catch (cancelled: CancellationException) { throw cancelled
@@ -134,6 +134,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                             ProfileManager.saveProfile(app, profile)
                             manager.addProfile(profile)
                             manager.saveProfileList(app)
+                            check(manager.reloadStoredProfile(app, profile.getUUIDString())?.mVersion == profile.mVersion)
                         } catch (e: Exception) {
                             runCatching { manager.removeProfile(app, profile) }.onFailure { report("rollback-openvpn", it) }
                             app.deleteFile(profile.getUUIDString() + ".vp")

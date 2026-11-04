@@ -79,9 +79,7 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
             state.dashboardMessage?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
         }
         item {
-            if (selected != null) SelectedPlanHero(selected,
-                { onAction(MainAction.EditSubscription(selected.id)) }, { sharing = selected.id },
-                { onAction(MainAction.UpdateGroupSubscription(selected.id)) }, { pendingDelete = selected.id })
+            if (selected != null) SelectedPlanHero(selected, { onAction(MainAction.UpdateGroupSubscription(selected.id)) })
             else DashboardPanel {
                 Text(stringResource(R.string.top_no_plan), style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.top_no_plan_hint), style = MaterialTheme.typography.bodyMedium)
@@ -111,7 +109,7 @@ private fun planDays(info: SubscriptionUsageInfo?): String {
 }
 
 @Composable
-private fun SelectedPlanHero(plan: GroupMapItem, onEdit: () -> Unit, onShare: () -> Unit, onRefresh: () -> Unit, onDelete: () -> Unit) {
+private fun SelectedPlanHero(plan: GroupMapItem, onRefresh: () -> Unit) {
     val info = plan.usageInfo
     val known = info != null && hasSubscriptionTraffic(info)
     val limited = info != null && hasSubscriptionQuota(info) && info.total > 0
@@ -137,8 +135,9 @@ private fun SelectedPlanHero(plan: GroupMapItem, onEdit: () -> Unit, onShare: ()
                 }
             }
             if (known && limited) Text(stringResource(R.string.top_remaining) + ": " + (info.total - info.used).coerceAtLeast(0).toTrafficString(), style = MaterialTheme.typography.bodyMedium)
-            SubscriptionTools(onEdit, onShare)
-            PlanActions(plan.remarks, onRefresh, onDelete)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                IconButton(onRefresh) { Icon(painterResource(R.drawable.ic_refresh_24dp), stringResource(R.string.top_refresh_named, plan.remarks), Modifier.size(22.dp), tint = MaterialTheme.colorScheme.primary) }
+            }
         }
     }
 }
@@ -179,17 +178,3 @@ private fun SubscriptionTools(onEdit: () -> Unit, onShare: () -> Unit) {
     }
 }
 
-@Composable
-private fun PlanActions(name: String, onRefresh: () -> Unit, onDelete: () -> Unit, modifier: Modifier = Modifier) {
-    val refresh = stringResource(R.string.top_refresh_named, name)
-    val delete = stringResource(R.string.top_delete_named, name)
-    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        TextButton(onClick = onRefresh, Modifier.weight(1f).semantics { contentDescription = refresh }) {
-            Icon(painterResource(R.drawable.ic_refresh_24dp), null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.top_update_short))
-        }
-        TextButton(onClick = onDelete, Modifier.weight(1f).semantics { contentDescription = delete }) {
-            Icon(painterResource(R.drawable.ic_delete_24dp), null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.error)
-            Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.top_delete_short), color = MaterialTheme.colorScheme.error)
-        }
-    }
-}

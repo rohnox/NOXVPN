@@ -123,6 +123,7 @@ class MainRepository(
         ip, httpPort, SettingsManager.getSocksUsername(), SettingsManager.getSocksPassword()
     )
     override fun copySubscriptionLink(url: String) = Utils.setClipboard(app, url)
+    override fun loadCountryFlag(country: String): android.graphics.Bitmap? = com.v2ray.ang.util.CountryFlagImages.load(app, country)
     override fun createSubscriptionQr(url: String): android.graphics.Bitmap? = com.v2ray.ang.util.QRCodeDecoder.createQRCode(url)
 
     override fun getSelectServer(): String? = MmkvManager.getSelectServer()
