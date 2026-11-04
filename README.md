@@ -1,224 +1,154 @@
-# Special VPN — 1.6.1
+<div align="center">
+  <img src="V2rayNG/app/src/main/res/drawable-nodpi/ispeed_logo.png" width="104" alt="Special VPN — gold S emblem">
+  <h1>Special VPN</h1>
+  <p><strong>یک داشبورد. اتصال‌های تو. کنترل کامل.</strong></p>
+  <p>رابط مشکی و طلایی · فارسی و انگلیسی · Xray / OpenVPN / Cisco-compatible</p>
+  <p>
+    <a href="https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.6.1"><img alt="Release 1.6.1" src="https://img.shields.io/badge/release-1.6.1-D9B85E?style=for-the-badge&labelColor=111315"></a>
+    <img alt="Android 7.0 and newer" src="https://img.shields.io/badge/Android-7.0%2B-D9B85E?style=for-the-badge&labelColor=111315">
+    <a href="LICENSE"><img alt="GPL v3" src="https://img.shields.io/badge/license-GPL--3.0-D9B85E?style=for-the-badge&labelColor=111315"></a>
+  </p>
+  <p><a href="#شروع-سریع">شروع سریع</a> · <a href="#تصاویر-رابط">تصاویر</a> · <a href="#ساخت-و-توسعه">توسعه</a> · <a href="#english">English</a></p>
+</div>
 
-دریافت و نمایش نمودار مصرف دقیقاً به رفتار نسخهٔ ۱٫۵٫۹ با تاریخ‌های UTC برگشت. اصلاحات OpenVPN و دکمهٔ آپدیت اشتراک نسخهٔ ۱٫۶٫۰ حفظ شده‌اند.
+---
 
-[تغییرات](CHANGES-1.6.1.md) · [بررسی‌ها](VALIDATION-1.6.1.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+<div dir="rtl">
 
-# Special VPN — 1.6.0
+Special VPN یک کلاینت اندروید با هویت مستقل و مبتنی بر فورک واقعی [v2rayNG 2.3.14](https://github.com/2dust/v2rayNG/tree/2.3.14) است؛ برای مدیریت اتصال‌ها، اشتراک‌ها و مصرف، با رابطی یکپارچه و پشتیبانی از فارسی راست‌به‌چپ.
 
-دکمه «آپدیت اشتراک / Update Sub» در کارت بالایی اشتراک بازگشته است. حذف پروفایل OpenVPN با تأیید، تیک پروفایل واقعاً متصل و دکمه اتصال/قطع بر اساس UUID اضافه شده‌اند. تاریخچه مصرف پاسارگارد با مرز روز محلی و به‌روزرسانی هنگام نمایش خانه دریافت می‌شود؛ در صورت تأخیر پنل، پیام نبود آمار امروز نمایش داده می‌شود.
+**برنامه سرور یا اشتراک رایگان همراه ندارد.** کانفیگ، فایل یا اشتراک خودتان را وارد کنید.
 
-[تغییرات](CHANGES-1.6.0.md) · [بررسی‌ها و محدودیت‌ها](VALIDATION-1.6.0.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+</div>
 
-# Special VPN — 1.5.9
+## دانلود ۱.۶.۱
 
-اصلاح بازیابی و ماندگاری پروفایل OpenVPN، حذف انتظار طولانی خواندن پروفایل و ارسال غیرمسدودکننده فرمان قطع. Remark نام دریافتی پنل را نشان می‌دهد و کارت خلاصهٔ اشتراک فقط آیکون آپدیت دارد. پس‌زمینه‌ها از تصاویر ۲۰۴۸ پیکسلی ساخته‌شده از SVG استفاده می‌کنند؛ ایموجی بزرگ حذف شده و پرچم کوچک کنار نام کشور حفظ شده است.
+| فایل | کاربرد |
+| :--- | :--- |
+| [**Universal Release APK — نصب پیشنهادی**](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SpecialVPN-1.6.1-universal-release.apk) | امضاشده؛ شامل arm64-v8a، armeabi-v7a، x86 و x86_64 |
+| [سورس کامل همراه ورودی‌های ساخت](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SpecialVPN-1.6.1-source.zip) | آرشیو قابل ساخت با ورودی‌های AAR/SO و سورس هسته‌ها |
+| [SHA256SUMS](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SHA256SUMS-1.6.1.txt) | بررسی یکپارچگی فایل‌ها |
+| [گواهی عمومی انتشار](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SpecialVPN-release-certificate.pem) | تطبیق امضای APK؛ فاقد کلید خصوصی |
 
-تست اتصال واقعی با سرور مشتری روی گوشی انجام نشده است؛ گزارش دقیق را بخوانید.
+حداقل Android 7.0 / API 24 است. شناسهٔ نصب `com.specialvpn.app` است. نسخهٔ Release با کلید انتشار قبلی امضا شده؛ نسخهٔ Debug برای توسعه و دارای امضای متفاوت است. مخزن خصوصی است و دانلود به دسترسی گیت‌هاب نیاز دارد.
 
-[تغییرات](CHANGES-1.5.9.md) · [بررسی‌ها و محدودیت‌ها](VALIDATION-1.5.9.md) · [پرچم‌ها و مجوز](branding/FLAGS.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+## تصاویر رابط
 
-# Special VPN — 1.5.8
+<table>
+  <tr>
+    <td align="center"><strong>داشبورد اتصال</strong></td>
+    <td align="center"><strong>اشتراک‌ها · فارسی</strong></td>
+    <td align="center"><strong>پروفایل‌های OpenVPN</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/media/dashboard.png" width="250" alt="Special VPN dashboard with connection, traffic history and quota cards"></td>
+    <td><img src="docs/media/subscriptions-fa.png" width="250" alt="Persian RTL subscription selection and quota cards"></td>
+    <td><img src="docs/media/openvpn.png" width="250" alt="Dedicated OpenVPN profile tab"></td>
+  </tr>
+</table>
 
-کشور و پرچم IP خروجی کنار آدرس نمایش داده می‌شوند و پرچم کم‌رنگ همان کشور در پس‌زمینه کارت اتصال قرار می‌گیرد. هنگام قطع اتصال یا نامشخص‌بودن IP/کشور، پس‌زمینه اصلی باقی می‌ماند. دکمه‌های ویرایش و اشتراک‌گذاری لینک/QR به اشتراک‌ها اضافه شدند. آیکون تنظیمات سریع مستقیم از منبع اختصاصی برنامه خوانده می‌شود تا تصاویر قدیمی تراکم نمایشگر آن را جایگزین نکنند.
+تصاویر، رندر خودِ رابط برنامه با داده‌های آزمایشی‌اند؛ وضعیت یا آمار یک مشتری واقعی نیستند.
 
-[تغییرات](CHANGES-1.5.8.md) · [گزارش بررسی‌ها](VALIDATION-1.5.8.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+## امکانات
 
-# Special VPN — 1.5.7
+| بخش | آنچه در دسترس است |
+| :--- | :--- |
+| **اتصال** | کنترل اتصال/قطع، زمان اتصال و شمارنده‌های واقعی ترافیک؛ انتخاب سرور و تست تأخیر واقعی Xray |
+| **اشتراک‌ها** | دریافت عنوان پنل، انتخاب ساب فعال داشبورد، سهمیه و مصرف، روزهای باقی‌مانده، آپدیت، ویرایش، حذف و اشتراک‌گذاری لینک/QR |
+| **نمودار مصرف** | تاریخچهٔ روزانهٔ آپلود + دانلود پاسارگارد، مجموع ۳۰ روز و انتخاب روز برای مشاهدهٔ مصرف |
+| **ورود کانفیگ** | لینک، کلیپ‌بورد، فایل و QR؛ مدیریت کانفیگ‌ها و اشتراک‌ها بر پایهٔ امکانات نسخهٔ مبنا |
+| **OpenVPN** | ورود فایل مستقل `.ovpn`، ذخیره و حذف پروفایل، نمایش پروفایل متصل بر اساس UUID و دکمهٔ اتصال/قطع همان پروفایل |
+| **Cisco-compatible** | اتصال سازگار با AnyConnect از طریق OpenConnect داخلی؛ برنامهٔ رسمی Cisco نیست |
+| **هویت و ظاهر** | فارسی RTL و انگلیسی، تم روشن/تیره، لوگوی اختصاصی و پرچم باکیفیت کشور IP خروجی |
+| **تنظیمات شبکه** | قابلیت‌های مسیریابی، DNS و حالت‌های اتصال پروژهٔ مبنا |
 
-نام و لوگوی جدید، آیکون اختصاصی اعلان و تنظیمات سریع، اصلاح تایمر و شمارنده‌های واقعی مصرف، نام درست سیسکو و نمایش IP خروجی پس از اتصال.
+### دربارهٔ آمار
 
-شناسه جدید: `com.specialvpn.app`؛ این نسخه جدا از برنامه قبلی نصب می‌شود و انتقال خودکار تنظیمات ندارد. کلید امضا و حقوق مؤلفان اصلی حفظ شده‌اند. بررسی IP با درخواست HTTPS از مسیر پروکسی داخلی به ipify انجام می‌شود؛ در صورت شکست «نامشخص» نمایش داده می‌شود.
+آمار سهمیه از اطلاعاتی می‌آید که ارائه‌دهنده همراه اشتراک می‌فرستد. نمودار روزانهٔ پاسارگارد از endpoint عمومیِ مخصوص همان اشتراک دریافت می‌شود؛ به کلید مدیریتی پنل نیاز ندارد.
 
-[تغییرات](CHANGES-1.5.7.md) · [نتیجه بررسی‌ها](VALIDATION-1.5.7.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+**در ۱.۶.۱، درخواست آمار و نمودار دقیقاً به رفتار ۱.۵.۹ با روزهای UTC برگشته است.** زمان آخرین دریافت می‌تواند تاریخ محلی امروز باشد، در حالی که آخرین نقطهٔ نمودار هنوز مربوط به روز قبل در UTC است. داده و تاریخ ساختگی به نمودار اضافه نمی‌شود. پنل‌هایی که تاریخچهٔ سازگار نمی‌دهند، نمودار روزانهٔ تضمین‌شده ندارند؛ شمارندهٔ سهمیه جایگزین تاریخچهٔ روزانه نمی‌شود.
 
-# iSpeedTopVPN APP — 1.5.6
+## شروع سریع
 
-دکمه‌های + و سه‌نقطه بالای صفحه و Manage پایین اشتراک‌ها حذف شدند. «افزودن اشتراک» همان پنجره ورود لینک، کلیپ‌بورد، QR و فایل را باز می‌کند. دکمه خانه طلایی است و مطابق زبان برنامه فقط «آپدیت اشتراک» یا «Update Subscription» نمایش می‌دهد. متن تازه‌سازی کارت ساب در انگلیسی «Update Sub» است. عملیات پیشرفته از ورودی متنی داخل تنظیمات در دسترس‌اند.
+1. فایل **Universal Release APK** را از ریلیز همین مخزن دریافت و نصب کنید.
+2. در تب **اشتراک‌ها / Subs**، «افزودن اشتراک» را بزنید و لینک خودتان را وارد کنید؛ کلیپ‌بورد، QR و فایل هم در دسترس‌اند.
+3. اشتراک دلخواه را انتخاب کنید؛ کادر طلایی و تیک، ساب انتخاب‌شدهٔ داشبورد را مشخص می‌کنند.
+4. در تب **سرورها / Servers**، سرور را انتخاب کنید و مجوز VPN اندروید را تأیید کنید.
+5. برای OpenVPN یا Cisco به تب مستقل **Open/Cisco** بروید. اندروید در هر لحظه یک VPN فعال دارد.
 
-[تغییرات](CHANGES-1.5.6.md) · [بررسی‌ها و محدودیت‌ها](VALIDATION-1.5.6.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+برای OpenVPN، فایل مستقل همراه گواهی‌ها و کلیدهای درون فایل را وارد کنید؛ فایل‌های گواهی خارجی و اسکریپت اجرایی وارد نمی‌شوند. راهنمای کامل: [PROTOCOLS-FA.md](PROTOCOLS-FA.md).
 
-APK و ZIP کامل این نسخه محلی تحویل می‌شوند؛ لینک‌های Release در یادداشت‌های قدیمی مربوط به نسخه‌های پیشین هستند.
+## تازه‌های ۱.۶.۱
 
-# iSpeedTopVPN APP — 1.5.5
+- بازگشت دریافت و نمایش نمودار پاسارگارد به رفتار UTC نسخهٔ ۱.۵.۹.
+- حفظ دکمهٔ **آپدیت اشتراک / Update Sub** در کارت بالایی اشتراک.
+- حفظ حذف پروفایل OpenVPN با تأیید، تیک پروفایل واقعاً متصل و تغییر دکمهٔ اتصال/قطع براساس UUID.
+- حفظ سایر امکانات و اصلاحات نسخهٔ ۱.۶.۰.
 
-طرح ۳ بخش اشتراک‌ها: کارت خلاصه با حلقه سهمیه، انتخاب هر ساب با تیک و کادر طلایی و نمایش اطلاعاتش در خانه، حذف با تأیید و به‌روزرسانی در همان صفحه. انتخاب ساب، اتصال VPN را عوض نمی‌کند. با لمس نمودار پاسارگارد یا انتخاب روز، مصرف واقعی همان روز نمایش داده می‌شود.
+[تغییرات این نسخه](CHANGES-1.6.1.md) · [گزارش بررسی‌ها](VALIDATION-1.6.1.md) · [یادداشت‌های تاریخی](README-HISTORY.md)
 
-اطلاعات مصرف کل، سهمیه، نام و اعتبار برای پاسارگارد و ثناییِ سازگار خوانده می‌شود. در نمونه ثنایی، تاریخچه روزانه عمومی ارائه نشده؛ نمودار ماهانه ساختگی اضافه نشده است. لینک‌ها و پاسخ‌های خصوصی مشتری در سورس قرار ندارند.
+## ساخت و توسعه
 
-[تغییرات](CHANGES-1.5.5.md) · [بررسی‌ها و محدودیت‌ها](VALIDATION-1.5.5.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
+پروژهٔ اندروید در `V2rayNG/` است. برای بازتولید ساخت تحویلی، **ZIP کامل ریلیز** را بگیرید؛ آرشیو خودکار Source code گیت‌هاب ورودی‌های تولیدشدهٔ نادیده‌گرفته‌شده در Git را تأمین نمی‌کند.
 
-APK و ZIP کامل این نسخه محلی تحویل می‌شوند؛ لینک‌های Release در یادداشت‌های قدیمی مربوط به نسخه‌های پیشین هستند.
-
-# iSpeedTopVPN APP — 1.5.4
-
-تاریخچه مصرف واقعی PasarGuard از API همان لینک ساب خوانده می‌شود: مصرف روزانه، مجموع آپلود و دانلود ۳۰ روز اخیر با دو رقم اعشار و زمان آخرین دریافت. کادر مستقل سهمیه مصرف، نام پنل، روزهای باقی‌مانده، پیام آپدیت موفق و اصلاحات OpenVPN/Cisco حفظ شده‌اند.
-
-برای پنل سازگار، سابقه گذشته مستقیم دریافت می‌شود و لازم نیست۳۰ روز منتظر ثبت محلی بمانید. پنل فاقد API همچنان با مسیر قبلی کار می‌کند و آمار ساختگی نمایش داده نمی‌شود. لینک نمونه مشتری و پاسخ خصوصی آن در سورس و گیت‌هاب قرار ندارند.
-
-[تغییرات](CHANGES-1.5.4.md) · [بررسی‌ها](VALIDATION-1.5.4.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
-
-خروجی‌های APK و ZIP کامل این نسخه محلی تحویل می‌شوند؛ لینک‌های Release در یادداشت‌های قدیمی زیر مربوط به نسخه‌های پیشین هستند.
-
-# iSpeedTopVPN APP — 1.5.3
-
-نمودار مجموع مصرف ساب با سابقه ثبت‌شده ۳۰ روز اخیر، کارت مستقل «سهمیه مصرف»، نام پنل، روزهای باقی‌مانده و پیام سبز پس از آپدیت موفق اشتراک. وضعیت OpenVPN مستقیم از سرویس خوانده می‌شود و پیش از ورود به اتصال OpenVPN/Cisco، فرمان توقف Xray ارسال می‌شود.
-
-سابقه مصرف از اولین به‌روزرسانی این نسخه ثبت می‌شود؛ لینک ساب تاریخچه قبلی روزانه را ارائه نمی‌کند. عدد مصرف دوره اشتراک با مجموع مصرف یک ماه فرض نمی‌شود.
-
-[تغییرات](CHANGES-1.5.3.md) · [بررسی‌ها و محدودیت‌ها](VALIDATION-1.5.3.md) · [ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
-
-فایل‌های APK و ZIP کامل نسخه ۱٫۵٫۳ همراه تحویل محلی ارائه می‌شوند. یادداشت‌ها و لینک Release نسخه‌های قبل در ادامه تاریخی‌اند.
-
-# iSpeedTopVPN APP — 1.5.2
-
-نمودار حجم مصرف واقعی اتصال، کارت سهمیه اشتراک، نام دریافتی از پنل، روزهای باقی‌مانده و به‌روزرسانی خودکار ساب هنگام ورود به برنامه. درخواست‌های ورود تکراری کمتر از یک دقیقه ادغام می‌شوند؛ تازه‌سازی دستی همچنان در دسترس است.
-
-[تغییرات](CHANGES-1.5.2.md) · [نتیجه بررسی‌ها و محدودیت‌ها](VALIDATION-1.5.2.md) · [راهنمای ساخت](BUILD-FA.md) · [امضا](RELEASE-FA.md)
-
-خروجی‌های APK و ZIP کامل نسخه ۱٫۵٫۲ همراه تحویل محلی ارائه می‌شوند. لینک Release زیر مربوط به نسخه قبلی است.
-
-# iSpeedTopVPN APP — 1.5.1
-
-نسخه اندروید با رابط مشکی و طلایی، پشتیبانی فارسی و انگلیسی، Xray و بخش مستقل OpenVPN/Cisco؛ بر پایه سورس واقعی v2rayNG 2.3.14 با حفظ تاریخچه و مجوزهای اصلی.
-
-- [دانلود APK و ZIP کامل سورس](https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.5.1)
-- [تغییرات نسخه](CHANGES-1.5.1.md) · [گزارش ساخت و محدودیت‌ها](VALIDATION.md)
-- [ساخت](BUILD-FA.md) · [امضای انتشار](RELEASE-FA.md) · [OpenVPN/Cisco](PROTOCOLS-FA.md) · [سورس و مجوز هسته‌ها](NATIVE-ENGINES.md)
-
-برای ساخت با همان ورودی‌های Native نسخه تحویلی، ZIP کامل سورسِ Release را دریافت کنید. درخت Git سورس و submoduleهای اصلی را نگه می‌دارد؛ فایل‌های تولیدشده AAR/SO/JAR که در Git نادیده گرفته می‌شوند، در ZIP کامل موجودند. ساخت دوباره هسته‌ها و محدودیت‌های آن در راهنماها مستند است. قالب‌های Workflows بالادستی در docs/upstream-workflows/ حفظ شده‌اند؛ CI و امضای انتشار در حساب جدید تنظیم یا اجرا نشده‌اند و هیچ کلید خصوصی به گیت‌هاب فرستاده نشده است.
-
-
-برای کلون در ویندوز، مسیر کوتاه انتخاب کنید و پشتیبانی مسیرهای طولانی را فعال نگه دارید:
-
-```sh
-git clone -c core.longpaths=true --recurse-submodules https://github.com/sabialballa/iSpeedTopVPN.git
+```powershell
+cd V2rayNG
+.\gradlew.bat :app:assembleFdroidDebug
 ```
 
-رندرهای کد در `verification/1.5.1/renders/` با داده آزمایشی ساخته شده‌اند و آزمون اتصال واقعی نیستند. برای بازتولید اختیاری رندرها، از پوشه V2rayNG اجرا کنید:
-
-```sh
-./gradlew -I ../scripts/visual-checks.init.gradle -Pispeed.visualChecks=true :app:testFdroidDebugUnitTest --tests '*PremiumVisualTest'
+```bash
+cd V2rayNG
+./gradlew :app:assembleFdroidDebug
 ```
 
-مخزن خصوصی است و دانلود فایل‌های Release به دسترسی همین مخزن نیاز دارد. یادداشت‌های نسخه‌های قبلی در ادامه تاریخی‌اند.
+این فرمان‌ها پس از نصب ابزارها و تنظیم Android SDK اجرا می‌شوند. نسخه‌های ابزار و مراحل آماده‌سازی ورودی‌های بومی در [BUILD-FA.md](BUILD-FA.md) و [NATIVE-ENGINES.md](NATIVE-ENGINES.md) ثبت شده‌اند. برای کار از روی Git، زیرماژول‌ها و ورودی‌های بومی را مطابق همان راهنما آماده کنید.
 
-# iSpeedTopVPN APP — 1.5.0
+| مسیر | مسئولیت |
+| :--- | :--- |
+| `V2rayNG/app/` | اپ، رابط Compose، ViewModelها و منابع |
+| `V2rayNG/engine-openvpn/` | اتصال موتور OpenVPN به برنامه |
+| `V2rayNG/engine-openconnect/` | اتصال موتور OpenConnect به برنامه |
+| `engines/` | سورس و مجوزهای موتورهای واردشده |
+| `branding/` | لوگو، منابع پرچم‌ها و مجوزهای بصری |
+| `verification/1.6.1/` | شواهد تست و ساخت در ZIP کامل |
 
-Modern black/gold dashboard and an independent OpenVPN/Cisco bottom tab. Home, Servers, Subscriptions, Open/Cisco, Controls. See CHANGES-1.5.0.md and VALIDATION.md. Earlier notes below are historical.
+### امضا و بررسی
 
-# iSpeedTopVPN APP — 1.4.3
-
-OpenVPN start initialization fix; only the two Home Quick Access Xray add/test buttons removed. OpenVPN/Cisco and .ovpn import remain. See CHANGES-1.4.3.md and VALIDATION.md. Prior notes below are historical.
-
-# iSpeedTopVPN APP — 1.4.1
-
-OpenVPN/Cisco entry freeze fix: initialize the status-service cache and move pipe/Binder reads off the UI callback. See CHANGES-1.4.1.md and VALIDATION.md. Prior notes below are historical.
-
-# iSpeedTopVPN APP — 1.4.0
-
-Embedded OpenVPN file import and an OpenConnect manager for AnyConnect-compatible servers, alongside the existing Xray dashboard. See [usage](PROTOCOLS-FA.md), [changes](CHANGES-1.4.0.md), [engine provenance/rebuild](NATIVE-ENGINES.md) and [actual verification](VALIDATION.md). Earlier notes below are historical.
-
-# iSpeedTopVPN APP — 1.3.0
-
-Metallic black and gold; empty internal Default plan hidden, immediate fetch for newly added subscriptions. See [changes](CHANGES-1.3.0.md) and [validation](VALIDATION.md). Earlier release notes below are historical.
-
-نسخه Release اختصاصی ۱٫۲٫۱ ساخته و امضا شد؛ راهنما: [RELEASE-FA.md](RELEASE-FA.md). هشدار Play Protect هنوز روی این فایل بررسی نشده است. گزارش فعلی: [VALIDATION.md](VALIDATION.md).
-
-# iSpeedTopVPN APP — 1.2.1
-
-Home one-tap subscription refresh and real-delay testing in Servers. Custom Compose dashboard, server cards, provider quota and live-device traffic chart. Adds one-button automatic connection: fresh real-ping tests of imported configurations, lowest successful latency, cancellation and stale-result protection. Based on GPL v2rayNG 2.3.14.
-
-Universal Debug APK built; signature, ABI, alignment, resources and F-Droid lint verified. No device or live-VPN success is claimed. See [auto-connect guide](AUTO-CONNECT-FA.md), [validation](VALIDATION.md) and [build/signing steps](BUILD-FA.md).
-
----
-# v2rayNG
-
-A V2Ray client for Android, support [Xray core](https://github.com/XTLS/Xray-core) and [v2fly core](https://github.com/v2fly/v2ray-core)
-
-[![API](https://img.shields.io/badge/API-24%2B-yellow.svg?style=flat)](https://developer.android.com/about/versions/lollipop)
-[![Kotlin Version](https://img.shields.io/badge/Kotlin-2.4.0-blue.svg)](https://kotlinlang.org)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/2dust/v2rayNG)](https://github.com/2dust/v2rayNG/commits/master)
-[![CodeFactor](https://www.codefactor.io/repository/github/2dust/v2rayng/badge)](https://www.codefactor.io/repository/github/2dust/v2rayng)
-[![GitHub Releases](https://img.shields.io/github/downloads/2dust/v2rayNG/latest/total?logo=github)](https://github.com/2dust/v2rayNG/releases)
-[![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg)](https://t.me/v2rayn)
-
----
-
-## Download / 下载
-
-Download the latest release here:
-
-在这里下载最新版本：
-
-[https://github.com/2dust/v2rayNG/releases](https://github.com/2dust/v2rayNG/releases)
-
-> [!TIP]
-> v2rayNG is the mobile version. For the desktop version, please visit the v2rayN \
-> v2rayNG 是手机版，电脑版请访问 v2rayN
->
-> https://github.com/2dust/v2rayN
-
----
-
-### Geoip and Geosite
-
-- geoip.dat and geosite.dat files are in `Android/data/com.v2ray.ang/files/assets` (path may differ on some Android device)
-- download feature will get enhanced version in this [repo](https://github.com/Loyalsoldier/v2ray-rules-dat) (note: it needs a working proxy)
-- latest official [domain list](https://github.com/Loyalsoldier/v2ray-rules-dat) and [ip list](https://github.com/Loyalsoldier/geoip) can be imported manually
-- possible to use a third-party dat file in the same folder, like [h2y](https://guide.v2fly.org/routing/sitedata.html#%E5%A4%96%E7%BD%AE%E7%9A%84%E5%9F%9F%E5%90%8D%E6%96%87%E4%BB%B6)
-
-More in our [wiki](https://github.com/2dust/v2rayNG/wiki)
-
-### Geoip 与 Geosite
-
-- geoip.dat 和 geosite.dat 文件位于 `Android/data/com.v2ray.ang/files/assets`（部分设备路径可能不同）
-- 下载功能将获取该 [仓库](https://github.com/Loyalsoldier/v2ray-rules-dat) 中的增强版本（注意：此功能需要一个可用的代理）
-- 最新官方 [域名列表](https://github.com/Loyalsoldier/v2ray-rules-dat) 和 [IP 列表](https://github.com/Loyalsoldier/geoip) 可手动导入
-- 也可在同一文件夹中使用第三方 dat 文件，例如 [h2y](https://guide.v2fly.org/routing/sitedata.html#%E5%A4%96%E7%BD%AE%E7%9A%84%E5%9F%9F%E5%90%8D%E6%96%87%E4%BB%B6)
-
-更多内容请见我们的 [wiki](https://github.com/2dust/v2rayNG/wiki)
-
----
-
-## Development guide / 开发指南
-
-### Note
-
-- Android project under the V2rayNG folder can be compiled directly in Android Studio, or using the Gradle wrapper. But the v2ray core inside the aar is (probably) outdated.
-- The aar can be compiled from the Golang project [AndroidLibV2rayLite](https://github.com/2dust/AndroidLibV2rayLite) or [AndroidLibXrayLite](https://github.com/2dust/AndroidLibXrayLite). For a quick start, read the guides for [Go Mobile](https://github.com/golang/go/wiki/Mobile) and [Makefiles for Go Developers](https://tutorialedge.net/golang/makefiles-for-go-developers/).
-- v2rayNG can run on Android Emulators. For WSA, VPN permission needs to be granted via `appops set [package name] ACTIVATE_VPN allow`.
-
-### 提示
-
-- V2rayNG 文件夹下的 Android 项目可直接在 Android Studio 中编译，或使用 Gradle wrapper 编译。但 aar 内置的 v2ray core（可能）已过时。
-- aar 可由 Golang 项目 [AndroidLibV2rayLite](https://github.com/2dust/AndroidLibV2rayLite) 或 [AndroidLibXrayLite](https://github.com/2dust/AndroidLibXrayLite) 编译而成。快速入门可参考 [Go Mobile](https://github.com/golang/go/wiki/Mobile) 指南和 [Makefiles for Go Developers](https://tutorialedge.net/golang/makefiles-for-go-developers/)。
-- v2rayNG 可在 Android 模拟器上运行。对于 WSA，需要通过 `appops set [package name] ACTIVATE_VPN allow` 授予 VPN 权限。
-
----
-
-
-## GPG Verification / GPG 签名校验
-
-Release files are signed with GPG to verify authenticity and integrity, helping prevent mirror, ISP, or CDN hijacking.
-
-发布文件已使用 GPG 签名，可用于校验文件真实性与完整性，预防镜像站、运营商或 CDN 劫持。
-
-### Fingerprint / 公钥指纹
+کلید خصوصی انتشار خارج از مخزن نگهداری می‌شود. روش ساخت Release، هم‌ترازی و امضا در [RELEASE-FA.md](RELEASE-FA.md) آمده است.
 
 ```text
-7694 5E9F 3E9A 168F 8070 F195 805D 661C
-134D FAF6 8903 C199 463C 31E5 AE90 3AE0
+Release certificate SHA-256
+3e70db5bbca2256d8df6b23d459302416e414c53a018d09d46778ddbc2c241a8
 ```
+
+| بررسی ۱.۶.۱ | نتیجهٔ اجرا |
+| :--- | :--- |
+| Debug + Release + lint | موفق؛ lint بدون خطا، ۳۷۲ هشدار و ۱ Hint |
+| تست‌های JVM و رابط اختیاری | ۲۸۵ موفق از ۲۸۹؛ ۴ تست قدیمی به‌علت نبود `sh` در ویندوز ناموفق |
+| امضا، ZIP alignment، پکیج و ورودی‌های Native | موفق؛ ۶۰ کتابخانهٔ بومی با نسخهٔ ۱.۴.۳ یکسان‌اند |
+| نصب، اتصال واقعی و تغییر روز روی گوشی | **Not run** — دستگاه یا شبیه‌ساز قابل استفاده متصل نبود |
+
+گزارش کامل شامل محدودیت‌ها و موارد اجرا‌نشده است؛ ساخت موفق به‌معنای تست موفق اتصال به سرور مشتری نیست.
+
+## حریم خصوصی و مجوزها
+
+ردیاب یا تبلیغی به این فورک اضافه نشده است. اطلاعات حساس مشتری، کانفیگ و کلید امضا در فایل‌های انتشار نیستند. آپدیت اشتراک با پنل ارائه‌دهنده تماس می‌گیرد؛ بررسی IP خروجی از ipify و شناسایی کشور همان IP از country.is استفاده می‌کند. پس‌زمینهٔ پرچم‌ها داخل برنامه قرار دارد و از اینترنت دانلود نمی‌شود.
+
+این پروژه مبتنی بر [v2rayNG](https://github.com/2dust/v2rayNG) اثر **2dust و مشارکت‌کنندگان** است و تحت [GPL-3.0](LICENSE) ارائه می‌شود. حقوق مؤلفان اصلی حفظ شده است. نام پوشه‌ها و مخزن برای تداوم تاریخچه باقی مانده‌اند؛ نام نمایشی برنامه **Special VPN** است.
+
+- **OpenVPN for Android:** [schwabe/ics-openvpn](https://github.com/schwabe/ics-openvpn)؛ مجوز و منشأ در [NATIVE-ENGINES.md](NATIVE-ENGINES.md).
+- **OpenConnect wrapper:** [pengyue-polaron/oconnect-android](https://github.com/pengyue-polaron/oconnect-android)؛ سازگار با AnyConnect، بدون وابستگی رسمی به Cisco.
+- **Vazirmatn:** فونت با مجوز OFL؛ منابع در `branding/fonts/`.
+- **flag-icons:** تصاویر پرچم با مجوز MIT؛ [منابع و مجوز](branding/FLAGS.md).
 
 ---
 
-## Community / 社区
+## English
 
-Telegram Group / Telegram 群组：
+**Special VPN** is an Android client built from a real v2rayNG 2.3.14 fork, with a black-and-gold Compose interface, Persian RTL and English support, subscription management, and embedded OpenVPN/OpenConnect integrations.
 
-[https://t.me/v2rayN](https://t.me/v2rayN)
-
-Telegram Channel / Telegram 频道：
-
-[https://t.me/github_2dust](https://t.me/github_2dust)
+- **Download:** use the signed Universal Release APK in [v1.6.1](https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.6.1), Android7.0+, four ABIs. Supply your own subscription or configuration; no server is bundled.
+- **Usage charts:** PasarGuard daily provider history, upload + download combined. Version1.6.1 restores1.5.9 UTC request/label behavior. Quota metadata and daily history are distinct; provider support is required.
+- **Build:** use the full source release asset for bundled build inputs. Follow [BUILD-FA.md](BUILD-FA.md), [engine provenance](NATIVE-ENGINES.md) and [signing instructions](RELEASE-FA.md).
+- **Validation:** Debug/Release/lint and APK checks passed.285/289 tests passed; four existing Windows tests require unavailable `sh`. No device installation or live VPN connection test was run. See [validation](VALIDATION-1.6.1.md).
+- **License:** GPL-3.0 host; original v2rayNG and third-party notices retained. This is not the official Cisco app. Private release signing keys are never included.
