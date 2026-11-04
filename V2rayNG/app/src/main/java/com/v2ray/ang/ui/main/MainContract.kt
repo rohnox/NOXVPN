@@ -27,6 +27,7 @@ sealed interface MainStatus {
  */
 data class MainUiState(
     val groups: List<GroupMapItem> = emptyList(),
+    val appUpdate: com.v2ray.ang.dto.CheckUpdateResult? = null,
     val subscriptionRefresh: SubscriptionRefreshNotice? = null,
     val selectedGroupId: String = "",
     val selectedGuid: String? = null,
@@ -57,6 +58,7 @@ data class MainUiState(
  */
 sealed interface MainAction {
     data object Initialize : MainAction
+    data object DismissAppUpdate : MainAction
     data object AppEntered : MainAction
     data object RefreshExitIp : MainAction
     data class UsageVisibility(val visible: Boolean) : MainAction

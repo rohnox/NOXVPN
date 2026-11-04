@@ -89,4 +89,7 @@
     <string name="top_exit_ip_loading">Проверка…</string>
     <string name="top_exit_ip_refresh">Обновить внешний IP</string>
     <string name="top_today_usage_pending">Статистика провайдера за %1$s ещё не получена.</string>
+    <string name="top_app_update">Новая версия: %1$s</string>
+    <string name="top_dismiss_app_update">Закрыть уведомление об обновлении</string>
+    <string name="top_app_update_action">Обновить</string>
 </resources>

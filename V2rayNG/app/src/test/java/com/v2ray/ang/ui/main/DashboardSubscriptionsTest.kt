@@ -117,6 +117,7 @@ class DashboardSubscriptionsTest {
         val source = mock<MainDataSource>()
         val events = MutableSharedFlow<MainServiceEvent>(extraBufferCapacity = 16)
         val items = mutableListOf(SubscriptionCache("one", SubscriptionItem(remarks = "One")), SubscriptionCache("two", SubscriptionItem(remarks = "Two")))
+        var clock = 0L
         var persisted = initial
         var selectedServer: String? = null
         val store = ViewModelStore()
@@ -135,7 +136,7 @@ class DashboardSubscriptionsTest {
             doAnswer { persisted = it.getArgument(0); null }.whenever(source).setDashboardSubscriptionId(any())
             doAnswer { call -> items.removeAll { it.guid == call.getArgument<String>(0) }; null }.whenever(source).removeSubscription(any())
             whenever(source.getSelectServer()).thenAnswer { selectedServer }
-            vm = MainViewModel(mock<Application>(), source, dispatcher, dispatcher)
+            vm = MainViewModel(mock<Application>(), source, dispatcher, dispatcher, { clock })
             store.put("main", vm)
         }
         override fun close() { store.clear(); priority.setInt(null, before); log.close(); Dispatchers.resetMain() }
@@ -236,4 +237,41 @@ class DashboardSubscriptionsTest {
         }
     }
 
+
+    @Test fun releaseBannerChecksOnEntryIsThrottledAndCanBeDismissed() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            val update = com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3", downloadUrl = "https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.3/SpecialVPN-1.6.3-universal-release.apk")
+            whenever(f.source.checkAppUpdate()).thenReturn(update)
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            assertEquals(update, f.vm.uiState.value.appUpdate)
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            verify(f.source, times(1)).checkAppUpdate()
+            f.vm.onAction(MainAction.DismissAppUpdate); runCurrent()
+            assertNull(f.vm.uiState.value.appUpdate)
+            f.clock = 16 * 60_000L
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            assertNull(f.vm.uiState.value.appUpdate)
+            verify(f.source, times(2)).checkAppUpdate()
+        }
+    }
+    @Test fun failedReleaseCheckIsQuietAndOwnerCloseCancelsPendingResult() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            doSuspendableAnswer { throw java.io.IOException("fixture") }.whenever(f.source).checkAppUpdate()
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            assertNull(f.vm.uiState.value.appUpdate)
+            f.clock = 16 * 60_000L
+            doReturn(com.v2ray.ang.dto.CheckUpdateResult(false)).whenever(f.source).checkAppUpdate()
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            assertNull(f.vm.uiState.value.appUpdate)
+            f.clock = 32 * 60_000L
+            val response = kotlinx.coroutines.CompletableDeferred<com.v2ray.ang.dto.CheckUpdateResult?>()
+            doSuspendableAnswer { response.await() }.whenever(f.source).checkAppUpdate()
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            f.store.clear(); runCurrent()
+            response.complete(com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3")); runCurrent()
+            assertNull(f.vm.uiState.value.appUpdate)
+        }
+    }
 }

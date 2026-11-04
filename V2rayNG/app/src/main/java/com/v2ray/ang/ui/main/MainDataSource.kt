@@ -18,6 +18,7 @@ interface MainDataSource : Closeable {
     fun setDashboardSubscriptionId(id: String)
     fun removeSubscription(id: String)
 
+    suspend fun checkAppUpdate(): com.v2ray.ang.dto.CheckUpdateResult?
     suspend fun fetchExitIp(httpPort: Int): String?
     suspend fun fetchExitCountry(ip: String, httpPort: Int): String?
     suspend fun fetchProviderUsage(id: String, httpPort: Int): com.v2ray.ang.dto.entities.SubscriptionUsageInfo?

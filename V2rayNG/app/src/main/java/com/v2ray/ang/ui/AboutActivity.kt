@@ -85,7 +85,7 @@ fun AboutScreen(
             SettingsMenuItem(
                 icon = painterResource(R.drawable.ic_source_code_24dp),
                 title = stringResource(R.string.title_source_code),
-                onClick = { Utils.openUri(context, AppConfig.APP_URL) }
+                onClick = { Utils.openUri(context, AppConfig.SPECIAL_SOURCE_URL) }
             )
             SettingsMenuItem(
                 icon = painterResource(R.drawable.license_24px),

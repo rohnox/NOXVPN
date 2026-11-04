@@ -44,12 +44,13 @@ class PremiumVisualTest {
     @get:Rule val compose = createComposeRule()
     private lateinit var inputModes: InputModeManager
     private val commands = mutableListOf<MainAction>()
+    private val destinations = mutableListOf<MainDestination>()
 
-    private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null, plans: Boolean = false, exitIp: ExitIpState = ExitIpState.Address("198.51.100.24")) {
+    private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null, plans: Boolean = false, exitIp: ExitIpState = ExitIpState.Address("198.51.100.24"), appUpdateFixture: com.v2ray.ang.dto.CheckUpdateResult? = null) {
         val visualIp = if (exitIp is ExitIpState.Address && exitIp.countryCode != null) exitIp.copy(flagBitmap = kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) { com.v2ray.ang.util.CountryFlagImages.load(org.robolectric.RuntimeEnvironment.getApplication(), exitIp.countryCode.orEmpty()) }) else exitIp
         val history = (0L..30L).map { t -> SessionTraffic(t, t * 10240L, t * t * 4096L, true) }
         val quota = SubscriptionUsageInfo(title = "iSpecialVPN", expire = System.currentTimeMillis() / 1000 + 7 * 86400, upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true, providerUsageUpdatedAt = System.currentTimeMillis() / 1000, providerUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (3L - day) * 104857600L) }, dailyUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (14L - day) shl 30) })
-        val state = if (populated) MainUiState(groups = if (plans) listOf(GroupMapItem("plan", "iSpecialVPN", quota), GroupMapItem("family", "Family plan", quota.copy(title = "Family plan", upload = 1L shl 30, download = 6L shl 30, total = 30L shl 30, expire = System.currentTimeMillis() / 1000 + 18 * 86400)), GroupMapItem("work", "Work plan", quota.copy(title = "Work plan", upload = 1L shl 30, download = 3L shl 30, total = 20L shl 30, expire = System.currentTimeMillis() / 1000 + 9 * 86400))) else listOf(GroupMapItem("plan", "import sub", quota)), dashboardSubscriptionId = if (plans) "family" else "", selectedGuid = "a", selectedSubscriptionId = "plan",
+        val state = if (populated) MainUiState(appUpdate = appUpdateFixture, groups = if (plans) listOf(GroupMapItem("plan", "iSpecialVPN", quota), GroupMapItem("family", "Family plan", quota.copy(title = "Family plan", upload = 1L shl 30, download = 6L shl 30, total = 30L shl 30, expire = System.currentTimeMillis() / 1000 + 18 * 86400)), GroupMapItem("work", "Work plan", quota.copy(title = "Work plan", upload = 1L shl 30, download = 3L shl 30, total = 20L shl 30, expire = System.currentTimeMillis() / 1000 + 9 * 86400))) else listOf(GroupMapItem("plan", "import sub", quota)), dashboardSubscriptionId = if (plans) "family" else "", selectedGuid = "a", selectedSubscriptionId = "plan",
             selectedServerName = "Germany · Frankfurt", isRunning = true, exitIp = visualIp, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
         val rows = if (populated) listOf("Germany · Frankfurt", "Turkey · Istanbul").mapIndexed { i, name ->
             ServerRowUiModel(if (i == 0) "a" else "b", ProfileItem(configType = EConfigType.VLESS), name, "", "VLESS / TLS", 34L + i * 15L, "")
@@ -65,6 +66,7 @@ class PremiumVisualTest {
                     val action: (MainAction) -> Unit = { command ->
                         commands.add(command)
                         when (command) {
+                            MainAction.DismissAppUpdate -> displayed = displayed.copy(appUpdate = null)
                             is MainAction.SelectDashboardSubscription -> displayed = displayed.copy(dashboardSubscriptionId = command.id)
                             is MainAction.DeleteSubscription -> {
                                 val remaining = displayed.groups.filterNot { it.id == command.id }
@@ -84,7 +86,7 @@ class PremiumVisualTest {
                         else if (tab == DashboardTab.Plans) ISpeedPlans(displayed, modifier, action, onImport = { importOpen = true })
                         else if (tab == DashboardTab.Controls) ISpeedControls(modifier, {})
                         else if (tab == DashboardTab.Servers) ISpeedServers(displayed, rows, modifier, action, { importOpen = true }, {})
-                        else ISpeedOverview(displayed, rows, "", modifier, {}, {}, { importOpen = true }, action, {}, {})
+                        else ISpeedOverview(displayed, rows, "", modifier, {}, {}, { importOpen = true }, action, { destinations.add(it) }, {})
                     }
                 }
             }
@@ -341,4 +343,21 @@ class PremiumVisualTest {
         capture("subscriptions-edit-share")
     }
 
+
+    @Test fun slimUpdateBannerOpensUpdaterAndDismisses() {
+        render(populated = true, appUpdateFixture = com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3"))
+        compose.onNodeWithText("New version: 1.6.3").assertIsDisplayed()
+        capture("home-update-banner-en")
+        compose.onNodeWithText("Update").performClick()
+        org.junit.Assert.assertEquals(MainDestination.CheckUpdate, destinations.last())
+        compose.onNodeWithContentDescription("Dismiss update notice").performClick()
+        org.junit.Assert.assertEquals(MainAction.DismissAppUpdate, commands.last())
+        compose.onNodeWithText("New version: 1.6.3").assertDoesNotExist()
+    }
+
+    @Test @Config(qualifiers = "fa-rIR-w393dp-h852dp-xhdpi") fun slimUpdateBannerPersian() {
+        render(populated = true, rtl = true, appUpdateFixture = com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3"))
+        compose.onNodeWithText("آپدیت").assertIsDisplayed()
+        capture("home-update-banner-fa")
+    }
 }

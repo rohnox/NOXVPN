@@ -91,4 +91,7 @@
     <string name="top_exit_ip_loading">جارٍ التحقق…</string>
     <string name="top_exit_ip_refresh">تحديث عنوان IP للخروج</string>
     <string name="top_today_usage_pending">لم يتم استلام إحصاءات المزود ليوم %1$s بعد.</string>
+    <string name="top_app_update">إصدار جديد: %1$s</string>
+    <string name="top_dismiss_app_update">إغلاق إشعار التحديث</string>
+    <string name="top_app_update_action">تحديث</string>
 </resources>

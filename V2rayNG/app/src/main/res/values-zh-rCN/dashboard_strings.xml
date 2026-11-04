@@ -86,4 +86,7 @@
     <string name="top_exit_ip_loading">正在检查…</string>
     <string name="top_exit_ip_refresh">刷新出口 IP</string>
     <string name="top_today_usage_pending">尚未收到服务商 %1$s 的统计数据。</string>
+    <string name="top_app_update">新版本：%1$s</string>
+    <string name="top_dismiss_app_update">关闭更新提示</string>
+    <string name="top_app_update_action">更新</string>
 </resources>

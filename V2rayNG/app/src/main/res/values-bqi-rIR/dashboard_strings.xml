@@ -87,4 +87,7 @@
     <string name="top_exit_ip_loading">در حال بررسی…</string>
     <string name="top_exit_ip_refresh">بررسی دوباره IP خروجی</string>
     <string name="top_today_usage_pending">هنوز آمار روز %1$s از پنل دریافت نشده است.</string>
+    <string name="top_app_update">نسخهٔ نو: %1$s</string>
+    <string name="top_dismiss_app_update">بستن پیام به‌روزرسانی</string>
+    <string name="top_app_update_action">آپدیت</string>
 </resources>

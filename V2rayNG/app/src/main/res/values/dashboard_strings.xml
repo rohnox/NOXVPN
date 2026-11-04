@@ -87,4 +87,7 @@
     <string name="top_exit_ip_loading">Checking…</string>
     <string name="top_exit_ip_refresh">Refresh exit IP</string>
     <string name="top_today_usage_pending">No provider statistics for %1$s yet.</string>
+    <string name="top_app_update">New version: %1$s</string>
+    <string name="top_dismiss_app_update">Dismiss update notice</string>
+    <string name="top_app_update_action">Update</string>
 </resources>

@@ -46,7 +46,7 @@ object UpdateCheckerManager {
 
         val latestRelease = if (includePreRelease) {
             JsonUtil.fromJsonSafe(response, Array<GitHubRelease>::class.java)
-                ?.firstOrNull()
+                ?.firstOrNull { !it.prerelease || includePreRelease }
                 ?: throw IllegalStateException("No pre-release found")
         } else {
             JsonUtil.fromJsonSafe(response, GitHubRelease::class.java)
@@ -55,52 +55,28 @@ object UpdateCheckerManager {
             return@withContext CheckUpdateResult(hasUpdate = false)
         }
 
-        val latestVersion = latestRelease.tagName.removePrefix("v")
-        LogUtil.i(
-            AppConfig.TAG,
-            "Found new version: $latestVersion (current: ${BuildConfig.VERSION_NAME})"
-        )
-
-        return@withContext if (compareVersions(latestVersion, BuildConfig.VERSION_NAME) > 0) {
-            val downloadUrl = getDownloadUrl(latestRelease, Build.SUPPORTED_ABIS[0])
-            CheckUpdateResult(
-                hasUpdate = true,
-                latestVersion = latestVersion,
-                releaseNotes = latestRelease.body,
-                downloadUrl = downloadUrl,
-                isPreRelease = latestRelease.prerelease
-            )
-        } else {
-            CheckUpdateResult(hasUpdate = false)
-        }
+        resolveRelease(latestRelease, BuildConfig.VERSION_NAME, Build.SUPPORTED_ABIS.firstOrNull().orEmpty(), includePreRelease)
     }
 
-    private fun compareVersions(version1: String, version2: String): Int {
-        val v1 = version1.split(".")
-        val v2 = version2.split(".")
-
-        for (i in 0 until maxOf(v1.size, v2.size)) {
-            val num1 = if (i < v1.size) v1[i].toInt() else 0
-            val num2 = if (i < v2.size) v2[i].toInt() else 0
-            if (num1 != num2) return num1 - num2
+    /** Only our signed Release asset, never Debug or an upstream application's APK. */
+    internal fun resolveRelease(release: GitHubRelease, currentVersion: String, abi: String, includePreRelease: Boolean = false): CheckUpdateResult {
+        if (release.prerelease && !includePreRelease) return CheckUpdateResult(hasUpdate = false)
+        val latest = release.tagName.removePrefix("v")
+        fun parts(value: String): List<Int> {
+            require(value.matches(Regex("[0-9]{1,9}(\\.[0-9]{1,9}){1,3}")))
+            return value.split('.').map { it.toInt() }
         }
-        return 0
-    }
-
-    private fun getDownloadUrl(release: GitHubRelease, abi: String): String {
-        val fDroid = "fdroid"
-
-        val assetsByAbi = release.assets.filter {
-            (it.name.contains(abi, true))
-        }
-
-        val asset = if (BuildConfig.APPLICATION_ID.contains(fDroid, ignoreCase = true)) {
-            assetsByAbi.firstOrNull { it.name.contains(fDroid) }
-        } else {
-            assetsByAbi.firstOrNull { !it.name.contains(fDroid) }
-        }
-
-        return asset?.browserDownloadUrl
-            ?: throw IllegalStateException("No compatible APK found")
+        val remote = parts(latest)
+        val current = parts(currentVersion)
+        val order = (0 until maxOf(remote.size, current.size)).asSequence().map { (remote.getOrElse(it) { 0 }).compareTo(current.getOrElse(it) { 0 }) }.firstOrNull { it != 0 } ?: 0
+        if (order <= 0) return CheckUpdateResult(hasUpdate = false)
+        val names = listOf("SpecialVPN-$latest-universal-release.apk", "SpecialVPN-$latest-$abi-release.apk")
+        val asset = names.firstNotNullOfOrNull { name -> release.assets.firstOrNull { it.name == name } }
+            ?: error("No compatible Special VPN Release APK")
+        val uri = java.net.URI(asset.browserDownloadUrl)
+        require(uri.scheme == "https" && uri.host == "github.com" && uri.userInfo == null && uri.fragment == null && uri.query == null)
+        require(uri.rawPath == "/sabialballa/iSpeedTopVPN/releases/download/" + release.tagName + "/" + asset.name)
+        return CheckUpdateResult(hasUpdate = true, latestVersion = latest, releaseNotes = release.body,
+            downloadUrl = asset.browserDownloadUrl, isPreRelease = release.prerelease)
     }
 }

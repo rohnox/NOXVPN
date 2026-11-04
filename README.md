@@ -4,7 +4,7 @@
   <p><strong>یک داشبورد. اتصال‌های تو. کنترل کامل.</strong></p>
   <p>رابط مشکی و طلایی · فارسی و انگلیسی · Xray / OpenVPN / Cisco-compatible</p>
   <p>
-    <a href="https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.6.1"><img alt="Release 1.6.1" src="https://img.shields.io/badge/release-1.6.1-D9B85E?style=for-the-badge&labelColor=111315"></a>
+    <a href="https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.6.2"><img alt="Release 1.6.2" src="https://img.shields.io/badge/release-1.6.2-D9B85E?style=for-the-badge&labelColor=111315"></a>
     <img alt="Android 7.0 and newer" src="https://img.shields.io/badge/Android-7.0%2B-D9B85E?style=for-the-badge&labelColor=111315">
     <a href="LICENSE"><img alt="GPL v3" src="https://img.shields.io/badge/license-GPL--3.0-D9B85E?style=for-the-badge&labelColor=111315"></a>
   </p>
@@ -25,12 +25,12 @@ Special VPN یک کلاینت اندروید با هویت مستقل و مبت�
 
 | فایل | کاربرد |
 | :--- | :--- |
-| [**Universal Release APK — نصب پیشنهادی**](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SpecialVPN-1.6.1-universal-release.apk) | امضاشده؛ شامل arm64-v8a، armeabi-v7a، x86 و x86_64 |
-| [سورس کامل همراه ورودی‌های ساخت](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SpecialVPN-1.6.1-source.zip) | آرشیو قابل ساخت با ورودی‌های AAR/SO و سورس هسته‌ها |
-| [SHA256SUMS](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SHA256SUMS-1.6.1.txt) | بررسی یکپارچگی فایل‌ها |
-| [گواهی عمومی انتشار](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.1/SpecialVPN-release-certificate.pem) | تطبیق امضای APK؛ فاقد کلید خصوصی |
+| [**Universal Release APK — نصب پیشنهادی**](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.2/SpecialVPN-1.6.2-universal-release.apk) | امضاشده؛ شامل arm64-v8a، armeabi-v7a، x86 و x86_64 |
+| [سورس کامل همراه ورودی‌های ساخت](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.2/SpecialVPN-1.6.2-source.zip) | آرشیو قابل ساخت با ورودی‌های AAR/SO و سورس هسته‌ها |
+| [SHA256SUMS](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.2/SHA256SUMS-1.6.2.txt) | بررسی یکپارچگی فایل‌ها |
+| [گواهی عمومی انتشار](https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.2/SpecialVPN-release-certificate.pem) | تطبیق امضای APK؛ فاقد کلید خصوصی |
 
-حداقل Android 7.0 / API 24 است. شناسهٔ نصب `com.specialvpn.app` است. نسخهٔ Release با کلید انتشار قبلی امضا شده؛ نسخهٔ Debug برای توسعه و دارای امضای متفاوت است. مخزن خصوصی است و دانلود به دسترسی گیت‌هاب نیاز دارد.
+حداقل Android 7.0 / API 24 است. شناسهٔ نصب `com.specialvpn.app` است. نسخهٔ Release با کلید انتشار قبلی امضا شده؛ نسخهٔ Debug برای توسعه و دارای امضای متفاوت است. پس از عمومی‌شدن مخزن، سورس و APK بدون ورود به گیت‌هاب قابل دریافت‌اند.
 
 ## تصاویر رابط
 
@@ -48,6 +48,12 @@ Special VPN یک کلاینت اندروید با هویت مستقل و مبت�
 </table>
 
 تصاویر، رندر خودِ رابط برنامه با داده‌های آزمایشی‌اند؛ وضعیت یا آمار یک مشتری واقعی نیستند.
+
+### نوار آپدیت داخل برنامه
+
+<img src="docs/media/update-banner-fa.png" width="330" alt="نوار باریک طلایی آپدیت Special VPN در حالت فارسی؛ دادهٔ آزمایشی">
+
+در این تصویر، نسخهٔ جدید صرفاً دادهٔ آزمایشی تست رابط است. [راهنمای انتشار آپدیت](UPDATES-FA.md).
 
 ## امکانات
 
@@ -85,7 +91,9 @@ Special VPN یک کلاینت اندروید با هویت مستقل و مبت�
 - حفظ حذف پروفایل OpenVPN با تأیید، تیک پروفایل واقعاً متصل و تغییر دکمهٔ اتصال/قطع براساس UUID.
 - حفظ سایر امکانات و اصلاحات نسخهٔ ۱.۶.۰.
 
-[تغییرات این نسخه](CHANGES-1.6.1.md) · [گزارش بررسی‌ها](VALIDATION-1.6.1.md) · [یادداشت‌های تاریخی](README-HISTORY.md)
+[تغییرات این نسخه](CHANGES-1.6.2.md) · [گزارش بررسی‌ها](VALIDATION-1.6.2.md) · [یادداشت‌های تاریخی](README-HISTORY.md)
+
+راهنمای انتشار نسخه‌های بعدی و نوار آپدیت: [UPDATES-FA.md](UPDATES-FA.md). برای فعال‌شدن این مسیر، نسخهٔ ۱٫۶٫۲ باید یک‌بار نصب شود.
 
 ## ساخت و توسعه
 
@@ -110,7 +118,7 @@ cd V2rayNG
 | `V2rayNG/engine-openconnect/` | اتصال موتور OpenConnect به برنامه |
 | `engines/` | سورس و مجوزهای موتورهای واردشده |
 | `branding/` | لوگو، منابع پرچم‌ها و مجوزهای بصری |
-| `verification/1.6.1/` | شواهد تست و ساخت در ZIP کامل |
+| `verification/1.6.2/` | شواهد تست و ساخت در ZIP کامل |
 
 ### امضا و بررسی
 
@@ -124,7 +132,7 @@ Release certificate SHA-256
 | بررسی ۱.۶.۱ | نتیجهٔ اجرا |
 | :--- | :--- |
 | Debug + Release + lint | موفق؛ lint بدون خطا، ۳۷۲ هشدار و ۱ Hint |
-| تست‌های JVM و رابط اختیاری | ۲۸۵ موفق از ۲۸۹؛ ۴ تست قدیمی به‌علت نبود `sh` در ویندوز ناموفق |
+| تست‌های JVM و رابط اختیاری | ۲۹۲ موفق از ۲۹۶؛ ۴ تست قدیمی به‌علت نبود `sh` در ویندوز ناموفق |
 | امضا، ZIP alignment، پکیج و ورودی‌های Native | موفق؛ ۶۰ کتابخانهٔ بومی با نسخهٔ ۱.۴.۳ یکسان‌اند |
 | نصب، اتصال واقعی و تغییر روز روی گوشی | **Not run** — دستگاه یا شبیه‌ساز قابل استفاده متصل نبود |
 
@@ -147,8 +155,8 @@ Release certificate SHA-256
 
 **Special VPN** is an Android client built from a real v2rayNG 2.3.14 fork, with a black-and-gold Compose interface, Persian RTL and English support, subscription management, and embedded OpenVPN/OpenConnect integrations.
 
-- **Download:** use the signed Universal Release APK in [v1.6.1](https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.6.1), Android7.0+, four ABIs. Supply your own subscription or configuration; no server is bundled.
-- **Usage charts:** PasarGuard daily provider history, upload + download combined. Version1.6.1 restores1.5.9 UTC request/label behavior. Quota metadata and daily history are distinct; provider support is required.
+- **Download:** use the signed Universal Release APK in [v1.6.2](https://github.com/sabialballa/iSpeedTopVPN/releases/tag/v1.6.2), Android 7.0+, four ABIs. Supply your own subscription or configuration; no server is bundled.
+- **Usage charts:** PasarGuard daily provider history, upload + download combined. Version 1.6.2 retains the 1.5.9 UTC request/label behavior. Quota metadata and daily history are distinct; provider support is required.
 - **Build:** use the full source release asset for bundled build inputs. Follow [BUILD-FA.md](BUILD-FA.md), [engine provenance](NATIVE-ENGINES.md) and [signing instructions](RELEASE-FA.md).
-- **Validation:** Debug/Release/lint and APK checks passed.285/289 tests passed; four existing Windows tests require unavailable `sh`. No device installation or live VPN connection test was run. See [validation](VALIDATION-1.6.1.md).
+- **Validation:** Debug/Release/lint and APK checks passed. 292/296 tests passed; four existing Windows tests require unavailable `sh`. No device installation or live VPN connection test was run. See [validation](VALIDATION-1.6.2.md).
 - **License:** GPL-3.0 host; original v2rayNG and third-party notices retained. This is not the official Cisco app. Private release signing keys are never included.

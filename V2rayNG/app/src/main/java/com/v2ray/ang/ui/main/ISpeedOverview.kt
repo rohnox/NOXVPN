@@ -75,6 +75,22 @@ internal fun ISpeedOverview(
 ) {
     val plan = dashboardPlan(state)
     LazyColumn(modifier, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        state.appUpdate?.takeIf { it.hasUpdate }?.let { update ->
+            item(key = "app-update") {
+                Surface(shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)) {
+                    Row(Modifier.fillMaxWidth().padding(start = 10.dp, end = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(painterResource(R.drawable.ic_check_update_24dp), null, Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.top_app_update, update.latestVersion.orEmpty()), Modifier.weight(1f), style = MaterialTheme.typography.labelMedium)
+                        Button({ onNavigate(MainDestination.CheckUpdate) }, modifier = Modifier.heightIn(min = 36.dp), contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)) { Text(stringResource(R.string.top_app_update_action), style = MaterialTheme.typography.labelMedium) }
+                        IconButton({ onAction(MainAction.DismissAppUpdate) }) {
+                            Icon(painterResource(R.drawable.ic_app_update_close), stringResource(R.string.top_dismiss_app_update), Modifier.size(18.dp))
+                        }
+                    }
+                }
+            }
+        }
         item { ConnectionHero(state, status, onToggle, onServers) { onAction(MainAction.RefreshExitIp) } }
         item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {

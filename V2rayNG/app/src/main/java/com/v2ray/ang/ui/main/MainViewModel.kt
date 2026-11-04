@@ -77,6 +77,9 @@ class MainViewModel(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
     private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
+    private var appUpdateJob: Job? = null
+    private var appUpdateCheckedAt: Long? = null
+    private var dismissedAppVersion: String? = null
     private var usageRefreshJob: Job? = null
     private var exitIpJob: Job? = null
     private var subscriptionShareJob: Job? = null
@@ -328,7 +331,12 @@ class MainViewModel(
             MainAction.AutoConnect -> startAutoConnect()
             MainAction.CancelAutoConnect -> cancelAutoConnect()
             MainAction.Initialize -> initialize()
+            MainAction.DismissAppUpdate -> {
+                dismissedAppVersion = _uiState.value.appUpdate?.latestVersion
+                _uiState.update { it.copy(appUpdate = null) }
+            }
             MainAction.AppEntered -> {
+                checkAppUpdate()
                 if (entryRefresh.shouldRefresh(entryClock())) {
                     importConfigViaSub("", quiet = true)
                 }
@@ -1281,6 +1289,20 @@ class MainViewModel(
         }
     }
 
+    private fun checkAppUpdate() {
+        val now = entryClock()
+        if (appUpdateJob?.isActive == true || appUpdateCheckedAt?.let { now - it in 0 until 15 * 60_000L } == true) return
+        appUpdateCheckedAt = now
+        appUpdateJob = viewModelScope.launch(ioDispatcher) {
+            try {
+                val result = dataSource.checkAppUpdate()
+                currentCoroutineContext().ensureActive()
+                _uiState.update { it.copy(appUpdate = result?.takeIf { value -> value.hasUpdate && value.latestVersion != dismissedAppVersion }) }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (error: Exception) { LogUtil.w(AppConfig.TAG, "App operation=check-release unavailable", IllegalStateException(error.javaClass.simpleName)) }
+        }
+    }
+
     private fun setUsageVisible(visible: Boolean) {
         if (!visible) { usageRefreshJob?.cancel(); usageRefreshJob = null; return }
         if (usageRefreshJob?.isActive == true) return
@@ -1376,6 +1398,7 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        appUpdateJob?.cancel()
         usageRefreshJob?.cancel()
         subscriptionShareJob?.cancel()
         exitIpGeneration.incrementAndGet()

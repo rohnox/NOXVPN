@@ -122,6 +122,8 @@ class MainRepository(
     override suspend fun fetchExitCountry(ip: String, httpPort: Int): String? = com.v2ray.ang.util.HttpUtil.getExitCountryViaProxy(
         ip, httpPort, SettingsManager.getSocksUsername(), SettingsManager.getSocksPassword()
     )
+    override suspend fun checkAppUpdate() = com.v2ray.ang.handler.UpdateCheckerManager.checkForUpdate(false)
+
     override suspend fun fetchProviderUsage(id: String, httpPort: Int): com.v2ray.ang.dto.entities.SubscriptionUsageInfo? {
         val item = MmkvManager.decodeSubscription(id) ?: return null
         if (!item.enabled) return null

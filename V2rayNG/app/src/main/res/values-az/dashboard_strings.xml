@@ -87,4 +87,7 @@
     <string name="top_exit_ip_loading">Yoxlanılır…</string>
     <string name="top_exit_ip_refresh">Çıxış IP-sini yenilə</string>
     <string name="top_today_usage_pending">%1$s üçün provayder statistikası hələ alınmayıb.</string>
+    <string name="top_app_update">Yeni versiya: %1$s</string>
+    <string name="top_dismiss_app_update">Yeniləmə bildirişini bağla</string>
+    <string name="top_app_update_action">Yenilə</string>
 </resources>

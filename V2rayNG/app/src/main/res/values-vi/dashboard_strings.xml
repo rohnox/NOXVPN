@@ -86,4 +86,7 @@
     <string name="top_exit_ip_loading">Đang kiểm tra…</string>
     <string name="top_exit_ip_refresh">Làm mới IP đầu ra</string>
     <string name="top_today_usage_pending">Chưa nhận được thống kê từ nhà cung cấp cho ngày %1$s.</string>
+    <string name="top_app_update">Phiên bản mới: %1$s</string>
+    <string name="top_dismiss_app_update">Đóng thông báo cập nhật</string>
+    <string name="top_app_update_action">Cập nhật</string>
 </resources>

@@ -87,4 +87,7 @@
     <string name="top_exit_ip_loading">যাচাই হচ্ছে…</string>
     <string name="top_exit_ip_refresh">বহির্গামী IP রিফ্রেশ করুন</string>
     <string name="top_today_usage_pending">%1$s দিনের পরিসংখ্যান এখনও প্রদানকারী থেকে পাওয়া যায়নি।</string>
+    <string name="top_app_update">নতুন সংস্করণ: %1$s</string>
+    <string name="top_dismiss_app_update">আপডেট বিজ্ঞপ্তি বন্ধ করুন</string>
+    <string name="top_app_update_action">আপডেট</string>
 </resources>
