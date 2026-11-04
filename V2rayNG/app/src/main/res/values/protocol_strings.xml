@@ -27,4 +27,12 @@
 <string name="protocol_heading">Advanced connections</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">Disconnect: %1$s</string>
+ <string name="protocol_profile_connected">Connected profile</string>
+ <string name="protocol_delete_title">Delete OpenVPN profile</string>
+ <string name="protocol_delete_confirm">Delete profile “%1$s” from this device?</string>
+ <string name="protocol_delete_named">Delete profile %1$s</string>
+ <string name="protocol_delete_stop_first">Disconnect OpenVPN before deleting a profile.</string>
+ <string name="protocol_delete_done">Profile deleted.</string>
+ <string name="protocol_delete_failed">Could not delete the profile.</string>
 </resources>

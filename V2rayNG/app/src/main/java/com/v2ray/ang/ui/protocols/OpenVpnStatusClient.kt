@@ -15,6 +15,7 @@ internal class OpenVpnStatusClient(
     context: Context,
     private val onState: (ConnectionStatus?) -> Unit,
     private val onTraffic: (Long, Long) -> Unit,
+    private val onProfile: (String?) -> Unit = {},
 ) : AutoCloseable {
     private val app = context.applicationContext
     private val owner = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -22,13 +23,21 @@ internal class OpenVpnStatusClient(
     @Volatile private var service: IServiceStatus? = null
     @Volatile private var closed = false
     private var bound = false
+    private val profileGeneration = java.util.concurrent.atomic.AtomicLong()
+    @Volatile private var profileJob: Job? = null
     private val callback = object : IStatusCallbacks.Stub() {
         override fun updateStateString(state: String?, message: String?, resId: Int, level: ConnectionStatus?, intent: Intent?) {
-            if (!closed) onState(level)
+            if (!closed) {
+                onState(level)
+                if (level == ConnectionStatus.LEVEL_CONNECTED) refreshConnectedProfile()
+                else { profileJob?.cancel(); profileGeneration.incrementAndGet(); onProfile(null) }
+            }
         }
         override fun updateByteCount(received: Long, sent: Long) { if (!closed) onTraffic(received, sent) }
         override fun newLogItem(item: LogItem?) = Unit
-        override fun connectedVPN(uuid: String?) = Unit
+        override fun connectedVPN(uuid: String?) {
+            if (!closed) { profileJob?.cancel(); profileGeneration.incrementAndGet(); onProfile(uuid) }
+        }
         override fun notifyProfileVersionChanged(uuid: String?, version: Int) = Unit
     }
     private val connection = object : ServiceConnection {
@@ -39,18 +48,35 @@ internal class OpenVpnStatusClient(
         override fun onServiceDisconnected(name: ComponentName?) {
             service = null
             reader.cancel()
-            if (!closed) onState(null)
+            if (!closed) { profileGeneration.incrementAndGet(); onProfile(null); onState(null) }
         }
         override fun onBindingDied(name: ComponentName?) {
             if (bound) app.unbindService(this)
             bound = false
             service = null
-            if (!closed) start()
+            if (!closed) {
+                profileGeneration.incrementAndGet()
+                onProfile(null)
+                onState(null)
+                start()
+            }
         }
         override fun onNullBinding(name: ComponentName?) {
             if (bound) app.unbindService(this)
             bound = false
             if (!closed) onState(null)
+        }
+    }
+    private fun refreshConnectedProfile() {
+        val target = service ?: return
+        val generation = profileGeneration.incrementAndGet()
+        profileJob?.cancel()
+        profileJob = owner.launch {
+            try {
+                val uuid = target.lastConnectedVPN
+                if (!closed && service === target && profileGeneration.get() == generation) onProfile(uuid)
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (error: Exception) { if (!closed) report(error) }
         }
     }
     fun start() {
@@ -79,6 +105,8 @@ internal class OpenVpnStatusClient(
     }
     override fun close() {
         closed = true
+        profileJob?.cancel()
+        profileGeneration.incrementAndGet()
         val target = service
         service = null
         if (bound) { app.unbindService(connection); bound = false }

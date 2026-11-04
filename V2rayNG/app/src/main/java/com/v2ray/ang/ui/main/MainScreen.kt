@@ -40,6 +40,10 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
     val loading by mainViewModel.isLoading.collectAsStateWithLifecycle()
     var selectedTab by rememberSaveable { mutableStateOf(DashboardTab.Overview.name) }
     val tab = dashboardTab(selectedTab)
+    androidx.lifecycle.compose.LifecycleResumeEffect(tab, state.dashboardSubscriptionId) {
+        onAction(MainAction.UsageVisibility(tab == DashboardTab.Overview))
+        onPauseOrDispose { onAction(MainAction.UsageVisibility(false)) }
+    }
     var importOpen by rememberSaveable { mutableStateOf(false) }
     var menu by rememberSaveable { mutableStateOf(false) }
     var shareGuid by rememberSaveable { mutableStateOf<String?>(null) }

@@ -543,13 +543,14 @@ object AngConfigManager {
                 it.subscription.lastUpdated = System.currentTimeMillis()
                 val previousUsage = it.subscription.usageInfo
                 val historyTime = System.currentTimeMillis() / 1000
+                val historyZone = java.time.ZoneId.systemDefault()
                 val historyRequest = UrlContentRequest(url = url, userAgent = userAgent, requestHeaders = requestHeaders,
                     httpPort = SettingsManager.getHttpPort(), proxyUsername = proxyUsername, proxyPassword = proxyPassword)
-                val providerHistory = PasarGuardUsage.fetch(historyRequest, historyTime)
-                    ?: if (historyRequest.httpPort != 0) PasarGuardUsage.fetch(historyRequest.copy(httpPort = 0), historyTime) else null
+                val providerHistory = PasarGuardUsage.fetch(historyRequest, historyTime, historyZone)
+                    ?: if (historyRequest.httpPort != 0) PasarGuardUsage.fetch(historyRequest.copy(httpPort = 0), historyTime, historyZone) else null
                 // History failure must not erase the last successful snapshot or fail config import.
                 val metadata = PasarGuardUsage.merge(previousUsage,
-                    usageInfo ?: SubscriptionUsageInfo(trafficAvailable = false, quotaAvailable = false), url, providerHistory, historyTime)
+                    usageInfo ?: SubscriptionUsageInfo(trafficAvailable = false, quotaAvailable = false), url, providerHistory, historyTime, PasarGuardUsage.offset(historyTime, historyZone).id)
                 val matchingPrevious = previousUsage?.takeIf { it.providerUsageSource == null || it.providerUsageSource == metadata.providerUsageSource }
                 it.subscription.usageInfo = SubscriptionInfoParser.recordUsage(
                     matchingPrevious, metadata, historyTime

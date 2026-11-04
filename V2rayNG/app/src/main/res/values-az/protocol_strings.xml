@@ -27,4 +27,12 @@
 <string name="protocol_heading">Qabaqcıl bağlantılar</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">Bağlantını kəs: %1$s</string>
+ <string name="protocol_profile_connected">Qoşulmuş profil</string>
+ <string name="protocol_delete_title">OpenVPN profilini sil</string>
+ <string name="protocol_delete_confirm">“%1$s” profili bu cihazdan silinsin?</string>
+ <string name="protocol_delete_named">%1$s profilini sil</string>
+ <string name="protocol_delete_stop_first">Profili silməzdən əvvəl OpenVPN bağlantısını kəsin.</string>
+ <string name="protocol_delete_done">Profil silindi.</string>
+ <string name="protocol_delete_failed">Profili silmək mümkün olmadı.</string>
 </resources>

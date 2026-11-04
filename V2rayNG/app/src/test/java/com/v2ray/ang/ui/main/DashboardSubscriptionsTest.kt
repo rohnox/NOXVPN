@@ -207,4 +207,33 @@ class DashboardSubscriptionsTest {
         assertNull(nearestProviderDay(points, Float.NaN))
         assertEquals(10L, nearestProviderDay(points.take(1), .5f))
     }
+
+    @Test fun visibleHistoryRefreshUpdatesOnlySelectedPlanAndStopsOnPause() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            val info = com.v2ray.ang.dto.entities.SubscriptionUsageInfo(providerUsage = listOf(SubscriptionUsageSample(100, 123)), providerUsageZone = "+03:30")
+            whenever(f.source.fetchProviderUsage("one", 0)).thenReturn(info)
+            f.vm.onAction(MainAction.UsageVisibility(true)); runCurrent()
+            assertEquals(info, dashboardPlan(f.vm.uiState.value)!!.usageInfo)
+            verify(f.source, times(1)).fetchProviderUsage("one", 0)
+            assertNull(f.vm.uiState.value.groups.first { it.id == "two" }.usageInfo)
+            f.vm.onAction(MainAction.UsageVisibility(false)); runCurrent()
+            advanceTimeBy(120_000); runCurrent()
+            verify(f.source, times(1)).fetchProviderUsage("one", 0)
+        }
+    }
+    @Test fun pausedOrSupersededHistoryRequestCannotPublishStaleData() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            val response = kotlinx.coroutines.CompletableDeferred<com.v2ray.ang.dto.entities.SubscriptionUsageInfo?>()
+            doSuspendableAnswer { response.await() }.whenever(f.source).fetchProviderUsage("one", 0)
+            f.vm.onAction(MainAction.UsageVisibility(true)); runCurrent()
+            f.vm.onAction(MainAction.SelectDashboardSubscription("two")); runCurrent()
+            response.complete(com.v2ray.ang.dto.entities.SubscriptionUsageInfo(title = "Stale")); runCurrent()
+            assertNull(f.vm.uiState.value.groups.first { it.id == "one" }.usageInfo)
+            assertEquals("two", dashboardPlan(f.vm.uiState.value)!!.id)
+            f.vm.onAction(MainAction.UsageVisibility(false)); runCurrent()
+        }
+    }
+
 }

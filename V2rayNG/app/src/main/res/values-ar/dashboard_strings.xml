@@ -90,4 +90,5 @@
     <string name="top_exit_ip_unavailable">غير متاح</string>
     <string name="top_exit_ip_loading">جارٍ التحقق…</string>
     <string name="top_exit_ip_refresh">تحديث عنوان IP للخروج</string>
+    <string name="top_today_usage_pending">لم يتم استلام إحصاءات المزود ليوم %1$s بعد.</string>
 </resources>

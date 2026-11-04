@@ -94,3 +94,9 @@ internal fun nearestProviderDay(points: List<com.v2ray.ang.dto.entities.Subscrip
     val target = start + (end - start) * fraction.coerceIn(0f, 1f)
     return points.minByOrNull { kotlin.math.abs(it.timestampSeconds - target) }?.timestampSeconds
 }
+
+/** Retry cadence while visible; a request spanning midnight triggers a prompt follow-up. */
+internal fun usageRefreshDelay(startMillis: Long, nowMillis: Long, zone: java.time.ZoneId): Long {
+    val nextDay = java.time.Instant.ofEpochMilli(startMillis).atZone(zone).toLocalDate().plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+    return (minOf(startMillis + 60_000L, nextDay) - nowMillis).coerceIn(1000L, 60_000L)
+}

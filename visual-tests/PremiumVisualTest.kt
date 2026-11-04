@@ -212,7 +212,7 @@ class PremiumVisualTest {
     @Test fun addSubscriptionUsesImportDialogAndTrimsInput() {
         render(plans = true, populated = true)
         compose.onNodeWithText("Manage").assertDoesNotExist()
-        compose.onNodeWithText("Update Sub").assertDoesNotExist()
+        compose.onNodeWithText("Update Sub").assertIsDisplayed()
         compose.onNodeWithText("Add subscription").performClick()
         compose.onNodeWithText("Add configuration").assertIsDisplayed()
         compose.onNodeWithText("Import").assertIsNotEnabled()

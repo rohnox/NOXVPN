@@ -33,6 +33,7 @@ internal data class ProtocolsState(
     val busy: Boolean = true, val openVpnReady: Boolean = false, val ciscoReady: Boolean = false,
     val vpnMode: Boolean = false, val profiles: List<OpenVpnRow> = emptyList(),
     val status: Int = R.string.protocol_state_unknown, val connected: Boolean = false,
+    val activeProfileId: String? = null,
     val received: Long? = null, val sent: Long? = null, val message: Int? = null
 )
 
@@ -57,11 +58,11 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                 if (ready.first) {
                     statusClient = OpenVpnStatusClient(app, { level ->
                         val (resource, connected) = openVpnUiStatus(level)
-                        _state.update { it.copy(status = resource, connected = connected,
+                        _state.update { it.copy(status = resource, connected = connected, activeProfileId = null,
                             received = if (connected) it.received else null, sent = if (connected) it.sent else null) }
                     }, { received, sent ->
                         _state.update { if (it.connected) it.copy(received = received, sent = sent) else it }
-                    }).also { it.start() }
+                    }, { uuid -> _state.update { it.copy(activeProfileId = uuid) } }).also { it.start() }
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (e: Exception) {
@@ -96,6 +97,35 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                     report("reload-openvpn", e)
                     _state.update { it.copy(message = R.string.protocol_unavailable) }
                 }
+            }
+        }
+    }
+
+    internal fun deleteProfile(guid: String) {
+        viewModelScope.launch {
+            initialized.await()
+            imports.withLock {
+                if (!canHandleProtocolAction(_state.value, ProtocolAction.Delete(guid))) {
+                    _state.update { it.copy(message = R.string.protocol_delete_stop_first) }
+                    return@withLock
+                }
+                _state.update { it.copy(busy = true, message = null) }
+                try {
+                    val rows = withContext(Dispatchers.IO) {
+                        val manager = ProfileManager.getInstance(app)
+                        val profile = ProfileManager.get(app, guid) ?: error("Profile unavailable")
+                        manager.removeProfile(app, profile)
+                        check(listOf(".vp", ".cp", ".cpold").none { app.getFileStreamPath(guid + it).exists() })
+                        manager.refreshVPNList(app)
+                        manager.profiles.map { OpenVpnRow(it.getUUIDString(), it.getName()) }.sortedBy { it.name }
+                    }
+                    _state.update { it.copy(profiles = rows, message = R.string.protocol_delete_done) }
+                } catch (cancelled: CancellationException) { throw cancelled }
+                catch (error: Exception) {
+                    report("delete-openvpn", error)
+                    _state.update { it.copy(message = R.string.protocol_delete_failed) }
+                    reload()
+                } finally { _state.update { it.copy(busy = false) } }
             }
         }
     }

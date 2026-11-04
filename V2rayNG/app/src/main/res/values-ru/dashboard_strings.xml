@@ -88,4 +88,5 @@
     <string name="top_exit_ip_unavailable">Недоступен</string>
     <string name="top_exit_ip_loading">Проверка…</string>
     <string name="top_exit_ip_refresh">Обновить внешний IP</string>
+    <string name="top_today_usage_pending">Статистика провайдера за %1$s ещё не получена.</string>
 </resources>

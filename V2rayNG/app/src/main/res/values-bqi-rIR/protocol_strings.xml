@@ -27,4 +27,12 @@
 <string name="protocol_heading">اتصال‌های پیشرفته</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">قطع اتصال: %1$s</string>
+ <string name="protocol_profile_connected">پروفایل متصل</string>
+ <string name="protocol_delete_title">حذف پروفایل OpenVPN</string>
+ <string name="protocol_delete_confirm">پروفایل «%1$s» از این دستگاه حذف شود؟</string>
+ <string name="protocol_delete_named">حذف پروفایل %1$s</string>
+ <string name="protocol_delete_stop_first">پیش از حذف پروفایل، اتصال OpenVPN را قطع کنید.</string>
+ <string name="protocol_delete_done">پروفایل حذف شد.</string>
+ <string name="protocol_delete_failed">حذف پروفایل انجام نشد.</string>
 </resources>

@@ -27,4 +27,12 @@
 <string name="protocol_heading">進階連線</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">中斷連線：%1$s</string>
+ <string name="protocol_profile_connected">已連線的設定檔</string>
+ <string name="protocol_delete_title">刪除 OpenVPN 設定檔</string>
+ <string name="protocol_delete_confirm">要從此裝置刪除設定檔「%1$s」嗎？</string>
+ <string name="protocol_delete_named">刪除設定檔 %1$s</string>
+ <string name="protocol_delete_stop_first">刪除設定檔前請先中斷 OpenVPN 連線。</string>
+ <string name="protocol_delete_done">已刪除設定檔。</string>
+ <string name="protocol_delete_failed">無法刪除設定檔。</string>
 </resources>

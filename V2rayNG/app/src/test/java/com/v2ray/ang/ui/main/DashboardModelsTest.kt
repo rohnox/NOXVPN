@@ -33,4 +33,12 @@ class DashboardModelsTest {
         assertEquals(41L, history.first().elapsedSeconds)
         assertTrue(appendTrafficHistory(history, sample(-1)).isEmpty())
     }
+
+    @Test fun `visible usage refresh wakes at local midnight and remains bounded`() {
+        val zone = java.time.ZoneId.of("Asia/Tehran")
+        val start = java.time.Instant.parse("2026-11-04T20:29:50Z").toEpochMilli()
+        assertEquals(10_000L, usageRefreshDelay(start, start, zone))
+        assertEquals(1_000L, usageRefreshDelay(start, start + 15_000, zone))
+        assertEquals(60_000L, usageRefreshDelay(start + 60_000, start + 60_000, zone))
+    }
 }

@@ -27,4 +27,12 @@
 <string name="protocol_heading">Kết nối nâng cao</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">Ngắt kết nối: %1$s</string>
+ <string name="protocol_profile_connected">Hồ sơ đang kết nối</string>
+ <string name="protocol_delete_title">Xóa hồ sơ OpenVPN</string>
+ <string name="protocol_delete_confirm">Xóa hồ sơ “%1$s” khỏi thiết bị này?</string>
+ <string name="protocol_delete_named">Xóa hồ sơ %1$s</string>
+ <string name="protocol_delete_stop_first">Ngắt kết nối OpenVPN trước khi xóa hồ sơ.</string>
+ <string name="protocol_delete_done">Đã xóa hồ sơ.</string>
+ <string name="protocol_delete_failed">Không thể xóa hồ sơ.</string>
 </resources>

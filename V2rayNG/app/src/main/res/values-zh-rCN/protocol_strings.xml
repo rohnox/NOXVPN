@@ -27,4 +27,12 @@
 <string name="protocol_heading">高级连接</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">断开连接：%1$s</string>
+ <string name="protocol_profile_connected">已连接的配置</string>
+ <string name="protocol_delete_title">删除 OpenVPN 配置</string>
+ <string name="protocol_delete_confirm">从此设备删除配置“%1$s”？</string>
+ <string name="protocol_delete_named">删除配置 %1$s</string>
+ <string name="protocol_delete_stop_first">删除配置前请先断开 OpenVPN。</string>
+ <string name="protocol_delete_done">配置已删除。</string>
+ <string name="protocol_delete_failed">无法删除配置。</string>
 </resources>

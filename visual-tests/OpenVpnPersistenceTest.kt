@@ -78,4 +78,19 @@ class OpenVpnPersistenceTest {
         // Deliberately do not update the cached manager/index, as in another process.
         assertEquals(profile.mVersion, ProfileManager.get(context, profile.uuidString, profile.mVersion, 100)!!.mVersion)
     }
+
+    @Test fun removingProfileDoesNotRecoverItOnFreshManager() {
+        val context = RuntimeEnvironment.getApplication()
+        reset()
+        val manager = ProfileManager.getInstance(context)
+        val profile = VpnProfile("Delete fixture")
+        ProfileManager.saveProfile(context, profile)
+        manager.addProfile(profile)
+        manager.saveProfileList(context)
+        manager.removeProfile(context, profile)
+        reset()
+        assertFalse(ProfileManager.getInstance(context).profiles.any { it.uuidString == profile.uuidString })
+        assertNull(ProfileManager.get(context, profile.uuidString))
+    }
+
 }

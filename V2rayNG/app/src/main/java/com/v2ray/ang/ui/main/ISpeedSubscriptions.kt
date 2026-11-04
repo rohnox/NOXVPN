@@ -136,7 +136,11 @@ private fun SelectedPlanHero(plan: GroupMapItem, onRefresh: () -> Unit) {
             }
             if (known && limited) Text(stringResource(R.string.top_remaining) + ": " + (info.total - info.used).coerceAtLeast(0).toTrafficString(), style = MaterialTheme.typography.bodyMedium)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                IconButton(onRefresh) { Icon(painterResource(R.drawable.ic_refresh_24dp), stringResource(R.string.top_refresh_named, plan.remarks), Modifier.size(22.dp), tint = MaterialTheme.colorScheme.primary) }
+                TextButton(onRefresh) {
+                    Icon(painterResource(R.drawable.ic_refresh_24dp), null, Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
+                    Spacer(Modifier.width(6.dp))
+                    Text(stringResource(R.string.top_update_short))
+                }
             }
         }
     }

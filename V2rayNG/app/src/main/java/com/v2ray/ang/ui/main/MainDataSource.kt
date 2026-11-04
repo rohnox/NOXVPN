@@ -20,6 +20,7 @@ interface MainDataSource : Closeable {
 
     suspend fun fetchExitIp(httpPort: Int): String?
     suspend fun fetchExitCountry(ip: String, httpPort: Int): String?
+    suspend fun fetchProviderUsage(id: String, httpPort: Int): com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
     fun loadCountryFlag(country: String): android.graphics.Bitmap?
     fun copySubscriptionLink(url: String)
     fun createSubscriptionQr(url: String): android.graphics.Bitmap?

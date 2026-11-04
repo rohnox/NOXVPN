@@ -27,4 +27,12 @@
 <string name="protocol_heading">Расширенные подключения</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">Отключить: %1$s</string>
+ <string name="protocol_profile_connected">Подключённый профиль</string>
+ <string name="protocol_delete_title">Удалить профиль OpenVPN</string>
+ <string name="protocol_delete_confirm">Удалить профиль «%1$s» с этого устройства?</string>
+ <string name="protocol_delete_named">Удалить профиль %1$s</string>
+ <string name="protocol_delete_stop_first">Перед удалением профиля отключите OpenVPN.</string>
+ <string name="protocol_delete_done">Профиль удалён.</string>
+ <string name="protocol_delete_failed">Не удалось удалить профиль.</string>
 </resources>

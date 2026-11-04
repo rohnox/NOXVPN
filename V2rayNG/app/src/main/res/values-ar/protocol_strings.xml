@@ -27,4 +27,12 @@
 <string name="protocol_heading">اتصالات متقدمة</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
+ <string name="protocol_disconnect_profile">قطع الاتصال: %1$s</string>
+ <string name="protocol_profile_connected">الملف المتصل</string>
+ <string name="protocol_delete_title">حذف ملف OpenVPN</string>
+ <string name="protocol_delete_confirm">هل تريد حذف الملف «%1$s» من هذا الجهاز؟</string>
+ <string name="protocol_delete_named">حذف الملف %1$s</string>
+ <string name="protocol_delete_stop_first">اقطع اتصال OpenVPN قبل حذف الملف.</string>
+ <string name="protocol_delete_done">تم حذف الملف.</string>
+ <string name="protocol_delete_failed">تعذر حذف الملف.</string>
 </resources>

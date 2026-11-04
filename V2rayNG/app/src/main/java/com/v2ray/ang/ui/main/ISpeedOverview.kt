@@ -226,8 +226,8 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
     val graphDescription = stringResource(R.string.top_provider_chart_a11y, used)
     val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f)
     val color = MaterialTheme.colorScheme.primary
-    val dates = remember(points, locale) {
-        val formatter = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale).apply { timeZone = java.util.TimeZone.getTimeZone("UTC") }
+    val dates = remember(points, locale, info?.providerUsageZone) {
+        val formatter = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale).apply { timeZone = java.util.TimeZone.getTimeZone(if (remote != null) info?.providerUsageZone ?: "UTC" else "UTC") }
         points.map { formatter.format(java.util.Date(it.timestampSeconds * 1000)) }
     }
     DashboardPanel {
@@ -239,6 +239,14 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
         if (remote != null) info?.providerUsageUpdatedAt?.takeIf { it in 1..Long.MAX_VALUE / 1000 }?.let { updated ->
             val time = remember(updated, locale) { java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT, locale).format(java.util.Date(updated * 1000)) }
             Text(stringResource(R.string.top_history_updated, time), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        if (remote != null) {
+            val zone = runCatching { java.time.ZoneId.of(info.providerUsageZone ?: "UTC") }.getOrDefault(java.time.ZoneOffset.UTC)
+            val today = java.time.Instant.ofEpochSecond(nowSeconds).atZone(java.time.ZoneId.systemDefault()).toLocalDate()
+            if (remote.none { java.time.Instant.ofEpochSecond(it.timestampSeconds).atZone(zone).toLocalDate() == today }) {
+                val label = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale).format(java.util.Date(today.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()))
+                Text(stringResource(R.string.top_today_usage_pending, label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
         TrafficLegend(stringResource(if (remote != null) R.string.top_monthly_usage else R.string.top_combined_usage), used, color)
         if (points.isEmpty()) {

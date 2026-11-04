@@ -31,6 +31,8 @@ data class SubscriptionUsageInfo(
     val providerUsage: List<SubscriptionUsageSample>? = null,
     val providerUsageUpdatedAt: Long? = null,
     val providerUsageSource: String? = null,
+    /** Fixed UTC offset used by the provider when grouping these daily intervals. Null means legacy UTC. */
+    val providerUsageZone: String? = null,
 ) {
     /** Bytes consumed so far (upload + download). */
     val used: Long get() = upload + download

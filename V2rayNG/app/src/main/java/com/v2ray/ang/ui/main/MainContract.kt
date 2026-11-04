@@ -59,6 +59,7 @@ sealed interface MainAction {
     data object Initialize : MainAction
     data object AppEntered : MainAction
     data object RefreshExitIp : MainAction
+    data class UsageVisibility(val visible: Boolean) : MainAction
     data object RefreshGroups : MainAction
     data object ToggleService : MainAction
     data object AutoConnect : MainAction

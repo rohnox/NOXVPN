@@ -29,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -76,6 +77,7 @@ class MainViewModel(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
     private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
+    private var usageRefreshJob: Job? = null
     private var exitIpJob: Job? = null
     private var subscriptionShareJob: Job? = null
     private val exitIpGeneration = AtomicLong()
@@ -331,6 +333,7 @@ class MainViewModel(
                     importConfigViaSub("", quiet = true)
                 }
             }
+            is MainAction.UsageVisibility -> setUsageVisible(action.visible)
             MainAction.RefreshExitIp -> refreshExitIp()
             MainAction.RefreshGroups -> setupGroupTab(forceRefresh = true)
             MainAction.TestAllServers -> testAllRealPing(true)
@@ -1278,6 +1281,32 @@ class MainViewModel(
         }
     }
 
+    private fun setUsageVisible(visible: Boolean) {
+        if (!visible) { usageRefreshJob?.cancel(); usageRefreshJob = null; return }
+        if (usageRefreshJob?.isActive == true) return
+        usageRefreshJob = viewModelScope.launch(ioDispatcher) {
+            while (currentCoroutineContext().isActive) {
+                val started = System.currentTimeMillis()
+                val state = _uiState.value
+                val id = dashboardPlan(state)?.id
+                if (!id.isNullOrEmpty() && subscriptionRefreshMutex.tryLock()) {
+                    try {
+                        val info = dataSource.fetchProviderUsage(id, state.sessionTraffic?.httpProxyPort ?: 0)
+                        currentCoroutineContext().ensureActive()
+                        if (info != null) _uiState.update { current ->
+                            if (dashboardPlan(current)?.id != id) current else current.copy(groups = current.groups.map { group ->
+                                if (group.id == id) group.copy(usageInfo = info) else group
+                            })
+                        }
+                    } catch (cancelled: CancellationException) { throw cancelled }
+                    catch (error: Exception) { LogUtil.w(AppConfig.TAG, "Subscription operation=refresh-visible-history unavailable") }
+                    finally { subscriptionRefreshMutex.unlock() }
+                }
+                kotlinx.coroutines.delay(usageRefreshDelay(started, System.currentTimeMillis(), java.time.ZoneId.systemDefault()))
+            }
+        }
+    }
+
     private fun resetExitIp() {
         exitIpGeneration.incrementAndGet()
         exitIpJob?.cancel()
@@ -1347,6 +1376,7 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        usageRefreshJob?.cancel()
         subscriptionShareJob?.cancel()
         exitIpGeneration.incrementAndGet()
         exitIpJob?.cancel()

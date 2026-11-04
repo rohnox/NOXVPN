@@ -40,11 +40,19 @@ internal fun ProtocolsRoute(model: ProtocolsViewModel, modifier: Modifier, onAct
 
 @Composable
 internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction: (ProtocolAction) -> Unit) {
+    var pendingDelete by rememberSaveable { mutableStateOf<String?>(null) }
     var cisco by rememberSaveable { mutableStateOf(false) }
     var details by rememberSaveable { mutableStateOf(false) }
     if (details) AlertDialog(onDismissRequest = { details = false }, title = { Text(stringResource(if (cisco) R.string.protocol_cisco else R.string.protocol_import)) },
         text = { Text(stringResource(if (cisco) R.string.protocol_cisco_hint else R.string.protocol_import_hint)) },
         confirmButton = { TextButton(onClick = { details = false }) { Text(stringResource(android.R.string.ok)) } })
+    val deleteTarget = state.profiles.firstOrNull { it.guid == pendingDelete }
+    if (deleteTarget != null) AlertDialog(onDismissRequest = { pendingDelete = null },
+        title = { Text(stringResource(R.string.protocol_delete_title)) },
+        text = { Text(stringResource(R.string.protocol_delete_confirm, deleteTarget.name)) },
+        confirmButton = { TextButton(onClick = { pendingDelete = null; onAction(ProtocolAction.Delete(deleteTarget.guid)) },
+            enabled = canHandleProtocolAction(state, ProtocolAction.Delete(deleteTarget.guid))) { Text(stringResource(R.string.top_delete_short)) } },
+        dismissButton = { TextButton(onClick = { pendingDelete = null }) { Text(stringResource(android.R.string.cancel)) } })
     LazyColumn(modifier.imePadding(), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         item {
             Text(stringResource(R.string.protocol_title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
@@ -76,18 +84,24 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
                 Text(stringResource(R.string.protocol_traffic, state.received.toTrafficString(), state.sent.toTrafficString()), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             items(state.profiles, key = { it.guid }) { profile ->
+                val connected = isConnectedOpenVpnProfile(state, profile.guid)
+                val action = if (connected) ProtocolAction.DisconnectProfile(profile.guid) else ProtocolAction.Connect(profile.guid)
                 DashboardPanel {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         ProfileEmblem()
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             Text(stringResource(R.string.protocol_openvpn), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
                             Text(profile.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            if (connected) Icon(painterResource(R.drawable.ic_fab_check), stringResource(R.string.protocol_profile_connected), Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
+                        }
+                        IconButton(onClick = { pendingDelete = profile.guid }, enabled = canHandleProtocolAction(state, ProtocolAction.Delete(profile.guid))) {
+                            Icon(painterResource(R.drawable.ic_delete_24dp), stringResource(R.string.protocol_delete_named, profile.name), Modifier.size(20.dp))
                         }
                     }
-                    PremiumButton(onClick = { onAction(ProtocolAction.Connect(profile.guid)) }, enabled = canHandleProtocolAction(state, ProtocolAction.Connect(profile.guid)), modifier = Modifier.fillMaxWidth()) {
+                    PremiumButton(onClick = { onAction(action) }, enabled = canHandleProtocolAction(state, action), modifier = Modifier.fillMaxWidth()) {
                         Icon(painterResource(R.drawable.ic_top_power), null, Modifier.size(20.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.protocol_connect_profile, profile.name), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                        Text(stringResource(if (connected) R.string.protocol_disconnect_profile else R.string.protocol_connect_profile, profile.name), maxLines = 2, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }

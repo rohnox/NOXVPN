@@ -85,4 +85,5 @@
     <string name="top_exit_ip_unavailable">無法使用</string>
     <string name="top_exit_ip_loading">正在檢查…</string>
     <string name="top_exit_ip_refresh">重新整理出口 IP</string>
+    <string name="top_today_usage_pending">尚未收到服務商 %1$s 的統計資料。</string>
 </resources>
