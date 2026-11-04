@@ -117,6 +117,17 @@ class MainRepository(
 
     override fun getSelectServer(): String? = MmkvManager.getSelectServer()
 
+    override fun getDashboardSubscriptionId(): String? = MmkvManager.decodeSettingsString(AppConfig.CACHE_DASHBOARD_SUBSCRIPTION_ID)
+
+    override fun setDashboardSubscriptionId(id: String) {
+        MmkvManager.encodeSettings(AppConfig.CACHE_DASHBOARD_SUBSCRIPTION_ID, id)
+    }
+
+    override fun removeSubscription(id: String) {
+        SettingsManager.removeSubscriptionWithDefault(id)
+        com.v2ray.ang.handler.SettingsChangeManager.makeSetupGroupTab()
+    }
+
     override fun setSelectServer(guid: String) = MmkvManager.setSelectServer(guid)
 
     override fun getConfirmRemove(): Boolean =

@@ -25,6 +25,8 @@ data class MainUiState(
     val selectedGuid: String? = null,
     val selectedServerName: String = "",
     val selectedSubscriptionId: String = "",
+    val dashboardSubscriptionId: String = "",
+    val dashboardMessage: Int? = null,
     val isRunning: Boolean = false,
     val sessionTraffic: com.v2ray.ang.dto.SessionTraffic? = null,
     val trafficHistory: List<com.v2ray.ang.dto.SessionTraffic> = emptyList(),
@@ -71,6 +73,8 @@ sealed interface MainAction {
     data object LocateSelectedServer : MainAction
 
     data class SelectGroup(val groupId: String) : MainAction
+    data class SelectDashboardSubscription(val id: String) : MainAction
+    data class DeleteSubscription(val id: String) : MainAction
     data class SelectServer(val guid: String) : MainAction
     data class RemoveServer(val guid: String) : MainAction
     data class EditServer(val guid: String, val profile: com.v2ray.ang.dto.entities.ProfileItem) : MainAction

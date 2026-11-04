@@ -73,3 +73,18 @@ internal class SubscriptionEntryRefresh {
         return true
     }
 }
+
+internal fun resolveDashboardSubscription(groups: List<com.v2ray.ang.dto.GroupMapItem>, preferred: String?, connected: String): String {
+    val plans = groups.filter { it.id.isNotEmpty() && it.id != com.v2ray.ang.AppConfig.DEFAULT_SUBSCRIPTION_ID }
+    return plans.firstOrNull { it.id == preferred }?.id ?: plans.firstOrNull { it.id == connected }?.id ?: plans.firstOrNull()?.id.orEmpty()
+}
+internal fun dashboardPlan(state: MainUiState): com.v2ray.ang.dto.GroupMapItem? =
+    state.groups.firstOrNull { it.id == resolveDashboardSubscription(state.groups, state.dashboardSubscriptionId, state.selectedSubscriptionId) && it.id.isNotEmpty() }
+
+internal fun nearestProviderDay(points: List<com.v2ray.ang.dto.entities.SubscriptionUsageSample>, fraction: Float): Long? {
+    if (points.isEmpty() || !fraction.isFinite()) return null
+    val start = points.minOf { it.timestampSeconds }.toDouble()
+    val end = points.maxOf { it.timestampSeconds }.toDouble()
+    val target = start + (end - start) * fraction.coerceIn(0f, 1f)
+    return points.minByOrNull { kotlin.math.abs(it.timestampSeconds - target) }?.timestampSeconds
+}

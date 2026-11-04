@@ -1,0 +1,11 @@
+# 1.5.5 — subscription selection and daily usage inspection
+
+The subscription tab implements selected design 3: a prominent gold summary with a real quota ring, followed by compact cards with stable-ID selection, a check mark and gold border. Each subscription has update and delete actions. Add opens the existing subscription editor directly.
+
+- A selected subscription owns the usage/quota/title/day information shown on Home. Its ID is persisted through the existing MMKV owner. Selecting a subscription also filters the server group but never selects a new VPN server or starts/stops a tunnel. Home connection status still describes the actual Xray connection.
+- Deletion requires confirmation and removes the local subscription and its dependent configurations through the existing SettingsManager owner. The active Xray subscription cannot be deleted until disconnected. Missing IDs are ignored; deletion selects a valid remaining subscription or the empty state. It does not delete the customer's server-side account.
+- Tap a real PasarGuard history point to see that day's combined upload+download volume. A localized day menu provides an alternative to chart tapping. Only actual provider daily intervals can be selected; cumulative account snapshots are never reinterpreted as daily usage.
+- Both PasarGuard and compatible Sanaei/3x-ui subscriptions retain standard metadata support: provider title, combined account usage, quota and expiry/remaining days. The supplied Sanaei endpoint returned Subscription-Userinfo to an app user agent, and public format=info JSON exposed aggregate fields only. No public daily-history endpoint was found in the inspected source/sample, so Sanaei does not receive a fabricated 30-day chart. PasarGuard's actual daily API remains supported.
+- No administrator token or customer link is embedded; no new network endpoint, permissions, native dependency, tracker or advertising. Optional fields and existing persisted subscription formats are retained. Version 1.5.5 / base versionCode 768; same package and release certificate.
+
+Official source examined: [3x-ui controller at 83ea59f, public metadata handler](https://github.com/MHSanaei/3x-ui/blob/83ea59fb693fee1815d867dff4d33028ddaf12a9/internal/sub/controller.go#L417). Findings apply to that source revision and the supplied sample, not every future or customized panel.

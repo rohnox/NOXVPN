@@ -68,4 +68,16 @@
     <string name="top_history_updated">آخرین دریافت آمار: %1$s</string>
     <string name="top_monthly_usage">مجموع مصرف ۳۰روزه</string>
     <string name="top_remote_history_empty">پنل برای این بازه، مصرفی ثبت نکرده است.</string>
+    <string name="top_add_subscription">افزودن اشتراک</string>
+    <string name="top_your_subscriptions">اشتراک‌های شما</string>
+    <string name="top_subscription_selected">انتخاب‌شده</string>
+    <string name="top_delete_short">حذف</string>
+    <string name="top_delete_subscription">حذف اشتراک</string>
+    <string name="top_delete_subscription_confirm">اشتراک «%1$s» و کانفیگ‌های وابسته حذف شوند؟</string>
+    <string name="top_delete_connected">ابتدا اتصال این اشتراک را قطع کنید، سپس آن را حذف کنید.</string>
+    <string name="top_refresh_named">به‌روزرسانی اشتراک %1$s</string>
+    <string name="top_delete_named">حذف اشتراک %1$s</string>
+    <string name="top_choose_day">انتخاب روز</string>
+    <string name="top_day_hint">برای دیدن مصرف روز، روی نمودار بزنید.</string>
+    <string name="top_day_value">مصرف روز %1$s: %2$s</string>
 </resources>

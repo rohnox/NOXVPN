@@ -179,6 +179,7 @@ class MainActivity : HelperBaseComponentActivity() {
         val intent = when (destination) {
             MainDestination.Protocols -> Intent(this, com.v2ray.ang.ui.protocols.ProtocolsActivity::class.java)
             MainDestination.Subscriptions -> Intent(this, SubSettingActivity::class.java)
+            MainDestination.AddSubscription -> Intent(this, com.v2ray.ang.ui.subscription.SubEditActivity::class.java)
             MainDestination.PerAppProxy -> Intent(this, PerAppProxyActivity::class.java)
             MainDestination.Routing -> Intent(this, RoutingSettingActivity::class.java)
             MainDestination.UserAssets -> Intent(this, UserAssetActivity::class.java)

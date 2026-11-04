@@ -77,6 +77,9 @@ class MainViewModel(
     private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
     private var subscriptionNoticeJob: Job? = null
+    private val dashboardChoiceMutex = Mutex()
+    private var dashboardSelectionJob: Job? = null
+    private var subscriptionDeleteJob: Job? = null
     private val subscriptionRefreshMutex = Mutex()
     private val entryRefresh = SubscriptionEntryRefresh()
     private val preloadDispatcher: CoroutineDispatcher = ioDispatcher.limitedParallelism(1)
@@ -329,6 +332,8 @@ class MainViewModel(
             is MainAction.UpdateGroupSubscription -> importConfigViaSub(action.groupId)
             MainAction.ExportAll -> exportAllAsync()
             is MainAction.SelectGroup -> subscriptionIdChanged(action.groupId)
+            is MainAction.SelectDashboardSubscription -> selectDashboardSubscription(action.id)
+            is MainAction.DeleteSubscription -> deleteSubscription(action.id)
             is MainAction.SelectServer -> updateSelectedGuid(action.guid)
             is MainAction.RemoveServer -> removeServerAndRefresh(action.guid)
             is MainAction.Search -> filterConfig(action.query)
@@ -496,30 +501,39 @@ class MainViewModel(
                 if (forceRefresh) {
                     cacheMutex.withLock { groupDataCache.clear() }
                 }
-                val groups = com.v2ray.ang.ui.subscription.visibleSubscriptions(
-                    dataSource.getSubscriptions(), dataSource.getServerGuidList(AppConfig.DEFAULT_SUBSCRIPTION_ID).isNotEmpty()
-                ).map {
-                    GroupMapItem(
-                        id = it.guid,
-                        remarks = subscriptionTitle(it.subscription.usageInfo, it.subscription.remarks),
-                        usageInfo = it.subscription.usageInfo?.let { info ->
-                            SubscriptionInfoParser.withWebPageFallback(info, it.subscription.url)
-                        },
-                    )
-                }
-                val selectedGroup = resolveSelectedGroup(groups)
-                val validIds = groups.mapTo(HashSet()) { it.id }
-                groupUiFlows.keys.removeAll { it !in validIds }
-                groupServerFlows.keys.removeAll { it !in validIds }
-                groupLoadMutexes.keys.removeAll { it !in validIds }
+                val selection = dashboardChoiceMutex.withLock {
+                    val groups = com.v2ray.ang.ui.subscription.visibleSubscriptions(
+                        dataSource.getSubscriptions(), dataSource.getServerGuidList(AppConfig.DEFAULT_SUBSCRIPTION_ID).isNotEmpty()
+                    ).map {
+                        GroupMapItem(
+                            id = it.guid,
+                            remarks = subscriptionTitle(it.subscription.usageInfo, it.subscription.remarks),
+                            usageInfo = it.subscription.usageInfo?.let { info ->
+                                SubscriptionInfoParser.withWebPageFallback(info, it.subscription.url)
+                            },
+                        )
+                    }
+                    currentCoroutineContext().ensureActive()
+                    val selectedGroup = resolveSelectedGroup(groups)
+                    val connected = dataSource.getSelectServer()?.let { dataSource.decodeServerConfig(it)?.subscriptionId }.orEmpty()
+                    val dashboardId = resolveDashboardSubscription(groups, dataSource.getDashboardSubscriptionId(), connected)
+                    if (dataSource.getDashboardSubscriptionId() != dashboardId) dataSource.setDashboardSubscriptionId(dashboardId)
+                    val validIds = groups.mapTo(HashSet()) { it.id }
+                    groupUiFlows.keys.removeAll { it !in validIds }
+                    groupServerFlows.keys.removeAll { it !in validIds }
+                    groupLoadMutexes.keys.removeAll { it !in validIds }
 
-                _uiState.update {
-                    it.copy(
-                        groups = groups,
-                        selectedGroupId = selectedGroup,
-                        selectedGuid = dataSource.getSelectServer(),
-                    )
+                    _uiState.update {
+                        it.copy(
+                            groups = groups,
+                            dashboardSubscriptionId = dashboardId,
+                            selectedGroupId = selectedGroup,
+                            selectedGuid = dataSource.getSelectServer(),
+                        )
+                    }
+                    groups to selectedGroup
                 }
+                val (groups, selectedGroup) = selection
                 groups.forEach { mutableServerGroupState(it.id) }
 
                 if (groups.isEmpty()) {
@@ -645,6 +659,53 @@ class MainViewModel(
         if (notice != null) subscriptionNoticeJob = viewModelScope.launch {
             kotlinx.coroutines.delay(6000)
             _uiState.update { it.copy(subscriptionRefresh = null) }
+        }
+    }
+
+    private fun selectDashboardSubscription(id: String) {
+        dashboardSelectionJob?.cancel()
+        dashboardSelectionJob = viewModelScope.launch(ioDispatcher) {
+            try {
+                dashboardChoiceMutex.withLock {
+                    if (id.isBlank() || id == AppConfig.DEFAULT_SUBSCRIPTION_ID || dataSource.getSubscriptionItem(id) == null) return@withLock
+                    dataSource.setDashboardSubscriptionId(id)
+                    currentCoroutineContext().ensureActive()
+                    _uiState.update { it.copy(dashboardSubscriptionId = id, dashboardMessage = null) }
+                    subscriptionIdChanged(id)
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "Dashboard subscription operation=select", IllegalStateException(error.javaClass.simpleName))
+                _uiState.update { it.copy(dashboardMessage = R.string.toast_failure) }
+            }
+        }
+    }
+
+    private fun deleteSubscription(id: String) {
+        if (subscriptionDeleteJob?.isActive == true) return
+        subscriptionDeleteJob = viewModelScope.launch(ioDispatcher) {
+            try {
+                subscriptionRefreshMutex.withLock {
+                    dashboardChoiceMutex.withLock choice@ {
+                        if (id.isBlank() || id == AppConfig.DEFAULT_SUBSCRIPTION_ID || dataSource.getSubscriptionItem(id) == null) return@choice
+                        val connected = dataSource.getSelectServer()?.let { dataSource.decodeServerConfig(it)?.subscriptionId }
+                        if (_uiState.value.isRunning && connected == id) {
+                            _uiState.update { it.copy(dashboardMessage = R.string.top_delete_connected) }
+                            return@choice
+                        }
+                        dataSource.removeSubscription(id)
+                        val remaining = _uiState.value.groups.filterNot { it.id == id }
+                        val next = resolveDashboardSubscription(remaining, dataSource.getDashboardSubscriptionId(), connected.orEmpty())
+                        dataSource.setDashboardSubscriptionId(next)
+                        _uiState.update { it.copy(groups = remaining, dashboardSubscriptionId = next, selectedGuid = dataSource.getSelectServer(), dashboardMessage = null) }
+                        setupGroupTab(forceRefresh = true)
+                    }
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "Dashboard subscription operation=delete", IllegalStateException(error.javaClass.simpleName))
+                _uiState.update { it.copy(dashboardMessage = R.string.toast_failure) }
+            }
         }
     }
 
@@ -890,7 +951,7 @@ class MainViewModel(
             MainAction.RemoveAllServers, MainAction.RemoveDuplicateServers, MainAction.RemoveInvalidServers,
             MainAction.UpdateSubscriptions, is MainAction.UpdateGroupSubscription,
             is MainAction.SelectServer, is MainAction.SelectGroup, is MainAction.EditServer,
-            is MainAction.RemoveServer, is MainAction.ImportManually, is MainAction.ImportBatchConfig -> {
+            is MainAction.DeleteSubscription, is MainAction.RemoveServer, is MainAction.ImportManually, is MainAction.ImportBatchConfig -> {
                 cancelAutoConnect()
                 selectionJob?.cancel()
                 selectionGeneration.incrementAndGet()

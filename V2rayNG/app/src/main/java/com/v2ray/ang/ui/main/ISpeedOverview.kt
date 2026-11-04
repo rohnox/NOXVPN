@@ -1,6 +1,7 @@
 package com.v2ray.ang.ui.main
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -29,6 +35,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -60,11 +68,10 @@ internal fun ISpeedOverview(
     onToggle: () -> Unit, onServers: () -> Unit, onImport: () -> Unit,
     onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit, onMore: (ServerRowUiModel) -> Unit
 ) {
-    val plan = state.groups.firstOrNull { it.id == state.selectedSubscriptionId && it.id.isNotEmpty() && it.id != AppConfig.DEFAULT_SUBSCRIPTION_ID }
-        ?: state.groups.firstOrNull { it.id == state.selectedGroupId && it.id.isNotEmpty() && it.id != AppConfig.DEFAULT_SUBSCRIPTION_ID }
+    val plan = dashboardPlan(state)
     LazyColumn(modifier, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item { ConnectionHero(state, status, onToggle, onServers) }
-        item { TrafficPanel(plan?.usageInfo) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
+        item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
             if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id))
         } }
@@ -158,7 +165,7 @@ private fun HeroMetric(label: String, value: String, modifier: Modifier) {
 }
 
 @Composable
-private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?, onRefresh: () -> Unit) {
+private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?, subscriptionId: String?, onRefresh: () -> Unit) {
     val nowSeconds by androidx.compose.runtime.produceState(System.currentTimeMillis() / 1000) {
         while (true) {
             value = System.currentTimeMillis() / 1000
@@ -168,6 +175,10 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
     val remote = info?.providerUsage
     val local = remember(info?.dailyUsage, nowSeconds) { com.v2ray.ang.handler.SubscriptionInfoParser.recentUsage(info, nowSeconds) }
     val points = remote ?: local
+    var selectedDay by rememberSaveable(subscriptionId) { mutableStateOf<Long?>(null) }
+    var dayMenu by remember { mutableStateOf(false) }
+    LaunchedEffect(points) { if (points.none { it.timestampSeconds == selectedDay }) selectedDay = null }
+    val chooseDay = stringResource(R.string.top_choose_day)
     val known = info != null && hasSubscriptionTraffic(info)
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val used = if (remote != null) com.v2ray.ang.handler.PasarGuardUsage.total(remote)?.let { formatHistoryTraffic(it, locale) } ?: stringResource(R.string.ispeed_unavailable)
@@ -194,7 +205,14 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
             Text(stringResource(if (remote != null) R.string.top_remote_history_empty else R.string.top_provider_history_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             TextButton(onRefresh) { Text(stringResource(R.string.top_refresh)) }
         } else {
-            Canvas(Modifier.fillMaxWidth().height(84.dp).semantics { contentDescription = graphDescription }) {
+            Canvas(Modifier.fillMaxWidth().height(84.dp).semantics {
+                contentDescription = graphDescription
+                if (remote != null) onClick(label = chooseDay) { dayMenu = true; true }
+            }.pointerInput(points, remote) {
+                if (remote != null) detectTapGestures { position ->
+                    selectedDay = nearestProviderDay(points, position.x / size.width.coerceAtLeast(1))
+                }
+            }) {
                 repeat(4) { i -> val y = size.height * i / 3; drawLine(gridColor, Offset(0f, y), Offset(size.width, y), 1.dp.toPx()) }
                 val ceiling = points.maxOf { it.usedBytes }.coerceAtLeast(1L).toDouble()
                 val start = points.first().timestampSeconds
@@ -205,6 +223,10 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
                     val y = size.height - (point.usedBytes / ceiling * (size.height - 12.dp.toPx())).toFloat()
                     if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
                     drawCircle(color, 3.dp.toPx(), Offset(x, y))
+                    if (point.timestampSeconds == selectedDay) {
+                        drawLine(color.copy(alpha = .6f), Offset(x, 0f), Offset(x, size.height), 1.dp.toPx())
+                        drawCircle(color, 5.dp.toPx(), Offset(x, y))
+                    }
                 }
                 drawPath(path, color, style = Stroke(2.5.dp.toPx(), cap = StrokeCap.Round))
             }
@@ -212,6 +234,20 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(dates.first(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(dates.last(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+            if (remote != null) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                val selected = points.firstOrNull { it.timestampSeconds == selectedDay }
+                Text(if (selected == null) stringResource(R.string.top_day_hint) else stringResource(R.string.top_day_value,
+                    dates[points.indexOf(selected)], formatHistoryTraffic(selected.usedBytes, locale)), Modifier.weight(1f), style = MaterialTheme.typography.labelSmall)
+                Box {
+                    TextButton(onClick = { dayMenu = true }) { Text(chooseDay, style = MaterialTheme.typography.labelSmall) }
+                    DropdownMenu(expanded = dayMenu, onDismissRequest = { dayMenu = false }, modifier = Modifier.heightIn(max = 280.dp)) {
+                        points.forEachIndexed { index, point -> key(point.timestampSeconds) {
+                            DropdownMenuItem(text = { Text(dates[index] + " · " + formatHistoryTraffic(point.usedBytes, locale)) },
+                                onClick = { selectedDay = point.timestampSeconds; dayMenu = false })
+                        } }
+                    }
                 }
             }
         }

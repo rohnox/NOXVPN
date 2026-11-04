@@ -212,17 +212,6 @@ private fun QuotaValue(label: String, value: String) {
 }
 
 @Composable
-internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit) {
-    val plans = state.groups.filter { it.id.isNotEmpty() && it.id != AppConfig.DEFAULT_SUBSCRIPTION_ID }
-    LazyColumn(modifier, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        item { Text(stringResource(R.string.top_no_plans), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold) }
-        item { Button(onClick = { onNavigate(MainDestination.Subscriptions) }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.top_manage)) } }
-        if (plans.isEmpty()) item { DashboardQuotaCard(null, "") { onNavigate(MainDestination.Subscriptions) } }
-        items(plans, key = { it.id }) { plan -> DashboardQuotaCard(plan.usageInfo, plan.remarks) { onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
-    }
-}
-
-@Composable
 internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) -> Unit) {
     val routes = listOf(MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy, MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore, MainDestination.Logcat, MainDestination.About)
     LazyColumn(modifier, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {

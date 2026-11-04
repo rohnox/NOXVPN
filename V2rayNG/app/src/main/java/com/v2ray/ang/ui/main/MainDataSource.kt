@@ -14,6 +14,9 @@ interface MainDataSource : Closeable {
 
     fun getSelectedSubscriptionId(): String
     fun setSelectedSubscriptionId(id: String)
+    fun getDashboardSubscriptionId(): String?
+    fun setDashboardSubscriptionId(id: String)
+    fun removeSubscription(id: String)
 
     fun getSelectServer(): String?
     fun setSelectServer(guid: String)

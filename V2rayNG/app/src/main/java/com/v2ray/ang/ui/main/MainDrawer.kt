@@ -37,6 +37,7 @@ import com.v2ray.ang.ui.compose.verticalScrollbar
 enum class MainDestination(@DrawableRes val iconRes: Int, @StringRes val labelRes: Int) {
     Protocols(R.drawable.ic_top_power, R.string.protocol_title),
     Subscriptions(R.drawable.ic_subscriptions_24dp, R.string.title_sub_setting),
+    AddSubscription(R.drawable.ic_add_24dp, R.string.top_add_subscription),
     PerAppProxy(R.drawable.ic_per_apps_24dp, R.string.per_app_proxy_settings),
     Routing(R.drawable.ic_routing_24dp, R.string.routing_settings_title),
     UserAssets(R.drawable.ic_file_24dp, R.string.title_user_asset_setting),
