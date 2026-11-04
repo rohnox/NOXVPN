@@ -103,6 +103,26 @@ object SubscriptionInfoParser {
         return result.takeIf { it.isNotEmpty() }
     }
 
+    fun recentUsage(info: SubscriptionUsageInfo?, nowSeconds: Long): List<com.v2ray.ang.dto.entities.SubscriptionUsageSample> {
+        val day = nowSeconds.coerceAtLeast(0) / 86400
+        return info?.dailyUsage.orEmpty().filter {
+            it.timestampSeconds >= 0 && it.timestampSeconds / 86400 in (day - 29)..day && it.usedBytes >= 0
+        }.distinctBy { it.timestampSeconds / 86400 }.sortedBy { it.timestampSeconds }.takeLast(30)
+    }
+
+    /** Retain at most 30 daily provider readings; never invent unobserved days. */
+    fun recordUsage(previous: SubscriptionUsageInfo?, current: SubscriptionUsageInfo, nowSeconds: Long): SubscriptionUsageInfo {
+        val known = current.trafficAvailable ?: (current.upload > 0 || current.download > 0)
+        val day = nowSeconds.coerceAtLeast(0) / 86400
+        val retained = recentUsage(previous, nowSeconds)
+        if (!known) return current.copy(dailyUsage = retained)
+        val upload = current.upload.coerceAtLeast(0)
+        val download = current.download.coerceAtLeast(0)
+        val used = if (Long.MAX_VALUE - upload < download) Long.MAX_VALUE else upload + download
+        val point = com.v2ray.ang.dto.entities.SubscriptionUsageSample(nowSeconds.coerceAtLeast(0), used)
+        return current.copy(dailyUsage = (retained.filter { it.timestampSeconds / 86400 != day } + point).takeLast(30))
+    }
+
     private fun normalizeExpire(value: Long): Long =
         if (value >= MILLIS_THRESHOLD) value / 1000 else value
 

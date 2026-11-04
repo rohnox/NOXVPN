@@ -43,18 +43,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
     internal val state = _state.asStateFlow()
     private val imports = Mutex()
     private val initialized = CompletableDeferred<Unit>()
-    private val listener = object : VpnStatus.StateListener {
-        override fun setConnectedVPN(uuid: String?) = Unit
-        override fun updateState(state: String?, logmessage: String?, localizedResId: Int, level: ConnectionStatus?, intent: Intent?) {
-            val (resource, connected) = openVpnUiStatus(level)
-            _state.update { it.copy(status = resource, connected = connected,
-                received = if (connected) it.received else null, sent = if (connected) it.sent else null) }
-        }
-    }
-    private val traffic = VpnStatus.ByteCountListener { received, sent, _, _ ->
-        _state.update { if (it.connected) it.copy(received = received, sent = sent) else it }
-    }
-    private var registered = false
+    private var statusClient: OpenVpnStatusClient? = null
 
     init {
         viewModelScope.launch {
@@ -66,9 +55,13 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 _state.update { it.copy(busy = false, openVpnReady = ready.first, ciscoReady = ready.second, vpnMode = ready.third) }
                 if (ready.first) {
-                    VpnStatus.addStateListener(listener)
-                    VpnStatus.addByteCountListener(traffic)
-                    registered = true
+                    statusClient = OpenVpnStatusClient(app, { level ->
+                        val (resource, connected) = openVpnUiStatus(level)
+                        _state.update { it.copy(status = resource, connected = connected,
+                            received = if (connected) it.received else null, sent = if (connected) it.sent else null) }
+                    }, { received, sent ->
+                        _state.update { if (it.connected) it.copy(received = received, sent = sent) else it }
+                    }).also { it.start() }
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (e: Exception) {
@@ -90,6 +83,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
     internal fun reload() {
         viewModelScope.launch {
             initialized.await()
+            statusClient?.refresh()
             imports.withLock {
                 if (!_state.value.openVpnReady) return@withLock
                 try {
@@ -166,10 +160,8 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
         LogUtil.e(AppConfig.TAG, "Embedded VPN phase=$phase", safe)
     }
     override fun onCleared() {
-        if (registered) {
-            VpnStatus.removeStateListener(listener)
-            VpnStatus.removeByteCountListener(traffic)
-        }
+        statusClient?.close()
+        statusClient = null
         super.onCleared()
     }
 }

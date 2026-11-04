@@ -5,8 +5,6 @@
   <string name="top_brand">iSpeedTopVPN</string>
   <string name="top_brand_sub">شبکه شخصی شما</string>
   <string name="top_caption">مدیریت اتصال و نمایش مصرف واقعی</string>
-  <string name="top_chart_a11y">آپلود زنده %1$s، دانلود %2$s</string>
-  <string name="top_chart_empty">پس از اتصال، داده واقعی اینجا نمایش داده می‌شود. اگر آمار در دسترس نیست، نمایش سرعت را در تنظیمات فعال کن.</string>
   <string name="top_choose">انتخاب سرور</string>
   <string name="top_connect">اتصال</string>
   <string name="top_controls">تنظیمات</string>
@@ -14,7 +12,6 @@
   <string name="top_download">دانلود</string>
   <string name="top_empty_hint">لینک را وارد کن، QR را اسکن کن یا فایل کانفیگ را باز کن.</string>
   <string name="top_empty_servers">اولین اتصالت از اینجا شروع می‌شود</string>
-  <string name="top_expiry">انقضا</string>
   <string name="top_group">گروه‌های اشتراک</string>
   <string name="top_heading">وضعیت اتصال</string>
   <string name="top_import">وارد کردن</string>
@@ -32,7 +29,7 @@
   <string name="top_online">سرویس فعال است</string>
   <string name="top_overview">خانه</string>
   <string name="top_plan_missing">پنل اطلاعات حجم را ارسال نکرده است.</string>
-  <string name="top_plan_quota">حجم اشتراک</string>
+  <string name="top_plan_quota">سهمیه مصرف</string>
   <string name="top_plan_source">دریافت‌شده از پنل اشتراک</string>
   <string name="top_plans">اشتراک‌ها</string>
   <string name="top_quick">دسترسی سریع</string>
@@ -44,15 +41,27 @@
   <string name="top_servers">سرورها</string>
   <string name="top_session">مدت اتصال</string>
   <string name="top_settings_hint">زبان، ظاهر، DNS و تنظیمات اتصال</string>
-  <string name="top_stats_settings">تنظیمات آمار</string>
   <string name="top_test">تست تأخیر</string>
   <string name="top_tools_hint">اتصالت را شخصی‌سازی کن</string>
   <string name="top_total">حجم کل</string>
-  <string name="top_traffic">نمودار سرعت انتقال</string>
+  <string name="top_traffic">مصرف اشتراک · ۳۰ روز اخیر</string>
   <string name="top_unlimited">نامحدود</string>
   <string name="top_untested">تست نشده</string>
   <string name="top_upload">آپلود</string>
   <string name="top_used">مصرف‌شده</string>
   <string name="top_your_servers">سرورهای شما</string>
   <string name="top_no_matches">سروری با این جست‌وجو پیدا نشد</string>
+    <string name="top_validity">اعتبار اشتراک</string>
+    <string name="top_plan_expired">منقضی شده</string>
+    <plurals name="top_days_remaining">
+        <item quantity="one">%d روز باقی‌مانده</item>
+        <item quantity="other">%d روز باقی‌مانده</item>
+    </plurals>
+    <string name="top_provider_history">مجموع آپلود و دانلود طبق پنل؛ سابقه از شروع ثبت در برنامه</string>
+    <string name="top_combined_usage">مصرف دوره اشتراک</string>
+    <string name="top_provider_chart_a11y">مجموع مصرف اشتراک %1$s؛ سابقه دریافت‌شده از پنل</string>
+    <string name="top_provider_history_empty">برای شروع ثبت سابقه، اشتراک را به‌روزرسانی کنید. سابقه روزهای قبل در لینک ساب موجود نیست.</string>
+    <string name="top_sub_updated">اشتراک با موفقیت به‌روزرسانی شد</string>
+    <string name="top_sub_partial">بعضی اشتراک‌ها به‌روزرسانی نشدند؛ دوباره تلاش کنید</string>
+    <string name="top_sub_failed">به‌روزرسانی اشتراک ناموفق بود؛ اتصال اینترنت را بررسی کنید</string>
 </resources>

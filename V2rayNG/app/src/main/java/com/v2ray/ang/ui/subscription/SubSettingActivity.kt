@@ -169,7 +169,7 @@ fun SubSettingScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = subCache.subscription.remarks,
+                                    text = com.v2ray.ang.ui.main.subscriptionTitle(subCache.subscription.usageInfo, subCache.subscription.remarks),
                                     style = MaterialTheme.typography.bodyLarge,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
@@ -214,7 +214,7 @@ fun SubSettingScreen(
                                         )
                                     }
                                     IconButton(onClick = {
-                                        if (confirmRemove) removeTarget = SubscriptionDeleteTarget(subCache.guid, subCache.subscription.remarks)
+                                        if (confirmRemove) removeTarget = SubscriptionDeleteTarget(subCache.guid, com.v2ray.ang.ui.main.subscriptionTitle(subCache.subscription.usageInfo, subCache.subscription.remarks))
                                         else onRemoveSub(subCache.guid)
                                     }) {
                                         Icon(

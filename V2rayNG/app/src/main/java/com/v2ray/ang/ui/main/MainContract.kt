@@ -5,6 +5,8 @@ import com.v2ray.ang.dto.GroupMapItem
 import com.v2ray.ang.dto.LocateTarget
 
 /** Locale-neutral state formatted only when it reaches the main UI. */
+enum class SubscriptionRefreshNotice { Success, Partial, Failed }
+
 sealed interface MainStatus {
     data object Disconnected : MainStatus
     data object Connected : MainStatus
@@ -18,6 +20,7 @@ sealed interface MainStatus {
  */
 data class MainUiState(
     val groups: List<GroupMapItem> = emptyList(),
+    val subscriptionRefresh: SubscriptionRefreshNotice? = null,
     val selectedGroupId: String = "",
     val selectedGuid: String? = null,
     val selectedServerName: String = "",
@@ -43,6 +46,7 @@ data class MainUiState(
  */
 sealed interface MainAction {
     data object Initialize : MainAction
+    data object AppEntered : MainAction
     data object RefreshGroups : MainAction
     data object ToggleService : MainAction
     data object AutoConnect : MainAction

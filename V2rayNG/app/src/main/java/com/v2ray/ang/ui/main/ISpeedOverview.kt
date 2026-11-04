@@ -14,6 +14,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,7 +64,7 @@ internal fun ISpeedOverview(
         ?: state.groups.firstOrNull { it.id == state.selectedGroupId && it.id.isNotEmpty() && it.id != AppConfig.DEFAULT_SUBSCRIPTION_ID }
     LazyColumn(modifier, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item { ConnectionHero(state, status, onToggle, onServers) }
-        item { TrafficPanel(state, onNavigate) }
+        item { TrafficPanel(plan?.usageInfo) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
             if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id))
         } }
@@ -157,64 +158,54 @@ private fun HeroMetric(label: String, value: String, modifier: Modifier) {
 }
 
 @Composable
-private fun TrafficPanel(state: MainUiState, onNavigate: (MainDestination) -> Unit) {
-    val rates = remember(state.trafficHistory) { trafficRates(state.trafficHistory) }
-    val latest = rates.lastOrNull()
-    val unavailable = stringResource(R.string.ispeed_unavailable)
-    val up = latest?.up?.toLong()?.toSpeedString() ?: unavailable
-    val down = latest?.down?.toLong()?.toSpeedString() ?: unavailable
-    val graphDescription = if (latest == null) stringResource(R.string.top_chart_empty) else stringResource(R.string.top_chart_a11y, up, down)
+private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?, onRefresh: () -> Unit) {
+    val nowSeconds by androidx.compose.runtime.produceState(System.currentTimeMillis() / 1000) {
+        while (true) {
+            value = System.currentTimeMillis() / 1000
+            kotlinx.coroutines.delay(60_000)
+        }
+    }
+    val points = remember(info?.dailyUsage, nowSeconds) { com.v2ray.ang.handler.SubscriptionInfoParser.recentUsage(info, nowSeconds) }
+    val known = info != null && hasSubscriptionTraffic(info)
+    val used = if (known) info.used.toTrafficString() else stringResource(R.string.ispeed_unavailable)
+    val graphDescription = stringResource(R.string.top_provider_chart_a11y, used)
     val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f)
-    val downloadColor = MaterialTheme.colorScheme.primary
-    val uploadColor = MaterialTheme.colorScheme.secondary
+    val color = MaterialTheme.colorScheme.primary
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+    val dates = remember(points, locale) {
+        val formatter = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale).apply { timeZone = java.util.TimeZone.getTimeZone("UTC") }
+        points.map { formatter.format(java.util.Date(it.timestampSeconds * 1000)) }
+    }
     DashboardPanel {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.top_traffic), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
-            }
-            Icon(painterResource(R.drawable.ic_top_chart), null, tint = MaterialTheme.colorScheme.primary)
+            Text(stringResource(R.string.top_traffic), Modifier.weight(1f), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
+            Icon(painterResource(R.drawable.ic_top_chart), null, tint = color)
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            TrafficLegend(stringResource(R.string.top_upload), up, uploadColor)
-            TrafficLegend(stringResource(R.string.top_download), down, downloadColor)
-        }
-        if (rates.isEmpty()) {
-            Box(Modifier.fillMaxWidth().height(56.dp), contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.top_chart_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            TextButton(onClick = { onNavigate(MainDestination.Settings) }) { Text(stringResource(R.string.top_stats_settings)) }
+        Text(stringResource(R.string.top_provider_history), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        TrafficLegend(stringResource(R.string.top_combined_usage), used, color)
+        if (points.isEmpty()) {
+            Text(stringResource(R.string.top_provider_history_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            TextButton(onRefresh) { Text(stringResource(R.string.top_refresh)) }
         } else {
             Canvas(Modifier.fillMaxWidth().height(84.dp).semantics { contentDescription = graphDescription }) {
-                repeat(4) { index -> val y = size.height * index / 3; drawLine(gridColor, Offset(0f, y), Offset(size.width, y), 1.dp.toPx()) }
-                val maxValue = rates.maxOf { max(it.up, it.down) }.coerceAtLeast(1.0)
-                val start = rates.first().seconds
-                val range = (rates.last().seconds - start).coerceAtLeast(1L)
-                fun plot(upload: Boolean, color: Color) {
-                    val path = Path()
-                    rates.forEachIndexed { i, point ->
-                        val x = (point.seconds - start).toFloat() / range * size.width
-                        val y = size.height - ((if (upload) point.up else point.down) / maxValue * (size.height - 12.dp.toPx())).toFloat()
-                        if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
-                        if (rates.size == 1) drawCircle(color, 3.dp.toPx(), Offset(x, y))
-                    }
-                    if (!upload && rates.size > 1) {
-                        val area = Path().apply {
-                            addPath(path)
-                            lineTo(size.width, size.height)
-                            lineTo(0f, size.height)
-                            close()
-                        }
-                        drawPath(area, Brush.verticalGradient(listOf(color.copy(alpha = .22f), color.copy(alpha = 0f))))
-                    }
-                    drawPath(path, color, style = Stroke(2.5.dp.toPx(), cap = StrokeCap.Round))
+                repeat(4) { i -> val y = size.height * i / 3; drawLine(gridColor, Offset(0f, y), Offset(size.width, y), 1.dp.toPx()) }
+                val ceiling = points.maxOf { it.usedBytes }.coerceAtLeast(1L).toDouble()
+                val start = points.first().timestampSeconds
+                val range = (points.last().timestampSeconds - start).coerceAtLeast(1L)
+                val path = Path()
+                points.forEachIndexed { index, point ->
+                    val x = (point.timestampSeconds - start).toFloat() / range * size.width
+                    val y = size.height - (point.usedBytes / ceiling * (size.height - 12.dp.toPx())).toFloat()
+                    if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                    drawCircle(color, 3.dp.toPx(), Offset(x, y))
                 }
-                plot(false, downloadColor); plot(true, uploadColor)
+                drawPath(path, color, style = Stroke(2.5.dp.toPx(), cap = StrokeCap.Round))
             }
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(formatSessionDuration(rates.first().seconds), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(formatSessionDuration(rates.last().seconds), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(dates.first(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(dates.last(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
         }
     }

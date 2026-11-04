@@ -38,10 +38,10 @@ import java.io.File
 class PremiumVisualTest {
     @get:Rule val compose = createComposeRule()
 
-    private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false) {
+    private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null) {
         val history = (0L..30L).map { t -> SessionTraffic(t, t * 10240L, t * t * 4096L, true) }
-        val quota = SubscriptionUsageInfo(upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true)
-        val state = if (populated) MainUiState(groups = listOf(GroupMapItem("plan", "Personal plan", quota)), selectedGuid = "a", selectedSubscriptionId = "plan",
+        val quota = SubscriptionUsageInfo(title = "iSpecialVPN", expire = System.currentTimeMillis() / 1000 + 7 * 86400, upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true, dailyUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (14L - day) shl 30) })
+        val state = if (populated) MainUiState(groups = listOf(GroupMapItem("plan", "import sub", quota)), selectedGuid = "a", selectedSubscriptionId = "plan",
             selectedServerName = "Germany · Frankfurt", isRunning = true, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
         val rows = if (populated) listOf("Germany · Frankfurt", "Turkey · Istanbul").mapIndexed { i, name ->
             ServerRowUiModel(if (i == 0) "a" else "b", ProfileItem(configType = EConfigType.VLESS), name, "", "VLESS / TLS", 34L + i * 15L, "")
@@ -51,6 +51,7 @@ class PremiumVisualTest {
                 CompositionLocalProvider(LocalLayoutDirection provides if (rtl) LayoutDirection.Rtl else LayoutDirection.Ltr) {
                     var tab by remember { mutableStateOf(if (protocols) DashboardTab.Protocols else DashboardTab.Overview) }
                     Scaffold(containerColor = MaterialTheme.colorScheme.background,
+                        snackbarHost = { SubscriptionRefreshBanner(notice) },
                         topBar = { Column(Modifier.statusBarsPadding()) { DashboardHeader(if (tab == DashboardTab.Overview) ({}) else null, null) {} } },
                         bottomBar = { DashboardNavigation(tab) { tab = it } }) { padding ->
                         val modifier = Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
@@ -83,10 +84,10 @@ class PremiumVisualTest {
         }
     }
 
-    @Test fun homeEnglish() { render(populated = true); compose.onNodeWithText("Turkey · Istanbul").assertIsDisplayed(); capture("home-en-dark") }
+    @Test fun homeEnglish() { render(populated = true); compose.onNodeWithText("iSpecialVPN").assertIsDisplayed(); compose.onNodeWithText("Subscription quota").assertIsDisplayed(); compose.onNodeWithText("7 days remaining").assertIsDisplayed(); compose.onNodeWithText("import sub").assertDoesNotExist(); capture("home-en-dark") }
     @Test fun homeEmpty() { render(); capture("home-en-empty") }
     @Test @Config(qualifiers = "fa-rIR-w393dp-h852dp-xhdpi")
-    fun homePersian() { render(rtl = true, populated = true); compose.onNodeWithText("Turkey · Istanbul").assertIsDisplayed(); capture("home-fa-dark") }
+    fun homePersian() { render(rtl = true, populated = true); compose.onNodeWithText("سهمیه مصرف").assertIsDisplayed(); capture("home-fa-dark") }
     @Test fun protocolEmpty() { render(protocols = true); compose.onNodeWithText("Import .ovpn file").assertIsDisplayed(); capture("protocol-empty-en") }
     @Test fun protocolProfile() { render(protocols = true, populated = true); capture("protocol-profile-en") }
     @Test fun ciscoSelector() { render(protocols = true); compose.onNodeWithText("Cisco", useUnmergedTree = true).performClick(); capture("cisco-en") }
@@ -98,4 +99,16 @@ class PremiumVisualTest {
         compose.onNodeWithText("Import .ovpn file").assertIsDisplayed()
         compose.onNodeWithText("Disconnect OpenVPN").assertDoesNotExist()
         capture("protocol-after-navigation")
-    }}
+    }
+    @Test fun successfulSubscriptionUpdateBanner() {
+        render(populated = true, notice = SubscriptionRefreshNotice.Success)
+        compose.onNodeWithText("Subscription updated successfully").assertIsDisplayed()
+        capture("subscription-updated")
+    }
+    @Test fun failedSubscriptionUpdateHasNoSuccessMessage() {
+        render(notice = SubscriptionRefreshNotice.Failed)
+        compose.onNodeWithText("Subscription update failed. Check your connection.").assertIsDisplayed()
+        compose.onNodeWithText("Subscription updated successfully").assertDoesNotExist()
+        capture("subscription-update-failed")
+    }
+}

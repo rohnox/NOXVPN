@@ -32,3 +32,30 @@ internal fun hasSubscriptionTraffic(info: SubscriptionUsageInfo): Boolean =
 
 internal fun hasSubscriptionQuota(info: SubscriptionUsageInfo): Boolean =
     info.quotaAvailable ?: (info.total > 0)
+
+/** Cumulative bytes of this connection, never a speed or provider history. */
+internal fun trafficVolumes(history: List<SessionTraffic>): List<TrafficRatePoint> = history
+    .filter { it.available && it.elapsedSeconds >= 0 && it.uploaded >= 0 && it.downloaded >= 0 }
+    .map { TrafficRatePoint(it.elapsedSeconds, it.uploaded.toDouble(), it.downloaded.toDouble()) }
+
+internal fun subscriptionTitle(info: SubscriptionUsageInfo?, fallback: String): String =
+    info?.title?.trim()?.takeIf { it.isNotEmpty() } ?: fallback
+
+/** Null means missing expiry; zero means expired. Round a partial day up. */
+internal fun subscriptionDaysRemaining(expireSeconds: Long?, nowSeconds: Long): Int? {
+    if (expireSeconds == null || expireSeconds <= 0) return null
+    if (expireSeconds <= nowSeconds) return 0
+    val seconds = expireSeconds - nowSeconds.coerceAtLeast(0)
+    return (seconds / 86400 + if (seconds % 86400 > 0) 1 else 0).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+}
+
+/** Suppress repeat entry events caused by permission dialogs, pickers or rotation. */
+internal class SubscriptionEntryRefresh {
+    private var lastEntryMillis: Long? = null
+    fun shouldRefresh(nowMillis: Long): Boolean {
+        val last = lastEntryMillis
+        if (last != null && nowMillis >= last && nowMillis - last < 60_000) return false
+        lastEntryMillis = nowMillis
+        return true
+    }
+}

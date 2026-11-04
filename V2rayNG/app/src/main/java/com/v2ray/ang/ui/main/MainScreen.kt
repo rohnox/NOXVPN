@@ -12,6 +12,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -64,6 +67,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = { SubscriptionRefreshBanner(state.subscriptionRefresh) },
         topBar = {
             Column(Modifier.statusBarsPadding()) {
                 DashboardHeader(onRefresh = if (tab == DashboardTab.Overview) ({ onAction(MainAction.UpdateGroupSubscription("")) }) else null,
@@ -132,5 +136,20 @@ private fun DashboardImportDialog(onDismiss: () -> Unit, onAction: (MainAction) 
                 if (methods) ImportMenuContent(onAction)
             }
         }
+    }
+}
+
+@Composable
+internal fun SubscriptionRefreshBanner(notice: SubscriptionRefreshNotice?) {
+    if (notice == null) return
+    val success = notice == SubscriptionRefreshNotice.Success
+    Surface(Modifier.padding(16.dp).semantics { liveRegion = LiveRegionMode.Polite }, shape = RoundedCornerShape(28.dp),
+        color = if (success) androidx.compose.ui.graphics.Color(0xFF28783A) else MaterialTheme.colorScheme.errorContainer,
+        contentColor = if (success) androidx.compose.ui.graphics.Color.White else MaterialTheme.colorScheme.onErrorContainer) {
+        Text(stringResource(when (notice) {
+            SubscriptionRefreshNotice.Success -> R.string.top_sub_updated
+            SubscriptionRefreshNotice.Partial -> R.string.top_sub_partial
+            SubscriptionRefreshNotice.Failed -> R.string.top_sub_failed
+        }), Modifier.padding(horizontal = 22.dp, vertical = 16.dp), style = MaterialTheme.typography.bodyMedium)
     }
 }

@@ -23,10 +23,14 @@ object LauncherManager {
 
     /** Embedded protocol entry points; the upstream activities retain VPN consent and service ownership. */
     fun launchEmbeddedOpenVpn(context: Context, guid: String) {
-        context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
-            .setAction(Intent.ACTION_MAIN)
-            .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
-            .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
+        // Ordered delivery lets the existing daemon stop handler run before switching VPN owners.
+        // Its actual STOP_SUCCESS event, not this callback, updates the Xray dashboard state.
+        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
+            context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
+                .setAction(Intent.ACTION_MAIN)
+                .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
+                .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
+        }
     }
 
     fun disconnectEmbeddedOpenVpn(context: Context) {
@@ -34,7 +38,9 @@ object LauncherManager {
     }
 
     fun launchEmbeddedCisco(context: Context) {
-        context.startActivity(Intent(context, app.openconnect.MainActivity::class.java))
+        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
+            context.startActivity(Intent(context, app.openconnect.MainActivity::class.java))
+        }
     }
 
     fun startServiceFromToggle(context: Context): Boolean {

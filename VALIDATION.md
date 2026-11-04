@@ -1,3 +1,7 @@
+# Current validation
+
+See [VALIDATION-1.5.3.md](VALIDATION-1.5.3.md) for version 1.5.3. The following reports are historical.
+
 # iSpeedTopVPN 1.5.1 — validation (2026-11-04)
 
 Scope: replace the crowded dashboard presentation with the compact black/gold design, keep the independent Open/Cisco tab and use a local Persian/English font. See CHANGES-1.5.1.md. Previous reports under verification/1.5.0 are historical.

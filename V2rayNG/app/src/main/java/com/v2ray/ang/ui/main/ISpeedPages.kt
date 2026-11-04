@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -134,13 +135,26 @@ internal fun DashboardQuotaCard(info: SubscriptionUsageInfo?, title: String, com
     val quotaKnown = info != null && hasSubscriptionQuota(info)
     val fraction = if (trafficKnown && quotaKnown && info.total > 0) (info.used.toDouble() / info.total).toFloat().coerceIn(0f, 1f) else null
     val locale = LocalConfiguration.current.locales[0]
-    val expiry = remember(info?.expire, locale) { info?.expire?.takeIf { it in 1..Long.MAX_VALUE / 1000 }?.let { DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(Date(it * 1000)) } }
+    val nowSeconds by produceState(System.currentTimeMillis() / 1000, info?.expire) {
+        while (true) {
+            value = System.currentTimeMillis() / 1000
+            kotlinx.coroutines.delay(60_000)
+        }
+    }
+    val days = subscriptionDaysRemaining(info?.expire, nowSeconds)
+    val expiry = when (days) {
+        null -> absent
+        0 -> stringResource(R.string.top_plan_expired)
+        else -> pluralStringResource(R.plurals.top_days_remaining, days, days)
+    }
+    val displayTitle = subscriptionTitle(info, title)
     val track = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .4f)
     val ink = if (fraction != null && fraction >= .9f) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
     DashboardPanel {
         if (compact) {
+            Text(stringResource(R.string.top_plan_quota), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text(title.ifBlank { stringResource(R.string.top_plan_quota) }, Modifier.weight(1f), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(displayTitle.ifBlank { stringResource(R.string.top_plan_quota) }, Modifier.weight(1f), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 IconButton(onRefresh, Modifier.size(32.dp)) { Icon(painterResource(R.drawable.ic_refresh_24dp), stringResource(if (info == null) R.string.top_manage else R.string.top_refresh), Modifier.size(18.dp)) }
             }
             if (info == null) {
@@ -152,13 +166,13 @@ internal fun DashboardQuotaCard(info: SubscriptionUsageInfo?, title: String, com
                     CompactQuota(stringResource(R.string.top_remaining), if (trafficKnown && quotaKnown && info.total > 0) (info.total - info.used).coerceAtLeast(0).toTrafficString() else absent, Modifier.weight(1f))
                 }
                 if (fraction != null) LinearProgressIndicator(progress = { fraction }, modifier = Modifier.fillMaxWidth().height(6.dp), color = ink, trackColor = track, gapSize = 0.dp, drawStopIndicator = {})
-                if (expiry != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(stringResource(R.string.top_expiry), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                if (days != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(stringResource(R.string.top_validity), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(expiry, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         } else {
-        DashboardTitle(title.ifBlank { stringResource(R.string.top_plan_quota) }, stringResource(R.string.top_refresh), onRefresh)
+        DashboardTitle(displayTitle.ifBlank { stringResource(R.string.top_plan_quota) }, stringResource(R.string.top_refresh), onRefresh)
         Text(stringResource(R.string.top_plan_source), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         if (info == null) {
             Text(stringResource(R.string.top_no_plan), fontWeight = FontWeight.Bold)
@@ -175,7 +189,7 @@ internal fun DashboardQuotaCard(info: SubscriptionUsageInfo?, title: String, com
             QuotaValue(stringResource(R.string.top_total), if (!quotaKnown) absent else if (info.total <= 0) stringResource(R.string.top_unlimited) else info.total.toTrafficString())
             QuotaValue(stringResource(R.string.top_remaining), if (trafficKnown && quotaKnown && info.total > 0) (info.total - info.used).coerceAtLeast(0).toTrafficString() else absent)
             HorizontalDivider(color = track)
-            QuotaValue(stringResource(R.string.top_expiry), expiry ?: absent)
+            QuotaValue(stringResource(R.string.top_validity), expiry)
             if (!trafficKnown) Text(stringResource(R.string.top_plan_missing), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         }

@@ -541,8 +541,11 @@ object AngConfigManager {
             val count = parseConfigViaSub(configText, it.guid, false)
             if (count > 0) {
                 it.subscription.lastUpdated = System.currentTimeMillis()
-                // Replaced on every successful update so the box disappears if the panel stops sending the headers.
-                it.subscription.usageInfo = usageInfo
+                // Replace current metadata, retaining only genuine recorded history when headers are absent.
+                it.subscription.usageInfo = SubscriptionInfoParser.recordUsage(
+                    it.subscription.usageInfo, usageInfo ?: SubscriptionUsageInfo(trafficAvailable = false, quotaAvailable = false),
+                    System.currentTimeMillis() / 1000
+                )
                 MmkvManager.encodeSubscription(it.guid, it.subscription)
                 LogUtil.i(AppConfig.TAG, "Subscription updated: ${it.subscription.remarks}, $count configs")
                 return SubscriptionUpdateResult(

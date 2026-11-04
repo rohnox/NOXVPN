@@ -25,7 +25,12 @@ data class SubscriptionUsageInfo(
     /** Null for older saved formats; false means the panel did not provide these counters. */
     val trafficAvailable: Boolean? = null,
     val quotaAvailable: Boolean? = null,
+    /** Daily account-counter observations, not reconstructed billing history. */
+    val dailyUsage: List<SubscriptionUsageSample>? = null,
 ) {
     /** Bytes consumed so far (upload + download). */
     val used: Long get() = upload + download
 }
+
+/** Latest successful provider reading per UTC day. */
+data class SubscriptionUsageSample(val timestampSeconds: Long, val usedBytes: Long)

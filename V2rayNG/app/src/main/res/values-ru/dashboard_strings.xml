@@ -5,8 +5,6 @@
   <string name="top_brand">iSpeedTopVPN</string>
   <string name="top_brand_sub">YOUR PERSONAL NETWORK</string>
   <string name="top_caption">Connection controls and actual usage</string>
-  <string name="top_chart_a11y">Live upload %1$s, download %2$s</string>
-  <string name="top_chart_empty">Real samples will appear after connection. Enable speed display in Settings if statistics are unavailable.</string>
   <string name="top_choose">Choose a server</string>
   <string name="top_connect">Connect</string>
   <string name="top_controls">Settings</string>
@@ -14,7 +12,6 @@
   <string name="top_download">Download</string>
   <string name="top_empty_hint">Paste a link, scan a QR code or import a configuration file.</string>
   <string name="top_empty_servers">Your first connection starts here</string>
-  <string name="top_expiry">Expires</string>
   <string name="top_group">Subscription groups</string>
   <string name="top_heading">Connection status</string>
   <string name="top_import">Import</string>
@@ -32,7 +29,7 @@
   <string name="top_online">Service active</string>
   <string name="top_overview">Home</string>
   <string name="top_plan_missing">The provider has not supplied traffic counters.</string>
-  <string name="top_plan_quota">Subscription allowance</string>
+  <string name="top_plan_quota">Subscription quota</string>
   <string name="top_plan_source">Reported by your subscription provider</string>
   <string name="top_plans">Subs</string>
   <string name="top_quick">Quick access</string>
@@ -44,15 +41,29 @@
   <string name="top_servers">Servers</string>
   <string name="top_session">Connection time</string>
   <string name="top_settings_hint">Language, theme, DNS and connection preferences</string>
-  <string name="top_stats_settings">Statistics settings</string>
   <string name="top_test">Test latency</string>
   <string name="top_tools_hint">Personalize your connection</string>
   <string name="top_total">Total</string>
-  <string name="top_traffic">Transfer speed</string>
+  <string name="top_traffic">Subscription usage · last 30 days</string>
   <string name="top_unlimited">Unlimited</string>
   <string name="top_untested">Not tested</string>
   <string name="top_upload">Upload</string>
   <string name="top_used">Used</string>
   <string name="top_your_servers">Your servers</string>
   <string name="top_no_matches">No servers match your search</string>
+    <string name="top_validity">Subscription validity</string>
+    <string name="top_plan_expired">Expired</string>
+    <plurals name="top_days_remaining">
+        <item quantity="one">Остался %d день</item>
+        <item quantity="few">Осталось %d дня</item>
+        <item quantity="many">Осталось %d дней</item>
+        <item quantity="other">Осталось %d дней</item>
+    </plurals>
+    <string name="top_provider_history">Combined provider counters · history starts when this app records updates</string>
+    <string name="top_combined_usage">Subscription cycle usage</string>
+    <string name="top_provider_chart_a11y">Combined subscription usage %1$s; recorded provider readings</string>
+    <string name="top_provider_history_empty">Refresh the subscription to start recording history. Earlier daily history is not provided by the subscription link.</string>
+    <string name="top_sub_updated">Subscription updated successfully</string>
+    <string name="top_sub_partial">Some subscriptions could not be updated. Try again.</string>
+    <string name="top_sub_failed">Subscription update failed. Check your connection.</string>
 </resources>

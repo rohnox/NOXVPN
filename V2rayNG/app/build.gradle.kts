@@ -13,8 +13,8 @@ android {
         applicationId = "com.ispeedtopvpn.app"
         minSdk = 24
         targetSdk = 37
-        versionCode = 764
-        versionName = "1.5.1"
+        versionCode = 766
+        versionName = "1.5.3"
 
         val abiFilterList = (properties["ABI_FILTERS"] as? String)?.split(';')
         splits {

@@ -74,7 +74,11 @@ class MainViewModel(
     private val dataSource: MainDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
+    private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
+    private var subscriptionNoticeJob: Job? = null
+    private val subscriptionRefreshMutex = Mutex()
+    private val entryRefresh = SubscriptionEntryRefresh()
     private val preloadDispatcher: CoroutineDispatcher = ioDispatcher.limitedParallelism(1)
 
     // ---------- UI state ----------
@@ -308,6 +312,11 @@ class MainViewModel(
             MainAction.AutoConnect -> startAutoConnect()
             MainAction.CancelAutoConnect -> cancelAutoConnect()
             MainAction.Initialize -> initialize()
+            MainAction.AppEntered -> {
+                if (entryRefresh.shouldRefresh(entryClock())) {
+                    importConfigViaSub("", quiet = true)
+                }
+            }
             MainAction.RefreshGroups -> setupGroupTab(forceRefresh = true)
             MainAction.TestAllServers -> testAllRealPing(true)
             MainAction.TestRealAllServers -> testAllRealPing()
@@ -492,7 +501,7 @@ class MainViewModel(
                 ).map {
                     GroupMapItem(
                         id = it.guid,
-                        remarks = it.subscription.remarks,
+                        remarks = subscriptionTitle(it.subscription.usageInfo, it.subscription.remarks),
                         usageInfo = it.subscription.usageInfo?.let { info ->
                             SubscriptionInfoParser.withWebPageFallback(info, it.subscription.url)
                         },
@@ -576,43 +585,66 @@ class MainViewModel(
         }
     }
 
-    private fun importConfigViaSub(subId: String) {
-        launchLoading {
-            withContext(ioDispatcher) {
-                try {
-                    val result = if (subId.isEmpty()) {
-                        dataSource.updateConfigViaSubAll()
-                    } else {
-                        val item = dataSource.getSubscriptionItem(subId) ?: return@withContext
-                        dataSource.updateConfigViaSub(SubscriptionCache(subId, item))
-                    }
-                    when {
-                        result.successCount + result.failureCount + result.skipCount == 0 ->
-                            toast(R.string.title_update_subscription_no_subscription)
+    private fun importConfigViaSub(subId: String, quiet: Boolean = false) {
+        if (!subscriptionRefreshMutex.tryLock()) return
+        val update: suspend kotlinx.coroutines.CoroutineScope.() -> Unit = {
+            try {
+                withContext(ioDispatcher) {
+                    try {
+                        val result = if (subId.isEmpty()) {
+                            dataSource.updateConfigViaSubAll()
+                        } else {
+                            val item = dataSource.getSubscriptionItem(subId) ?: return@withContext
+                            dataSource.updateConfigViaSub(SubscriptionCache(subId, item))
+                        }
+                        val notice = when {
+                            result.successCount > 0 && result.failureCount == 0 -> SubscriptionRefreshNotice.Success
+                            result.successCount > 0 -> SubscriptionRefreshNotice.Partial
+                            result.failureCount > 0 -> SubscriptionRefreshNotice.Failed
+                            else -> null
+                        }
+                        showSubscriptionNotice(notice)
+                        if (!quiet) when {
+                            result.successCount + result.failureCount + result.skipCount == 0 ->
+                                toast(R.string.title_update_subscription_no_subscription)
 
-                        result.successCount > 0 && result.failureCount + result.skipCount == 0 ->
-                            toast(
-                                getQuantityString(
-                                    R.plurals.title_update_config_count,
-                                    result.configCount,
-                                    result.configCount,
+                            result.successCount > 0 && result.failureCount + result.skipCount == 0 ->
+                                toast(
+                                    getQuantityString(
+                                        R.plurals.title_update_config_count,
+                                        result.configCount,
+                                        result.configCount,
+                                    )
                                 )
-                            )
 
-                        else ->
-                            toast(dataSource.getString(R.string.title_update_subscription_result, result.configCount, result.successCount, result.failureCount, result.skipCount))
+                            else ->
+                                toast(dataSource.getString(R.string.title_update_subscription_result, result.configCount, result.successCount, result.failureCount, result.skipCount))
+                        }
+                        if (result.successCount > 0) {
+                            setupGroupTab(forceRefresh = true)
+                            refreshSelectedGuid()
+                        }
+                    } catch (cancelled: CancellationException) {
+                        throw cancelled
+                    } catch (e: Exception) {
+                        LogUtil.e(AppConfig.TAG, "Subscription update failed", e)
+                        showSubscriptionNotice(SubscriptionRefreshNotice.Failed)
+                        if (!quiet) toastError(R.string.toast_failure)
                     }
-                    if (result.configCount > 0) {
-                        setupGroupTab(forceRefresh = true)
-                        refreshSelectedGuid()
-                    }
-                } catch (cancelled: CancellationException) {
-                    throw cancelled
-                } catch (e: Exception) {
-                    LogUtil.e(AppConfig.TAG, "Subscription update failed", e)
-                    toastError(R.string.toast_failure)
                 }
+            } finally {
+                subscriptionRefreshMutex.unlock()
             }
+        }
+        if (quiet) viewModelScope.launch(block = update) else launchLoading(update)
+    }
+
+    private fun showSubscriptionNotice(notice: SubscriptionRefreshNotice?) {
+        subscriptionNoticeJob?.cancel()
+        _uiState.update { it.copy(subscriptionRefresh = notice) }
+        if (notice != null) subscriptionNoticeJob = viewModelScope.launch {
+            kotlinx.coroutines.delay(6000)
+            _uiState.update { it.copy(subscriptionRefresh = null) }
         }
     }
 

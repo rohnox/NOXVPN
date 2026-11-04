@@ -224,4 +224,17 @@ class AutoConnectViewModelTest {
             assertFalse(f.vm.uiState.value.isRunning)
         }
     }
+    @Test fun xrayStopAcknowledgementClearsHomeAndRejectsLateTraffic() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            f.events.emit(MainServiceEvent.StateRunning); runCurrent()
+            assertTrue(f.vm.uiState.value.isRunning)
+            f.events.emit(MainServiceEvent.StateStopSuccess); runCurrent()
+            assertFalse(f.vm.uiState.value.isRunning)
+            assertEquals(MainStatus.Disconnected, f.vm.uiState.value.status)
+            f.events.emit(MainServiceEvent.Traffic(com.v2ray.ang.dto.SessionTraffic(20, 100, 200, true))); runCurrent()
+            assertNull(f.vm.uiState.value.sessionTraffic)
+            assertTrue(f.vm.uiState.value.trafficHistory.isEmpty())
+        }
+    }
 }

@@ -1,0 +1,24 @@
+# iSpeedTopVPN 1.5.3 — validation (2026-11-04)
+
+Scope: provider-based combined traffic history, explicit quota card, update confirmation and OpenVPN/Xray status handover. See CHANGES-1.5.3.md.
+
+## Executed
+
+- Normal F-Droid universal Debug and Release assembly plus Debug lint completed separately with BUILD SUCCESSFUL (verification/1.5.3/build-final.log). Optional test activity/dependencies are excluded from delivered normal APKs.
+- Full normal JVM suite: 198 tests, 194 passed, four unchanged RootProcessRunnerTest failures because this Windows host cannot execute sh (CreateProcess error2). No tests disabled. The full-suite command exits failed; full-checks.log and jvm-full/ retain the results. New tests cover provider daily readings, same-day replacement, thirty-day pruning, gaps, reset counters, missing metadata, legacy JSON/round-trip compatibility, overflow, expiry, title fallback, actual update-result notices, notice timing, entry coalescing and clearing Home after the daemon stop event while ignoring late traffic.
+- Thirteen optional API35 Robolectric checks passed: ten Compose render/interaction checks plus three IPC/launch tests. Direct fake-daemon IPC supplies connected/disconnected states independently of VpnStatus, and callbacks after close are ignored. Launch checks confirm the Xray stop message precedes OpenVPN activity launch and that an absent Xray daemon permits Cisco manager entry. These tests do not establish a real VPN connection.
+- Actual component renders cover English/Persian, light/dark, empty/populated Home, OpenVPN profile/empty screens, Cisco, navigation and success/failure update banners. Quota heading, provider title and remaining days are asserted. Initial render checks caught a misplaced quota label; it was corrected and all thirteen checks rerun successfully. Renders use isolated test data without endpoints, persistence or native VPN initialization; see renders/ and visual-tests/.
+- Debug lint: 0 errors, 369 warnings, one hint; no new suppressions. Source XML, original GPL, native source pins and diff checks pass. Original canonical guides were fetched and compared; instruction files are excluded from publication.
+- Release signature v2/v3 and ZIP16KiB alignment pass with the existing certificate. Four ABIs, licenses, 64-bit ELF LOAD alignment, font source hashes and absence of project UI fixtures in Release DEX are checked. All sixty native libraries and permission declarations match release1.4.3. No private key/password, customer configuration, tracker or advertising added.
+
+## Not run
+
+- Physical-device/emulator install/update and actual Xray/OpenVPN/Cisco connections: no usable device/emulator attached. Previous-version screenshots are not a test of this build.
+- Actual VPN handover, cold start, two equivalent consecutive starts, successful/failed setup, stop/repeated stop, stop while connecting, permission cancellation, background/re-entry, rotation, process/Binder death and reconnect: require a device/emulator. Mock IPC and ordered-broadcast tests cover only their assertions. Existing VPN/proxy-only/root start branches and native engines remain in use.
+- Real subscription endpoint: no customer URL supplied for this task. Daily provider history begins with the first successful refresh in this version; standard subscription headers contain current totals, not historical daily billing data. Earlier days are not reconstructed. The legend explicitly reports subscription-cycle counters; those counters are not assumed to equal monthly consumption. Missing headers/limits remain unknown; resets appear as actual counter drops.
+- Real persistence across app/process restart, restored subscription backups, offline/online recovery, TalkBack spoken output, touch/keyboard/D-pad, IME, large font scale, dynamic color and both server-column settings: no device/emulator. Legacy JSON and history logic have JVM coverage; static renders are not device/persistence checks.
+- Google Play Protect scanning/certification of this new APK: not performed, no approval claim.
+
+The separate quota panel sits immediately below the chart and includes provider name, used/total/remaining quota, progress and remaining days. The green six-second banner appears only after actual successful subscription updates; failed/partial results have their own message. Entry refreshes run on IO and coalesce events within sixty seconds. OpenVPN status comes directly from IServiceStatus; log-cache failure is not treated as a disconnect. Opening the Cisco manager initiates an Xray stop even if the user later cancels Cisco selection. Home remains driven by Xray daemon events, not the generic Android VPN icon.
+
+Complete logs, test XML and renders are included in the full local source ZIP. GitHub contains source/tests and this validation summary; large local build evidence and APKs are delivered separately.
