@@ -77,9 +77,11 @@
     <string name="top_delete_subscription">Delete subscription</string>
     <string name="top_delete_subscription_confirm">Delete subscription “%1$s” and its configurations?</string>
     <string name="top_delete_connected">Disconnect this subscription before deleting it.</string>
-    <string name="top_refresh_named">Refresh subscription %1$s</string>
+    <string name="top_refresh_named">Update subscription %1$s</string>
     <string name="top_delete_named">Delete subscription %1$s</string>
     <string name="top_choose_day">Choose day</string>
     <string name="top_day_hint">Tap the chart to view daily usage.</string>
     <string name="top_day_value">Usage on %1$s: %2$s</string>
+    <string name="top_update_short">Update Sub</string>
+    <string name="top_update_subscription">Update Subscription</string>
 </resources>

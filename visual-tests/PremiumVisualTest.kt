@@ -43,6 +43,7 @@ import java.io.File
 class PremiumVisualTest {
     @get:Rule val compose = createComposeRule()
     private lateinit var inputModes: InputModeManager
+    private val commands = mutableListOf<MainAction>()
 
     private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null, plans: Boolean = false) {
         val history = (0L..30L).map { t -> SessionTraffic(t, t * 10240L, t * t * 4096L, true) }
@@ -59,7 +60,9 @@ class PremiumVisualTest {
                 CompositionLocalProvider(LocalLayoutDirection provides if (rtl) LayoutDirection.Rtl else LayoutDirection.Ltr) {
                     var tab by remember { mutableStateOf(if (plans) DashboardTab.Plans else if (protocols) DashboardTab.Protocols else DashboardTab.Overview) }
                     var displayed by remember { mutableStateOf(state) }
+                    var importOpen by remember { mutableStateOf(false) }
                     val action: (MainAction) -> Unit = { command ->
+                        commands.add(command)
                         when (command) {
                             is MainAction.SelectDashboardSubscription -> displayed = displayed.copy(dashboardSubscriptionId = command.id)
                             is MainAction.DeleteSubscription -> {
@@ -69,15 +72,18 @@ class PremiumVisualTest {
                             else -> Unit
                         }
                     }
+                    if (importOpen) DashboardImportDialog({ importOpen = false }) { command -> importOpen = false; action(command) }
                     Scaffold(containerColor = MaterialTheme.colorScheme.background,
                         snackbarHost = { SubscriptionRefreshBanner(notice) },
-                        topBar = { Column(Modifier.statusBarsPadding()) { DashboardHeader(if (tab == DashboardTab.Overview) ({}) else null, null) {} } },
+                        topBar = { Column(Modifier.statusBarsPadding()) { DashboardHeader(if (tab == DashboardTab.Overview) ({ action(MainAction.UpdateGroupSubscription("")) }) else null) } },
                         bottomBar = { DashboardNavigation(tab) { tab = it } }) { padding ->
                         val modifier = Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
                         if (tab == DashboardTab.Protocols) ProtocolsScreen(ProtocolsState(busy = false, openVpnReady = true, ciscoReady = true, vpnMode = true,
                             profiles = if (populated) listOf(OpenVpnRow("profile", "Personal VPN")) else emptyList()), modifier) {}
-                        else if (tab == DashboardTab.Plans) ISpeedPlans(displayed, modifier, action) {}
-                        else ISpeedOverview(displayed, rows, "", modifier, {}, {}, {}, action, {}, {})
+                        else if (tab == DashboardTab.Plans) ISpeedPlans(displayed, modifier, action, onImport = { importOpen = true })
+                        else if (tab == DashboardTab.Controls) ISpeedControls(modifier, {})
+                        else if (tab == DashboardTab.Servers) ISpeedServers(displayed, rows, modifier, action, { importOpen = true }, {})
+                        else ISpeedOverview(displayed, rows, "", modifier, {}, {}, { importOpen = true }, action, {}, {})
                     }
                 }
             }
@@ -183,4 +189,63 @@ class PremiumVisualTest {
         compose.onNode(hasText("300.00 MB", substring = true)).performClick()
         compose.onNode(hasText("300.00 MB", substring = true)).assertIsDisplayed()
     }
+    @Test fun homeHasEnglishUpdateButtonAndNoHeaderIcons() {
+        render(populated = true)
+        compose.onNodeWithText("Update Subscription").assertIsDisplayed().performClick()
+        org.junit.Assert.assertEquals(MainAction.UpdateGroupSubscription(""), commands.last())
+        compose.onNodeWithText("آپدیت اشتراک").assertDoesNotExist()
+        compose.onNodeWithContentDescription("Add configuration").assertDoesNotExist()
+        capture("home-update-en")
+    }
+    @Test @Config(qualifiers = "fa-rIR-w393dp-h852dp-xhdpi")
+    fun homeHasPersianUpdateButtonOnly() {
+        render(populated = true, rtl = true)
+        compose.onNodeWithText("آپدیت اشتراک").assertIsDisplayed()
+        compose.onNodeWithText("Update Subscription").assertDoesNotExist()
+        capture("home-update-fa")
+    }
+    @Test fun addSubscriptionUsesImportDialogAndTrimsInput() {
+        render(plans = true, populated = true)
+        compose.onNodeWithText("Manage").assertDoesNotExist()
+        compose.onNodeWithText("Update Sub").assertIsDisplayed()
+        compose.onNodeWithText("Add subscription").performClick()
+        compose.onNodeWithText("Add configuration").assertIsDisplayed()
+        compose.onNodeWithText("Import").assertIsNotEnabled()
+        compose.onNodeWithText("Configuration or subscription link").performTextInput("  https://example.invalid/sub/test-only  ")
+        compose.onNodeWithText("Import").performScrollTo().performClick()
+        org.junit.Assert.assertEquals(MainAction.ImportBatchConfig("https://example.invalid/sub/test-only"), commands.last())
+    }
+    @Test fun subscriptionDialogKeepsClipboardQrAndFileActions() {
+        render(plans = true, populated = true)
+        listOf("Import from Clipboard" to MainAction.ImportClipboard, "Import from QR code" to MainAction.ImportQRcode, "Import from a local file" to MainAction.ImportConfigLocal).forEach { (label, expected) ->
+            compose.onNodeWithText("Add subscription").performClick()
+            compose.onNodeWithText(label).performScrollTo().performClick()
+            org.junit.Assert.assertEquals(expected, commands.last())
+        }
+    }
+    @Test fun updateButtonSupportsEnter() {
+        render(populated = true)
+        compose.runOnIdle { inputModes.requestInputMode(InputMode.Keyboard) }
+        val button = compose.onNodeWithText("Update Subscription")
+        button.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        button.assertIsFocused().performKeyInput { pressKey(Key.Enter) }
+        org.junit.Assert.assertEquals(MainAction.UpdateGroupSubscription(""), commands.last())
+    }
+    @Test fun subscriptionsHaveNoManageFooter() {
+        render(plans = true, populated = true)
+        compose.onNodeWithText("Manage").assertDoesNotExist()
+        compose.onNodeWithText("Refresh").assertDoesNotExist()
+        capture("subscriptions-clean-en")
+    }
+    @Test fun serverAndSettingsHeaderHaveNoImportOrOverflowIcons() {
+        render(populated = true)
+        compose.onNodeWithText("Servers").performClick()
+        compose.onNodeWithContentDescription("Add configuration").assertDoesNotExist()
+        compose.onNodeWithText("Update Subscription").assertDoesNotExist()
+        capture("servers-clean-en")
+        compose.onNodeWithText("Settings").performClick()
+        compose.onNodeWithContentDescription("Add configuration").assertDoesNotExist()
+        capture("settings-clean-en")
+    }
+
 }

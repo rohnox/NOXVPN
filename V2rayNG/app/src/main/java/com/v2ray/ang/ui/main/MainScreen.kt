@@ -70,29 +70,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
         snackbarHost = { SubscriptionRefreshBanner(state.subscriptionRefresh) },
         topBar = {
             Column(Modifier.statusBarsPadding()) {
-                DashboardHeader(onRefresh = if (tab == DashboardTab.Overview) ({ onAction(MainAction.UpdateGroupSubscription("")) }) else null,
-                    onImport = if (tab == DashboardTab.Protocols || tab == DashboardTab.Overview) null else ({ importOpen = true })) {
-                    if (tab != DashboardTab.Protocols) Box {
-                        IconButton(onClick = { menu = true }) { Icon(painterResource(R.drawable.ic_more_vert_24dp), stringResource(R.string.top_advanced)) }
-                        DropdownMenu(menu, { menu = false }) {
-                            MoreMenuContent { action ->
-                                menu = false
-                                when (action) {
-                                    MainMoreMenuAction.DeleteAll -> deleteAll = true
-                                    MainMoreMenuAction.DeleteDuplicate -> deleteDuplicate = true
-                                    MainMoreMenuAction.DeleteInvalid -> deleteInvalid = true
-                                    MainMoreMenuAction.RestartService -> onAction(MainAction.RestartService)
-                                    MainMoreMenuAction.ExportAll -> onAction(MainAction.ExportAll)
-                                    MainMoreMenuAction.LocateSelected -> { selectedTab = DashboardTab.Servers.name; onAction(MainAction.LocateSelectedServer) }
-                                    MainMoreMenuAction.SortByTestResults -> onAction(MainAction.SortByTestResults)
-                                    MainMoreMenuAction.TestAll -> onAction(MainAction.TestAllServers)
-                                    MainMoreMenuAction.TestAllRealPing -> onAction(MainAction.TestRealAllServers)
-                                    MainMoreMenuAction.UpdateSubscriptions -> onAction(MainAction.UpdateSubscriptions)
-                                }
-                            }
-                        }
-                    }
-                }
+                DashboardHeader(onRefresh = if (tab == DashboardTab.Overview) ({ onAction(MainAction.UpdateGroupSubscription("")) }) else null)
                 if (loading) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
         },
@@ -106,9 +84,30 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                 onAction = onAction, onNavigate = onNavigate, onMore = { shareGuid = it.guid })
             DashboardTab.Servers -> ISpeedServers(state, group.rows, content, onAction,
                 onImport = { importOpen = true }, onMore = { shareGuid = it.guid })
-            DashboardTab.Plans -> ISpeedPlans(state, content, onAction, onNavigate)
+            DashboardTab.Plans -> ISpeedPlans(state, content, onAction, onImport = { importOpen = true })
             DashboardTab.Protocols -> protocolsContent(content)
-            DashboardTab.Controls -> ISpeedControls(content, onNavigate)
+            DashboardTab.Controls -> ISpeedControls(content, onNavigate) {
+                Box {
+                    TextButton(onClick = { menu = true }) { Text(stringResource(R.string.top_advanced)) }
+                    DropdownMenu(menu, { menu = false }) {
+                        MoreMenuContent { action ->
+                            menu = false
+                            when (action) {
+                                MainMoreMenuAction.DeleteAll -> deleteAll = true
+                                MainMoreMenuAction.DeleteDuplicate -> deleteDuplicate = true
+                                MainMoreMenuAction.DeleteInvalid -> deleteInvalid = true
+                                MainMoreMenuAction.RestartService -> onAction(MainAction.RestartService)
+                                MainMoreMenuAction.ExportAll -> onAction(MainAction.ExportAll)
+                                MainMoreMenuAction.LocateSelected -> { selectedTab = DashboardTab.Servers.name; onAction(MainAction.LocateSelectedServer) }
+                                MainMoreMenuAction.SortByTestResults -> onAction(MainAction.SortByTestResults)
+                                MainMoreMenuAction.TestAll -> onAction(MainAction.TestAllServers)
+                                MainMoreMenuAction.TestAllRealPing -> onAction(MainAction.TestRealAllServers)
+                                MainMoreMenuAction.UpdateSubscriptions -> onAction(MainAction.UpdateSubscriptions)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -117,7 +116,7 @@ internal fun dashboardTab(savedName: String): DashboardTab =
     DashboardTab.entries.firstOrNull { it.name == savedName } ?: DashboardTab.Overview
 
 @Composable
-private fun DashboardImportDialog(onDismiss: () -> Unit, onAction: (MainAction) -> Unit) {
+internal fun DashboardImportDialog(onDismiss: () -> Unit, onAction: (MainAction) -> Unit) {
     var link by rememberSaveable { mutableStateOf("") }
     var methods by rememberSaveable { mutableStateOf(false) }
     Dialog(onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {

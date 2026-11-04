@@ -53,19 +53,17 @@ internal fun GoldWave(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun DashboardHeader(onRefresh: (() -> Unit)?, onImport: (() -> Unit)?, more: @Composable () -> Unit) {
+internal fun DashboardHeader(onRefresh: (() -> Unit)?) {
     Box(Modifier.fillMaxWidth()) {
         GoldWave(Modifier.matchParentSize())
         Row(Modifier.fillMaxWidth().heightIn(min = 62.dp).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Image(painterResource(R.drawable.ispeed_logo), null, Modifier.size(32.dp))
             Text(stringResource(R.string.top_brand), Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontStyle = FontStyle.Italic, fontWeight = FontWeight.Bold, maxLines = 1)
-            if (onRefresh != null) IconButton(onClick = onRefresh, modifier = Modifier.size(40.dp)) {
-                Icon(painterResource(R.drawable.ic_refresh_24dp), stringResource(R.string.acc_update_subscriptions), Modifier.size(23.dp), tint = MaterialTheme.colorScheme.primary)
+            if (onRefresh != null) Button(onClick = onRefresh, modifier = Modifier.heightIn(min = 48.dp),
+                shape = RoundedCornerShape(14.dp), contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary)) {
+                Text(stringResource(R.string.top_update_subscription), style = MaterialTheme.typography.labelSmall)
             }
-            if (onImport != null) IconButton(onClick = onImport, modifier = Modifier.size(40.dp)) {
-                Icon(painterResource(R.drawable.ic_add_24dp), stringResource(R.string.top_add), Modifier.size(23.dp))
-            }
-            more()
         }
     }
 }

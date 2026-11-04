@@ -35,7 +35,7 @@ import com.v2ray.ang.dto.entities.SubscriptionUsageInfo
 import com.v2ray.ang.extension.toTrafficString
 
 @Composable
-internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit) {
+internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (MainAction) -> Unit, onImport: () -> Unit) {
     val plans = state.groups.filter { it.id.isNotEmpty() && it.id != AppConfig.DEFAULT_SUBSCRIPTION_ID }
     val selected = dashboardPlan(state)
     var pendingDelete by rememberSaveable { mutableStateOf<String?>(null) }
@@ -67,7 +67,7 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
         dismissButton = { TextButton(onClick = { pendingDelete = null }) { Text(stringResource(android.R.string.cancel)) } })
     LazyColumn(modifier, state = list, contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         item {
-            DashboardTitle(stringResource(R.string.top_plans), stringResource(R.string.top_add_subscription)) { onNavigate(MainDestination.AddSubscription) }
+            DashboardTitle(stringResource(R.string.top_plans), stringResource(R.string.top_add_subscription), onImport)
             state.dashboardMessage?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
         }
         item {
@@ -76,7 +76,7 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
             else DashboardPanel {
                 Text(stringResource(R.string.top_no_plan), style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.top_no_plan_hint), style = MaterialTheme.typography.bodyMedium)
-                PremiumButton(onClick = { onNavigate(MainDestination.AddSubscription) }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.top_add_subscription)) }
+                PremiumButton(onClick = onImport, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.top_add_subscription)) }
             }
         }
         item { Text(stringResource(R.string.top_your_subscriptions), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold) }
@@ -85,7 +85,6 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
                 { onAction(MainAction.SelectDashboardSubscription(plan.id)) },
                 { onAction(MainAction.UpdateGroupSubscription(plan.id)) }, { pendingDelete = plan.id })
         }
-        item { TextButton(onClick = { onNavigate(MainDestination.Subscriptions) }) { Text(stringResource(R.string.top_manage)) } }
     }
 }
 
@@ -164,7 +163,7 @@ private fun PlanActions(name: String, onRefresh: () -> Unit, onDelete: () -> Uni
     val delete = stringResource(R.string.top_delete_named, name)
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         TextButton(onClick = onRefresh, Modifier.weight(1f).semantics { contentDescription = refresh }) {
-            Icon(painterResource(R.drawable.ic_refresh_24dp), null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.top_refresh))
+            Icon(painterResource(R.drawable.ic_refresh_24dp), null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.top_update_short))
         }
         TextButton(onClick = onDelete, Modifier.weight(1f).semantics { contentDescription = delete }) {
             Icon(painterResource(R.drawable.ic_delete_24dp), null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.error)

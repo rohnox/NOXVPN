@@ -1,0 +1,23 @@
+# iSpeedTopVPN 1.5.6 — validation (2026-11-04)
+
+Scope: remove header plus/overflow actions and the subscription Manage footer; show a localized gold update button on Home; open the existing import dialog from Add subscription; rename the selected subscription card update label. No data, network, VPN lifecycle or native-engine implementation changed. See CHANGES-1.5.6.md.
+
+## Executed
+
+- All26 optional PremiumVisualTest cases passed on the final production code, including seven added cases. They assert English-only and Persian-only Home update labels; dispatch of the existing update-all action by touch/Enter; absence of the header import icon in subscriptions/servers/settings; no Manage footer or old Refresh text in the subscription tab; import-dialog opening; disabled blank input; trimming/importing a synthetic link; clipboard, QR and local-file action dispatch. Fixture callbacks record actions without loading a customer endpoint or Android native VPN engine.
+- The full JVM/optional UI run executed246 tests:242 passed,4 failed,0 skipped,0 errors. The four unchanged RootProcessRunnerTest cases fail because Windows cannot execute sh (CreateProcess error2). The command exits failed and no test was disabled. Results: verification/1.5.6/all-tests.log and jvm-full/. This includes217 regular JVM tests and29 optional UI/IPC checks; all29 optional checks passed.
+- Actual Compose renders inspected at393x852dp include English/Persian RTL Home with the gold text button, subscriptions without plus/overflow/Manage, and server/settings content. Existing empty/populated, light/dark and protocol renders/checks also ran. These renders use synthetic data and record only component/fixture behavior, not live subscription traffic.
+- Semantics snapshots expose the gold update control as one named button with a merged text label and48dp height. The subscription update action has a localized accessible name. The existing import dialog retains its scrolling and IME padding. Dialog pixels are omitted due to the documented Robolectric4.17/API35 separate-window capture limitation; assertions exercise dialog content and action dispatch.
+- Advanced operations remain wired to the existing menu/actions and confirmation dialogs through a text entry inside Settings. The header no longer has a plus or overflow slot. Per-server share/delete actions, user config import, quotas/history and OpenVPN/Cisco are retained.
+- Normal F-Droid Debug and Release assembly plus Debug lint completed BUILD SUCCESSFUL after the optional visual-test dependencies were excluded. Lint: zero errors,370 warnings,one hint, unchanged counts from1.5.5 and no added suppression. Logs: verification/1.5.6/build-final.log and lint.xml.
+- Release signing passed using the existing certificate with v2/v3 signatures and ZIP16KiB alignment. All60 packaged native libraries and permission declarations are identical to release1.4.3. Four ABIs, ELF alignment, fonts/OFL/GPL/native licenses and absence of project UI fixtures in Release DEX passed. See sign.log, apk-comparison.log, elf.log and font-and-test-scope.log under verification/1.5.6/.
+- Original GPL license, all resource XML, source diff and recursive native source pins pass. Both added labels and the updated per-subscription accessible label are present in all ten configured locale files. No customer URL/config, signing material, new dependency, permission, advertising or telemetry is included.
+
+## Not run
+
+- Install/update and live interaction on a physical Android device/emulator: no usable device available. Native VPN sessions, live subscription update/import and OpenVPN/Cisco handover were not repeated on hardware; their implementation was not changed.
+- TalkBack spoken output, real-device keyboard/D-pad focus/activation, dynamic color, both server-column configurations, large font scaling and narrow-screen layout: no device/emulator available. JVM touch/Enter and existing subscription D-pad checks do not prove hardware or TalkBack behavior.
+- Activity recreation/process death with an open import dialog, real IME traversal from first to last import action, screen close/reopen persistence, and end-to-end advanced Settings menu interaction on a device: unavailable. The existing saveable fields and storage owners were retained; no new persisted field was introduced.
+- Play Protect scanning/certification of this APK: not performed; no guarantee about system installation warnings.
+
+The release uses the same application ID/certificate for update compatibility. APKs and the complete source ZIP are local outputs; GitHub receives source/tests/docs only. Import link tests use example.invalid, never a customer subscription. Version1.5.6/base versionCode769.

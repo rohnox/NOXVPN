@@ -75,9 +75,11 @@
     <string name="top_delete_subscription">حذف اشتراک</string>
     <string name="top_delete_subscription_confirm">اشتراک «%1$s» و کانفیگ‌های وابسته حذف شوند؟</string>
     <string name="top_delete_connected">ابتدا اتصال این اشتراک را قطع کنید، سپس آن را حذف کنید.</string>
-    <string name="top_refresh_named">به‌روزرسانی اشتراک %1$s</string>
+    <string name="top_refresh_named">آپدیت اشتراک %1$s</string>
     <string name="top_delete_named">حذف اشتراک %1$s</string>
     <string name="top_choose_day">انتخاب روز</string>
     <string name="top_day_hint">برای دیدن مصرف روز، روی نمودار بزنید.</string>
     <string name="top_day_value">مصرف روز %1$s: %2$s</string>
+    <string name="top_update_short">آپدیت اشتراک</string>
+    <string name="top_update_subscription">آپدیت اشتراک</string>
 </resources>

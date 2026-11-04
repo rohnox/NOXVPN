@@ -212,7 +212,7 @@ private fun QuotaValue(label: String, value: String) {
 }
 
 @Composable
-internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) -> Unit) {
+internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) -> Unit, advancedContent: @Composable () -> Unit = {}) {
     val routes = listOf(MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy, MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore, MainDestination.Logcat, MainDestination.About)
     LazyColumn(modifier, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item {
@@ -228,6 +228,7 @@ internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) ->
                 }
             }
         }
+        item { advancedContent() }
         item { Text(stringResource(R.string.ispeed_attribution), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 12.dp)) }
     }
 }
