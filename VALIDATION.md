@@ -1,6 +1,6 @@
 # Current validation
 
-See [VALIDATION-1.5.3.md](VALIDATION-1.5.3.md) for version 1.5.3. The following reports are historical.
+See [VALIDATION-1.5.4.md](VALIDATION-1.5.4.md) for version 1.5.4. The following reports are historical.
 
 # iSpeedTopVPN 1.5.1 — validation (2026-11-04)
 

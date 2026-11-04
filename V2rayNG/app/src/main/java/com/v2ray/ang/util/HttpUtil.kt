@@ -172,7 +172,7 @@ object HttpUtil {
 
             val headersMap = JsonUtil.parseHeadersToMap(request.requestHeaders)
             for ((key, value) in headersMap) {
-                LogUtil.d(AppConfig.TAG, "Adding custom header: $key = $value")
+                LogUtil.d(AppConfig.TAG, "Adding configured subscription request header")
                 try {
                     requestBuilder.header(key, value)
                 } catch (_: IllegalArgumentException) {
@@ -209,6 +209,42 @@ object HttpUtil {
             }
         }
         throw IOException("Too many redirects")
+    }
+
+    /** Bounded JSON metadata request. No redirects or URL/header values are logged. */
+    fun getBoundedSubscriptionJson(request: UrlContentRequest): String? {
+        val url = request.url ?: return null
+        return try {
+            val client = buildOkHttpClient(request.timeout, request.httpPort, request.proxyUsername, request.proxyPassword, false)
+                .newBuilder().callTimeout(request.timeout.toLong(), TimeUnit.MILLISECONDS).build()
+            val builder = Request.Builder().url(url).get().header("Accept", "application/json")
+                .header("User-Agent", request.userAgent?.takeIf { it.isNotBlank() } ?: "v2rayNG/" + BuildConfig.VERSION_NAME)
+            if (!request.requestHeaders.isNullOrBlank()) {
+                for ((key, value) in com.google.gson.JsonParser.parseString(request.requestHeaders).asJsonObject.entrySet()) {
+                    if (!value.isJsonNull) builder.header(key, if (value.isJsonPrimitive) value.asString else value.toString())
+                }
+            }
+            client.newCall(builder.build()).execute().use { response ->
+                if (!response.isSuccessful || !response.header("Content-Type").orEmpty().contains("json", ignoreCase = true)) return null
+                val body = response.body
+                if (body.contentLength() > 1_048_576) return null
+                body.byteStream().use { input ->
+                    val bytes = java.io.ByteArrayOutputStream()
+                    val buffer = ByteArray(8192)
+                    while (true) {
+                        val count = input.read(buffer)
+                        if (count < 0) break
+                        if (bytes.size() + count > 1_048_576) return null
+                        bytes.write(buffer, 0, count)
+                    }
+                    bytes.toString(Charsets.UTF_8.name())
+                }
+            }
+        } catch (error: Exception) {
+            val safe = IOException(error.javaClass.simpleName).apply { stackTrace = error.stackTrace }
+            LogUtil.e(AppConfig.TAG, "Subscription history operation=fetch-json", safe)
+            null
+        }
     }
 
     private fun applyEmbeddedBasicAuthHeader(rawUrl: String, requestBuilder: Request.Builder) {

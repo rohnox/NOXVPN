@@ -64,4 +64,8 @@
     <string name="top_sub_updated">اشتراک با موفقیت به‌روزرسانی شد</string>
     <string name="top_sub_partial">بعضی اشتراک‌ها به‌روزرسانی نشدند؛ دوباره تلاش کنید</string>
     <string name="top_sub_failed">به‌روزرسانی اشتراک ناموفق بود؛ اتصال اینترنت را بررسی کنید</string>
+    <string name="top_remote_history">تاریخچه واقعی پنل؛ مجموع آپلود و دانلود روزانه</string>
+    <string name="top_history_updated">آخرین دریافت آمار: %1$s</string>
+    <string name="top_monthly_usage">مجموع مصرف ۳۰روزه</string>
+    <string name="top_remote_history_empty">پنل برای این بازه، مصرفی ثبت نکرده است.</string>
 </resources>

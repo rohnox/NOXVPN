@@ -41,6 +41,20 @@ internal fun trafficVolumes(history: List<SessionTraffic>): List<TrafficRatePoin
 internal fun subscriptionTitle(info: SubscriptionUsageInfo?, fallback: String): String =
     info?.title?.trim()?.takeIf { it.isNotEmpty() } ?: fallback
 
+/** Match the provider page's binary units and two-decimal totals. */
+internal fun formatHistoryTraffic(bytes: Long, locale: java.util.Locale): String {
+    val units = arrayOf("B", "KB", "MB", "GB", "TB", "PB", "EB")
+    var value = bytes.coerceAtLeast(0).toDouble()
+    var unit = 0
+    while (value >= 1024 && unit < units.lastIndex) { value /= 1024; unit++ }
+    val formatter = java.text.NumberFormat.getNumberInstance(locale).apply {
+        minimumFractionDigits = if (unit == 0) 0 else 2
+        maximumFractionDigits = if (unit == 0) 0 else 2
+        isGroupingUsed = false
+    }
+    return formatter.format(value) + " " + units[unit]
+}
+
 /** Null means missing expiry; zero means expired. Round a partial day up. */
 internal fun subscriptionDaysRemaining(expireSeconds: Long?, nowSeconds: Long): Int? {
     if (expireSeconds == null || expireSeconds <= 0) return null

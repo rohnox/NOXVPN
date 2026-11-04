@@ -40,7 +40,7 @@ class PremiumVisualTest {
 
     private fun render(protocols: Boolean = false, rtl: Boolean = false, light: Boolean = false, populated: Boolean = false, notice: SubscriptionRefreshNotice? = null) {
         val history = (0L..30L).map { t -> SessionTraffic(t, t * 10240L, t * t * 4096L, true) }
-        val quota = SubscriptionUsageInfo(title = "iSpecialVPN", expire = System.currentTimeMillis() / 1000 + 7 * 86400, upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true, dailyUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (14L - day) shl 30) })
+        val quota = SubscriptionUsageInfo(title = "iSpecialVPN", expire = System.currentTimeMillis() / 1000 + 7 * 86400, upload = 2L shl 30, download = 12L shl 30, total = 40L shl 30, trafficAvailable = true, quotaAvailable = true, providerUsageUpdatedAt = System.currentTimeMillis() / 1000, providerUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (3L - day) * 104857600L) }, dailyUsage = (2L downTo 0L).map { day -> com.v2ray.ang.dto.entities.SubscriptionUsageSample(System.currentTimeMillis() / 1000 - day * 86400, (14L - day) shl 30) })
         val state = if (populated) MainUiState(groups = listOf(GroupMapItem("plan", "import sub", quota)), selectedGuid = "a", selectedSubscriptionId = "plan",
             selectedServerName = "Germany · Frankfurt", isRunning = true, status = MainStatus.Connected, sessionTraffic = history.last(), trafficHistory = history) else MainUiState()
         val rows = if (populated) listOf("Germany · Frankfurt", "Turkey · Istanbul").mapIndexed { i, name ->
@@ -84,7 +84,7 @@ class PremiumVisualTest {
         }
     }
 
-    @Test fun homeEnglish() { render(populated = true); compose.onNodeWithText("iSpecialVPN").assertIsDisplayed(); compose.onNodeWithText("Subscription quota").assertIsDisplayed(); compose.onNodeWithText("7 days remaining").assertIsDisplayed(); compose.onNodeWithText("import sub").assertDoesNotExist(); capture("home-en-dark") }
+    @Test fun homeEnglish() { render(populated = true); compose.onNodeWithText("iSpecialVPN").assertIsDisplayed(); compose.onNodeWithText("Subscription quota").assertIsDisplayed(); compose.onNodeWithText("Total 30-day usage").assertIsDisplayed(); compose.onNodeWithText("600.00 MB").assertIsDisplayed(); compose.onNodeWithText("7 days remaining").assertIsDisplayed(); compose.onNodeWithText("import sub").assertDoesNotExist(); capture("home-en-dark") }
     @Test fun homeEmpty() { render(); capture("home-en-empty") }
     @Test @Config(qualifiers = "fa-rIR-w393dp-h852dp-xhdpi")
     fun homePersian() { render(rtl = true, populated = true); compose.onNodeWithText("سهمیه مصرف").assertIsDisplayed(); capture("home-fa-dark") }

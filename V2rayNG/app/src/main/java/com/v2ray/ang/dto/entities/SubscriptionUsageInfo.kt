@@ -27,6 +27,10 @@ data class SubscriptionUsageInfo(
     val quotaAvailable: Boolean? = null,
     /** Daily account-counter observations, not reconstructed billing history. */
     val dailyUsage: List<SubscriptionUsageSample>? = null,
+    /** Actual daily interval usage from the provider API, distinct from observed account counters. */
+    val providerUsage: List<SubscriptionUsageSample>? = null,
+    val providerUsageUpdatedAt: Long? = null,
+    val providerUsageSource: String? = null,
 ) {
     /** Bytes consumed so far (upload + download). */
     val used: Long get() = upload + download

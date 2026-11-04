@@ -165,13 +165,16 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
             kotlinx.coroutines.delay(60_000)
         }
     }
-    val points = remember(info?.dailyUsage, nowSeconds) { com.v2ray.ang.handler.SubscriptionInfoParser.recentUsage(info, nowSeconds) }
+    val remote = info?.providerUsage
+    val local = remember(info?.dailyUsage, nowSeconds) { com.v2ray.ang.handler.SubscriptionInfoParser.recentUsage(info, nowSeconds) }
+    val points = remote ?: local
     val known = info != null && hasSubscriptionTraffic(info)
-    val used = if (known) info.used.toTrafficString() else stringResource(R.string.ispeed_unavailable)
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+    val used = if (remote != null) com.v2ray.ang.handler.PasarGuardUsage.total(remote)?.let { formatHistoryTraffic(it, locale) } ?: stringResource(R.string.ispeed_unavailable)
+        else if (known) info.used.toTrafficString() else stringResource(R.string.ispeed_unavailable)
     val graphDescription = stringResource(R.string.top_provider_chart_a11y, used)
     val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f)
     val color = MaterialTheme.colorScheme.primary
-    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val dates = remember(points, locale) {
         val formatter = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale).apply { timeZone = java.util.TimeZone.getTimeZone("UTC") }
         points.map { formatter.format(java.util.Date(it.timestampSeconds * 1000)) }
@@ -181,10 +184,14 @@ private fun TrafficPanel(info: com.v2ray.ang.dto.entities.SubscriptionUsageInfo?
             Text(stringResource(R.string.top_traffic), Modifier.weight(1f), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
             Icon(painterResource(R.drawable.ic_top_chart), null, tint = color)
         }
-        Text(stringResource(R.string.top_provider_history), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        TrafficLegend(stringResource(R.string.top_combined_usage), used, color)
+        Text(stringResource(if (remote != null) R.string.top_remote_history else R.string.top_provider_history), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (remote != null) info?.providerUsageUpdatedAt?.takeIf { it in 1..Long.MAX_VALUE / 1000 }?.let { updated ->
+            val time = remember(updated, locale) { java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT, locale).format(java.util.Date(updated * 1000)) }
+            Text(stringResource(R.string.top_history_updated, time), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        TrafficLegend(stringResource(if (remote != null) R.string.top_monthly_usage else R.string.top_combined_usage), used, color)
         if (points.isEmpty()) {
-            Text(stringResource(R.string.top_provider_history_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(if (remote != null) R.string.top_remote_history_empty else R.string.top_provider_history_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             TextButton(onRefresh) { Text(stringResource(R.string.top_refresh)) }
         } else {
             Canvas(Modifier.fillMaxWidth().height(84.dp).semantics { contentDescription = graphDescription }) {

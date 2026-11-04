@@ -68,4 +68,8 @@
     <string name="top_sub_updated">Subscription updated successfully</string>
     <string name="top_sub_partial">Some subscriptions could not be updated. Try again.</string>
     <string name="top_sub_failed">Subscription update failed. Check your connection.</string>
+    <string name="top_remote_history">Actual provider history · daily upload + download</string>
+    <string name="top_history_updated">Statistics last fetched: %1$s</string>
+    <string name="top_monthly_usage">Total 30-day usage</string>
+    <string name="top_remote_history_empty">The provider reported no usage for this period.</string>
 </resources>

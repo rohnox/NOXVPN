@@ -1,14 +1,14 @@
-نسخه ۱٫۵٫۳ با همان کلید Release نسخه ۱٫۲٫۱ امضا شده و گواهی لازم برای آپدیت ثابت است؛ نصب عملی این آپدیت روی گوشی هنوز تست نشده است. هش گواهی ثابت مانده؛ هش APK در گزارش فعلی ثبت شده است.
+نسخه ۱٫۵٫۴ با همان کلید Release نسخه ۱٫۲٫۱ امضا شده و گواهی لازم برای آپدیت ثابت است؛ نصب عملی این آپدیت روی گوشی هنوز تست نشده است. هش گواهی ثابت مانده؛ هش APK در گزارش فعلی ثبت شده است.
 
-# انتشار امضاشده ۱٫۵٫۳
+# انتشار امضاشده ۱٫۵٫۴
 
-خروجی `iSpeedTopVPN-1.5.3-universal-release.apk` واقعاً با `assembleFdroidRelease` ساخته و سپس هم‌تراز و با کلید انتشار اختصاصی امضا شده است. کلید خصوصی بیرون از سورس نگهداری می‌شود و در ZIP نیست. جزئیات نتیجه‌ها و محدودیت‌ها در `VALIDATION.md` است.
+خروجی `iSpeedTopVPN-1.5.4-universal-release.apk` واقعاً با `assembleFdroidRelease` ساخته و سپس هم‌تراز و با کلید انتشار اختصاصی امضا شده است. کلید خصوصی بیرون از سورس نگهداری می‌شود و در ZIP نیست. جزئیات نتیجه‌ها و محدودیت‌ها در `VALIDATION.md` است.
 
 اثر انگشت SHA256 گواهی عمومی انتشار:
 
 `3e70db5bbca2256d8df6b23d459302416e414c53a018d09d46778ddbc2c241a8`
 
-هش خود APK با هش گواهی متفاوت است؛ هش APK را از SHA256SUMS-1.5.3.txt خروجی بخوانید. برای هر نسخه بعدی همان کلید خصوصی را استفاده کنید. کلید و رمز را امن و جداگانه بکاپ بگیرید؛ گواهی عمومی جایگزین کلید خصوصی نیست.
+هش خود APK با هش گواهی متفاوت است؛ هش APK را از SHA256SUMS-1.5.4.txt خروجی بخوانید. برای هر نسخه بعدی همان کلید خصوصی را استفاده کنید. کلید و رمز را امن و جداگانه بکاپ بگیرید؛ گواهی عمومی جایگزین کلید خصوصی نیست.
 
 ## انتقال از Debug
 
@@ -24,13 +24,13 @@ Debug و Release امضای متفاوت دارند. قبل از حذف Debug، 
 
 خروجی پیش از امضای دستی:
 
-`app/build/outputs/apk/fdroid/release/iSpeedTopVPN_1.5.3-fdroid_universal.apk`
+`app/build/outputs/apk/fdroid/release/iSpeedTopVPN_1.5.4-fdroid_universal.apk`
 
 برای امضای همان فایل، متغیرهای مسیر را با مسیرهای واقعی جایگزین کنید. apksigner رمز را تعاملی درخواست می‌کند؛ رمز را در فرمان یا گیت ننویسید:
 
 ```powershell
 $tools = Join-Path $env:ANDROID_HOME 'build-tools/37.0.0'
-$unsigned = 'app/build/outputs/apk/fdroid/release/iSpeedTopVPN_1.5.3-fdroid_universal.apk'
+$unsigned = 'app/build/outputs/apk/fdroid/release/iSpeedTopVPN_1.5.4-fdroid_universal.apk'
 & "$tools/zipalign.exe" -P 16 -f 4 $unsigned 'ispeed-aligned.apk'
 & "$tools/apksigner.bat" sign --ks 'C:/secure/ispeedtopvpn-release.p12' --ks-key-alias ispeedtopvpn --out 'iSpeedTopVPN-release.apk' 'ispeed-aligned.apk'
 & "$tools/apksigner.bat" verify --verbose --print-certs 'iSpeedTopVPN-release.apk'

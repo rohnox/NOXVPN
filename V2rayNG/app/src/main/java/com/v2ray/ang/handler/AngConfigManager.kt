@@ -541,10 +541,18 @@ object AngConfigManager {
             val count = parseConfigViaSub(configText, it.guid, false)
             if (count > 0) {
                 it.subscription.lastUpdated = System.currentTimeMillis()
-                // Replace current metadata, retaining only genuine recorded history when headers are absent.
+                val previousUsage = it.subscription.usageInfo
+                val historyTime = System.currentTimeMillis() / 1000
+                val historyRequest = UrlContentRequest(url = url, userAgent = userAgent, requestHeaders = requestHeaders,
+                    httpPort = SettingsManager.getHttpPort(), proxyUsername = proxyUsername, proxyPassword = proxyPassword)
+                val providerHistory = PasarGuardUsage.fetch(historyRequest, historyTime)
+                    ?: if (historyRequest.httpPort != 0) PasarGuardUsage.fetch(historyRequest.copy(httpPort = 0), historyTime) else null
+                // History failure must not erase the last successful snapshot or fail config import.
+                val metadata = PasarGuardUsage.merge(previousUsage,
+                    usageInfo ?: SubscriptionUsageInfo(trafficAvailable = false, quotaAvailable = false), url, providerHistory, historyTime)
+                val matchingPrevious = previousUsage?.takeIf { it.providerUsageSource == null || it.providerUsageSource == metadata.providerUsageSource }
                 it.subscription.usageInfo = SubscriptionInfoParser.recordUsage(
-                    it.subscription.usageInfo, usageInfo ?: SubscriptionUsageInfo(trafficAvailable = false, quotaAvailable = false),
-                    System.currentTimeMillis() / 1000
+                    matchingPrevious, metadata, historyTime
                 )
                 MmkvManager.encodeSubscription(it.guid, it.subscription)
                 LogUtil.i(AppConfig.TAG, "Subscription updated: ${it.subscription.remarks}, $count configs")

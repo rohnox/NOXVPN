@@ -38,4 +38,9 @@ class DashboardConsumptionTest {
         assertTrue(gate.shouldRefresh(60100))
         assertTrue(gate.shouldRefresh(0))
     }
+    @Test fun providerTotalUsesTwoDecimalBinaryUnits() {
+        assertEquals("2.15 GB", formatHistoryTraffic((2.15 * 1024 * 1024 * 1024).toLong(), java.util.Locale.ENGLISH))
+        assertEquals("0 B", formatHistoryTraffic(0, java.util.Locale.ENGLISH))
+        assertEquals("600.00 MB", formatHistoryTraffic(600L * 1024 * 1024, java.util.Locale.ENGLISH))
+    }
 }
