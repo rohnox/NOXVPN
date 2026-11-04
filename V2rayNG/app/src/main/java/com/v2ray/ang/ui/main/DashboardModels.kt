@@ -3,6 +3,12 @@ package com.v2ray.ang.ui.main
 import com.v2ray.ang.dto.SessionTraffic
 import com.v2ray.ang.dto.entities.SubscriptionUsageInfo
 
+/** Regional indicators are presentation only; never infer a country from a server's name. */
+internal fun countryFlag(code: String?): String {
+    if (code == null || code !in java.util.Locale.getISOCountries()) return ""
+    return buildString { code.forEach { appendCodePoint(0x1F1E6 + it.code - 'A'.code) } }
+}
+
 /** UI-owned, bounded session history. Nothing is persisted or read from the native core here. */
 internal data class TrafficRatePoint(val seconds: Long, val up: Double, val down: Double)
 

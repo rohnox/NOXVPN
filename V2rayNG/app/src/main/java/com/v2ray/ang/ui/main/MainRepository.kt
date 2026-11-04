@@ -119,6 +119,12 @@ class MainRepository(
         httpPort, SettingsManager.getSocksUsername(), SettingsManager.getSocksPassword()
     )
 
+    override suspend fun fetchExitCountry(ip: String, httpPort: Int): String? = com.v2ray.ang.util.HttpUtil.getExitCountryViaProxy(
+        ip, httpPort, SettingsManager.getSocksUsername(), SettingsManager.getSocksPassword()
+    )
+    override fun copySubscriptionLink(url: String) = Utils.setClipboard(app, url)
+    override fun createSubscriptionQr(url: String): android.graphics.Bitmap? = com.v2ray.ang.util.QRCodeDecoder.createQRCode(url)
+
     override fun getSelectServer(): String? = MmkvManager.getSelectServer()
 
     override fun getDashboardSubscriptionId(): String? = MmkvManager.decodeSettingsString(AppConfig.CACHE_DASHBOARD_SUBSCRIPTION_ID)

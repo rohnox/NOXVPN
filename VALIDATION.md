@@ -1,28 +1,29 @@
-# Special VPN 1.5.7 — validation
+# Special VPN 1.5.8 — validation
 
-VersionName 1.5.7 / base versionCode770. Application ID com.specialvpn.app. Source folder and repository retain their historical names. Changed behavior is listed in CHANGES-1.5.7.md.
+Scope: country of the actual exit IP, dedicated runtime Quick Settings icon, subscription edit navigation and clipboard/QR sharing. Package com.specialvpn.app; base versionCode771. See CHANGES-1.5.8.md.
 
-## Executed
+## Checks
 
-- Final full JVM/optional Robolectric run: 268 tests,264 passed,4 failed,0 skipped. All four failures are unchanged RootProcessRunnerTest cases: Windows cannot execute sh (CreateProcess error2). The full test command exits failed; no tests were disabled. Results: verification/1.5.7/jvm-full/ and all-tests.log.
-- Exit-IP parser rejects nonliteral, malformed and oversized responses; explicit loopback HTTP proxy, six-second timeout, disabled redirects/retry and invalid-port rejection passed. ViewModel tests cover disconnected state, daemon port use, success, missing port, lookup failure/retry, in-flight cancellation on daemon stop. UI tests cover populated/loading/unavailable/disconnected and refresh action dispatch. All addresses in test screenshots are reserved synthetic examples, not live IP results.
-- Core accounting tests cover absent/null objects, custom policy preservation, malformed policy and generated configuration. SessionTraffic tests cover monotonic timer advancement and legacy/backward clock handling. The Compose timer test advances one second between daemon samples; it does not extrapolate traffic bytes.
-- Notification tests construct actual framework notifications with synthetic state: Cisco/OpenVPN connected and disconnected titles, dedicated small icons, Persian strings, new app name and Quick Settings manifest identity. No live native session is started by these tests.
-- Compose renders include the selected original PNG, compact gold-outline update button, real component layout and exit-IP row, English/Persian RTL and existing dark/light/empty/populated subscription/protocol fixtures. Rendered values are synthetic. The subscription quota remains below the usage chart and scrolls into view.
+Country parsing tests validate matching IPv4/IPv6 addresses, ISO country codes and rejection of malformed, mismatched and oversized data. ViewModel tests retain the successful IP while a country lookup is pending and reject its late result after stop. Existing bounded proxy-only request, invalid-port and cancellation tests remain enabled. No customer IP or configuration was queried during these tests.
+
+Subscription tests resolve the URL by stable ID, trim it, reject missing/blank records, check clipboard success/failure, QR failure/success and dismissal. Compose tests dispatch Edit, copy and QR for the selected subscription ID. Existing selection, deletion, keyboard and D-pad tests remain enabled; their virtual-list lookup scrolls before accessing an off-screen card. The existing editor still owns validation, persistence and settings-change notifications.
+
+The Quick Settings regression test calls setState(INACTIVE) and captures the actual Tile icon resource. This covers the density-resource override missed by the earlier manifest-only test. The production change is a dedicated resource reference only; no service state/lifecycle decision changed.
 
 ## Not run
 
-- Physical Android installation, Samsung Android12+ statistics, wall-clock observation of the live timer, Xray/OpenVPN/Cisco connections, engine handover, notification/tile updates during live connections, start/stop/restart races in VPN/proxy/root modes: no usable device/emulator is attached. JVM tests do not prove those device behaviors.
-- Live public exit-IP lookup through a running Xray session, custom proxy credentials, IPv6 mobile networks and provider outages: no live device tunnel available. Custom routing can use different exits for other destinations; unavailable proxy listeners show Unavailable.
-- TalkBack spoken labels/focus, actual touch/keyboard/D-pad navigation, dynamic color, large-font/narrow screens, both server-column layouts, activity/process recreation and actual IME traversal: no device/emulator available. Existing fixture interaction assertions prove only their stated component behavior.
-- Old-package configuration migration is not implemented. New package installs independently; user-managed export/import is required. Actual backup transfer was not tested.
-- Play Protect certification or scanning of this APK: not performed. Signing and a successful build do not guarantee absence of system warnings.
+- Physical-device install/update and Quick Settings active/inactive transitions on Xiaomi/Samsung: no usable device/emulator attached. If the pinned tile belongs to the older, separate app package, remove that tile and add Special VPN.
+- Live geolocation over a real VPN, provider outage/rate-limit behavior and IP-country accuracy: no device tunnel. Country is approximate; failure leaves the valid IP visible with an unknown country. IPv6 parser coverage does not prove mobile network connectivity.
+- Actual subscription editor save/close/reopen, Android clipboard paste into another application, QR scan by another phone, process recreation and platform IME behavior: not run on hardware. The existing editor/storage/QR encoder is reused.
+- TalkBack spoken labels/focus and hardware touch/keyboard/D-pad, dynamic color, large text and both server columns: no device available. JVM fixture assertions are limited to their covered behavior.
+- Play Protect scanning/certification: not performed.
 
-## Build and artifact inspection
+Final combined run:277 tests,273 passed,4 failed,0 skipped,0 errors. The four unchanged RootProcessRunnerTest failures are caused by Windows missing sh (CreateProcess error2). The full test command exits failed; no tests are disabled. Results: verification/1.5.8/all-tests.log and jvm-full/. The focused parser/ViewModel run also completed BUILD SUCCESSFUL before the final expanded suite.
 
-- Normal `:app:assembleFdroidDebug :app:assembleFdroidRelease :app:lintFdroidDebug` completed BUILD SUCCESSFUL after optional UI-test dependencies were excluded. Lint: zero errors,370 warnings,one hint (same counts as1.5.6, no new suppression). Results: build-final.log and lint.xml.
-- Release signed with existing certificate SHA256 `3e70db5bbca2256d8df6b23d459302416e414c53a018d09d46778ddbc2c241a8`; v2/v3 signature and ZIP16KiB alignment checks passed. Both APK identities, all four ABI inputs and absence of ACRA/Xposed passed. Debug was independently inspected. Results: sign.log and debug-verify.log.
-- All60 native libraries are byte-identical to1.4.3; ELF alignment, bundled font content/OFL asset and absence of project UI-test fixture classes in Release DEX passed. Permission capabilities match the preceding build after normalizing the application-specific receiver permission to the explicitly changed package ID. No new permission capability was added.
-- Resource XML, original GPL license, `git diff --check` and recursive native source pins passed. New labels supplied in all ten configured locales. The selected reference PNG and runtime PNG are identical copies.
+Country-flag tests reject unknown/lowercase/invalid codes. The decorative badge and full-card flag background with a gradient scrim are enabled only for a running connection with a known country; disconnected/loading/unavailable states retain the original background. The emoji is excluded from accessibility speech. Compose renders inspected in English dark/light and Persian RTL include the country badge and full-card flag, with legible controls and rounded clipping and subscription edit/share actions, plus existing English/Persian RTL, light/dark and populated/empty fixtures. Screenshots contain reserved/synthetic values; they are not live geolocation results. QR generation reuses the existing encoder, with no new dependency or external transmission.
 
-Artifacts: SpecialVPN-1.5.7-universal-release.apk, SpecialVPN-1.5.7-universal-debug.apk, SpecialVPN-1.5.7-source.zip and public certificate. SHA256SUMS-1.5.7.txt records hashes. The complete source ZIP retains its historical iSpeedTopVPN top-level folder and includes native sources/build inputs. No customer subscription response, administrator credential, private signing material or real exit IP is included.
+Normal F-Droid Debug/Release assembly and Debug lint completed BUILD SUCCESSFUL with optional UI-test dependencies excluded. Lint: zero errors,371 warnings,one hint. The added warning is the upstream ic_stat_name resource becoming unused after the runtime icon fix; no suppression was added.
+
+Release v2/v3 signatures, ZIP16KiB alignment, both APK identities, all four ABI inputs, absence of ACRA/Xposed, font/OFL packaging and absence of UI fixtures in Release DEX passed. All60 native libraries match1.4.3 byte-for-byte; ELF alignment and permission capabilities are retained (application-specific receiver permission normalized for the package rename in1.5.7). Original license, resource XML, source diff and recursive native source pins passed.
+
+Outputs: SpecialVPN-1.5.8-universal-release.apk, SpecialVPN-1.5.8-universal-debug.apk and SpecialVPN-1.5.8-source.zip. Existing release certificate SHA256 remains `3e70db5bbca2256d8df6b23d459302416e414c53a018d09d46778ddbc2c241a8`. SHA256SUMS-1.5.8.txt records artifact hashes. The source archive keeps the historical iSpeedTopVPN top folder and includes native sources/inputs. Private subscription links, configurations and signing keys are excluded. Signing/build logs are under verification/1.5.8/.

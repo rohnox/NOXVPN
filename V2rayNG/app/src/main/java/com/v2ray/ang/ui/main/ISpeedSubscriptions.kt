@@ -38,6 +38,7 @@ import com.v2ray.ang.extension.toTrafficString
 internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (MainAction) -> Unit, onImport: () -> Unit) {
     val plans = state.groups.filter { it.id.isNotEmpty() && it.id != AppConfig.DEFAULT_SUBSCRIPTION_ID }
     val selected = dashboardPlan(state)
+    var sharing by rememberSaveable { mutableStateOf<String?>(null) }
     var pendingDelete by rememberSaveable { mutableStateOf<String?>(null) }
     var focusAfterDelete by rememberSaveable { mutableStateOf<String?>(null) }
     val selectedFocus = remember { FocusRequester() }
@@ -55,6 +56,12 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
             focusAfterDelete = null
         }
     }
+    val shareTarget = plans.firstOrNull { it.id == sharing }
+    if (shareTarget != null) AlertDialog(onDismissRequest = { sharing = null },
+        title = { Text(stringResource(R.string.acc_share_subscription)) },
+        text = { Text(shareTarget.remarks) },
+        confirmButton = { TextButton(onClick = { sharing = null; onAction(MainAction.ShareSubscription(shareTarget.id, true)) }) { Text(stringResource(R.string.share_subscription_qrcode)) } },
+        dismissButton = { TextButton(onClick = { sharing = null; onAction(MainAction.ShareSubscription(shareTarget.id, false)) }) { Text(stringResource(R.string.share_subscription_clipboard)) } })
     val target = plans.firstOrNull { it.id == pendingDelete }
     if (target != null) AlertDialog(onDismissRequest = { pendingDelete = null },
         title = { Text(stringResource(R.string.top_delete_subscription)) },
@@ -68,10 +75,12 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
     LazyColumn(modifier, state = list, contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         item {
             DashboardTitle(stringResource(R.string.top_plans), stringResource(R.string.top_add_subscription), onImport)
+            state.subscriptionShareMessage?.let { Text(stringResource(it), style = MaterialTheme.typography.bodySmall) }
             state.dashboardMessage?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
         }
         item {
             if (selected != null) SelectedPlanHero(selected,
+                { onAction(MainAction.EditSubscription(selected.id)) }, { sharing = selected.id },
                 { onAction(MainAction.UpdateGroupSubscription(selected.id)) }, { pendingDelete = selected.id })
             else DashboardPanel {
                 Text(stringResource(R.string.top_no_plan), style = MaterialTheme.typography.titleMedium)
@@ -82,6 +91,7 @@ internal fun ISpeedPlans(state: MainUiState, modifier: Modifier, onAction: (Main
         item { Text(stringResource(R.string.top_your_subscriptions), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold) }
         items(plans, key = { it.id }) { plan ->
             PlanChoiceCard(plan, plan.id == selected?.id, selectedFocus,
+                { onAction(MainAction.EditSubscription(plan.id)) }, { sharing = plan.id },
                 { onAction(MainAction.SelectDashboardSubscription(plan.id)) },
                 { onAction(MainAction.UpdateGroupSubscription(plan.id)) }, { pendingDelete = plan.id })
         }
@@ -101,7 +111,7 @@ private fun planDays(info: SubscriptionUsageInfo?): String {
 }
 
 @Composable
-private fun SelectedPlanHero(plan: GroupMapItem, onRefresh: () -> Unit, onDelete: () -> Unit) {
+private fun SelectedPlanHero(plan: GroupMapItem, onEdit: () -> Unit, onShare: () -> Unit, onRefresh: () -> Unit, onDelete: () -> Unit) {
     val info = plan.usageInfo
     val known = info != null && hasSubscriptionTraffic(info)
     val limited = info != null && hasSubscriptionQuota(info) && info.total > 0
@@ -127,17 +137,19 @@ private fun SelectedPlanHero(plan: GroupMapItem, onRefresh: () -> Unit, onDelete
                 }
             }
             if (known && limited) Text(stringResource(R.string.top_remaining) + ": " + (info.total - info.used).coerceAtLeast(0).toTrafficString(), style = MaterialTheme.typography.bodyMedium)
+            SubscriptionTools(onEdit, onShare)
             PlanActions(plan.remarks, onRefresh, onDelete)
         }
     }
 }
 
 @Composable
-private fun PlanChoiceCard(plan: GroupMapItem, active: Boolean, selectedFocus: FocusRequester, onSelect: () -> Unit, onRefresh: () -> Unit, onDelete: () -> Unit) {
+private fun PlanChoiceCard(plan: GroupMapItem, active: Boolean, selectedFocus: FocusRequester, onEdit: () -> Unit, onShare: () -> Unit, onSelect: () -> Unit, onRefresh: () -> Unit, onDelete: () -> Unit) {
     val refreshLabel = stringResource(R.string.top_refresh_named, plan.remarks)
     val deleteLabel = stringResource(R.string.top_delete_named, plan.remarks)
     Surface(shape = RoundedCornerShape(20.dp), color = if (active) MaterialTheme.colorScheme.primaryContainer.copy(alpha = .35f) else MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(if (active) 1.5.dp else 1.dp, if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)) {
+        Column {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 4.dp)) {
             Row(Modifier.weight(1f).then(if (active) Modifier.focusRequester(selectedFocus) else Modifier)
                 .clickable(role = Role.RadioButton, onClick = onSelect).semantics(mergeDescendants = true) { selected = active }
@@ -154,6 +166,16 @@ private fun PlanChoiceCard(plan: GroupMapItem, active: Boolean, selectedFocus: F
             IconButton(onRefresh) { Icon(painterResource(R.drawable.ic_refresh_24dp), refreshLabel, Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary) }
             IconButton(onDelete) { Icon(painterResource(R.drawable.ic_delete_24dp), deleteLabel, Modifier.size(20.dp), tint = MaterialTheme.colorScheme.error) }
         }
+        SubscriptionTools(onEdit, onShare)
+        }
+    }
+}
+
+@Composable
+private fun SubscriptionTools(onEdit: () -> Unit, onShare: () -> Unit) {
+    Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.End) {
+        IconButton(onEdit) { Icon(painterResource(R.drawable.ic_edit_24dp), stringResource(R.string.acc_edit), Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary) }
+        IconButton(onShare) { Icon(painterResource(R.drawable.ic_share_24dp), stringResource(R.string.acc_share_subscription), Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary) }
     }
 }
 

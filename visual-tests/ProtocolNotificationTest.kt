@@ -22,6 +22,15 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(application = Application::class, sdk = [35])
 class ProtocolNotificationTest {
+    @Test fun quickSettingsRuntimeUsesDedicatedIconDespiteDensityOverrides() {
+        val service = org.mockito.Mockito.spy(Robolectric.buildService(com.v2ray.ang.service.QSTileService::class.java).get())
+        val tile = org.mockito.Mockito.mock(android.service.quicksettings.Tile::class.java)
+        org.mockito.Mockito.doReturn(tile).`when`(service).qsTile
+        service.setState(android.service.quicksettings.Tile.STATE_INACTIVE)
+        val icon = org.mockito.ArgumentCaptor.forClass(android.graphics.drawable.Icon::class.java)
+        org.mockito.Mockito.verify(tile).setIcon(icon.capture())
+        assertEquals(R.drawable.ic_ispeed_notification, icon.value.resId)
+    }
     @Test fun ciscoTitleDoesNotInheritTheOpenVpnAppResource() {
         val service = Robolectric.buildService(OpenVpnService::class.java).get()
         val state = OpenVpnService::class.java.getDeclaredField("mConnectionState").apply { isAccessible = true }

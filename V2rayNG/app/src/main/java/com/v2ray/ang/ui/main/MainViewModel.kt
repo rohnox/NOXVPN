@@ -77,6 +77,7 @@ class MainViewModel(
     private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
     private var exitIpJob: Job? = null
+    private var subscriptionShareJob: Job? = null
     private val exitIpGeneration = AtomicLong()
     @Volatile private var exitIpPort = 0
     private var subscriptionNoticeJob: Job? = null
@@ -345,17 +346,20 @@ class MainViewModel(
             is MainAction.SelectGroup -> subscriptionIdChanged(action.groupId)
             is MainAction.SelectDashboardSubscription -> selectDashboardSubscription(action.id)
             is MainAction.DeleteSubscription -> deleteSubscription(action.id)
+            is MainAction.ShareSubscription -> shareSubscription(action.id, action.qr)
             is MainAction.SelectServer -> updateSelectedGuid(action.guid)
             is MainAction.RemoveServer -> removeServerAndRefresh(action.guid)
             is MainAction.Search -> filterConfig(action.query)
             is MainAction.ImportBatchConfig -> importBatchConfig(action.configText)
             MainAction.LocateHandled -> consumeLocateTarget()
             is MainAction.ShareQRCode -> {
+                subscriptionShareJob?.cancel()
                 val bitmap = dataSource.share2QRCode(action.guid)
                 _uiState.update { it.copy(shareQRCodeBitmap = bitmap) }
             }
 
             MainAction.DismissQRCodeDialog -> {
+                subscriptionShareJob?.cancel()
                 _uiState.update { it.copy(shareQRCodeBitmap = null) }
             }
 
@@ -368,6 +372,7 @@ class MainViewModel(
             MainAction.RestartService,
             MainAction.LocateSelectedServer,
             is MainAction.EditServer,
+            is MainAction.EditSubscription,
             is MainAction.ShareClipboard,
             is MainAction.ShareFullContent,
             is MainAction.OpenSubscriptionLink -> {
@@ -1249,6 +1254,30 @@ class MainViewModel(
         _uiState.update { it.copy(locateTarget = null) }
     }
 
+    private fun shareSubscription(id: String, qr: Boolean) {
+        subscriptionShareJob?.cancel()
+        _uiState.update { it.copy(shareQRCodeBitmap = null, subscriptionShareMessage = null) }
+        subscriptionShareJob = viewModelScope.launch {
+            try {
+                val url = kotlinx.coroutines.withContext(ioDispatcher) { dataSource.getSubscriptionItem(id)?.url?.trim() }.orEmpty()
+                if (url.isBlank()) { _uiState.update { it.copy(subscriptionShareMessage = R.string.toast_failure) }; return@launch }
+                if (qr) {
+                    val bitmap = kotlinx.coroutines.withContext(defaultDispatcher) { dataSource.createSubscriptionQr(url) }
+                    currentCoroutineContext().ensureActive()
+                    if (bitmap == null) _uiState.update { it.copy(subscriptionShareMessage = R.string.toast_failure) }
+                    _uiState.update { it.copy(shareQRCodeBitmap = bitmap) }
+                } else {
+                    dataSource.copySubscriptionLink(url)
+                    _uiState.update { it.copy(subscriptionShareMessage = R.string.toast_success) }
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "Subscription operation=share failed", IllegalStateException(error.javaClass.simpleName))
+                _uiState.update { it.copy(subscriptionShareMessage = R.string.toast_failure) }
+            }
+        }
+    }
+
     private fun resetExitIp() {
         exitIpGeneration.incrementAndGet()
         exitIpJob?.cancel()
@@ -1277,6 +1306,19 @@ class MainViewModel(
             if (exitIpGeneration.get() == generation && _uiState.value.isRunning) {
                 if (value == null) LogUtil.w(AppConfig.TAG, "Exit IP mode=proxy phase=connected operation=lookup unavailable")
                 _uiState.update { it.copy(exitIp = value?.let { ExitIpState.Address(it) } ?: ExitIpState.Unavailable) }
+                if (value != null) {
+                    val country = try { dataSource.fetchExitCountry(value, port) }
+                        catch (cancelled: CancellationException) { throw cancelled }
+                        catch (error: Exception) {
+                            LogUtil.w(AppConfig.TAG, "Exit country mode=proxy operation=lookup unavailable")
+                            null
+                        }
+                    currentCoroutineContext().ensureActive()
+                    if (exitIpGeneration.get() == generation && _uiState.value.isRunning) {
+                        if (country == null) LogUtil.w(AppConfig.TAG, "Exit country mode=proxy operation=lookup unavailable")
+                        _uiState.update { it.copy(exitIp = ExitIpState.Address(value, country)) }
+                    }
+                }
             }
         }
     }
@@ -1298,6 +1340,7 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        subscriptionShareJob?.cancel()
         exitIpGeneration.incrementAndGet()
         exitIpJob?.cancel()
         cancelAutoConnect()

@@ -4,6 +4,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -117,6 +119,18 @@ private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> U
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
         Box(Modifier.background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.colorScheme.surfaceContainerLow)))) {
+            val flag = if (state.isRunning) countryFlag((state.exitIp as? ExitIpState.Address)?.countryCode) else ""
+            if (flag.isNotEmpty()) {
+                val light = MaterialTheme.colorScheme.surface.luminance() > .5f
+                BoxWithConstraints(Modifier.matchParentSize().clearAndSetSemantics {}) {
+                    val flagSize = with(androidx.compose.ui.platform.LocalDensity.current) { (maxWidth * .9f).toSp() }
+                    Text(flag, fontSize = flagSize, lineHeight = flagSize, maxLines = 1, softWrap = false, overflow = TextOverflow.Visible,
+                        modifier = Modifier.align(Alignment.Center).wrapContentSize(unbounded = true).alpha(if (light) .23f else .38f))
+                }
+                Box(Modifier.matchParentSize().background(Brush.verticalGradient(listOf(
+                    MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (light) .25f else .12f),
+                    MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = if (light) .5f else .65f)))))
+            }
             GoldWave(Modifier.fillMaxWidth().height(105.dp))
             Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -151,6 +165,20 @@ private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> U
                             ExitIpState.Unavailable -> stringResource(R.string.top_exit_ip_unavailable)
                             else -> stringResource(R.string.top_exit_ip_loading)
                         }, style = MaterialTheme.typography.labelMedium.copy(textDirection = TextDirection.Ltr), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    }
+                    (state.exitIp as? ExitIpState.Address)?.let { address ->
+                        val code = address.countryCode
+                        val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+                        if (code == null) Text(stringResource(R.string.ispeed_unavailable), style = MaterialTheme.typography.labelSmall)
+                        else Surface(shape = RoundedCornerShape(10.dp), color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            border = BorderStroke(.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = .4f))) {
+                            Row(Modifier.widthIn(max = 120.dp).padding(horizontal = 6.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Text(countryFlag(code), modifier = Modifier.clearAndSetSemantics {}, style = MaterialTheme.typography.bodyMedium)
+                                Text(java.util.Locale.Builder().setRegion(code).build().getDisplayCountry(locale),
+                                    modifier = Modifier.weight(1f, fill = false), style = MaterialTheme.typography.labelSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            }
+                        }
                     }
                     if (state.exitIp == ExitIpState.Loading) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
                     else IconButton(onRefreshExitIp) { Icon(painterResource(R.drawable.ic_refresh_24dp), stringResource(R.string.top_exit_ip_refresh), Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary) }

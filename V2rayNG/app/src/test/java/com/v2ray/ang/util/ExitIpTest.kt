@@ -7,6 +7,13 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class ExitIpTest {
+    @Test fun countryMustMatchTheQueriedAddressAndKnownIsoCode() {
+        assertEquals("NL", HttpUtil.parseExitCountryResponse("""{"ip":"203.0.113.7","country":"NL"}""", "203.0.113.7"))
+        assertEquals("DE", HttpUtil.parseExitCountryResponse("""{"ip":"2001:db8:0:0:0:0:0:1","country":"DE"}""", "2001:db8::1"))
+        listOf("{}", "[]", "broken", """{"ip":"203.0.113.8","country":"NL"}""",
+            """{"ip":"203.0.113.7","country":"ZZ"}""", """{"ip":"example.com","country":"NL"}""", "x".repeat(257))
+            .forEach { assertNull(HttpUtil.parseExitCountryResponse(it, "203.0.113.7")) }
+    }
     @Test fun acceptsOnlyLiteralAddresses() {
         assertEquals("203.0.113.7", HttpUtil.parseExitIpResponse("""{"ip":"203.0.113.7"}"""))
         assertEquals("2001:db8::1", HttpUtil.parseExitIpResponse("""{"ip":"2001:db8::1"}"""))

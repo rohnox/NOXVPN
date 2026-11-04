@@ -22,6 +22,51 @@ import org.mockito.kotlin.*
 // Existing coroutines-test virtual Main APIs; remove opt-in when those dispatcher APIs stabilize.
 @OptIn(ExperimentalCoroutinesApi::class)
 class DashboardSubscriptionsTest {
+    @Test fun countryFlagUsesOnlyKnownCountryCodes() {
+        assertEquals("🇳🇱", countryFlag("NL"))
+        assertEquals("🇩🇪", countryFlag("DE"))
+        listOf(null, "", "ZZ", "nl", "NLD").forEach { assertEquals("", countryFlag(it)) }
+    }
+    @Test fun sharingResolvesSubscriptionByIdAndRejectsMissingOrBlankLinks() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            f.items[1].subscription.url = "  https://example.invalid/sub/test  "
+            f.vm.onAction(MainAction.ShareSubscription("two", false)); runCurrent()
+            verify(f.source).copySubscriptionLink("https://example.invalid/sub/test")
+            assertEquals(R.string.toast_success, f.vm.uiState.value.subscriptionShareMessage)
+            f.vm.onAction(MainAction.ShareSubscription("missing", false)); runCurrent()
+            assertEquals(R.string.toast_failure, f.vm.uiState.value.subscriptionShareMessage)
+            f.vm.onAction(MainAction.ShareSubscription("one", false)); runCurrent()
+            verify(f.source, times(1)).copySubscriptionLink(any())
+            f.vm.onAction(MainAction.ShareSubscription("two", true)); runCurrent()
+            verify(f.source).createSubscriptionQr("https://example.invalid/sub/test")
+            assertEquals(R.string.toast_failure, f.vm.uiState.value.subscriptionShareMessage)
+            val bitmap = mock<android.graphics.Bitmap>()
+            whenever(f.source.createSubscriptionQr(any())).thenReturn(bitmap)
+            f.vm.onAction(MainAction.ShareSubscription("two", true)); runCurrent()
+            assertSame(bitmap, f.vm.uiState.value.shareQRCodeBitmap)
+            f.vm.onAction(MainAction.DismissQRCodeDialog); runCurrent()
+            assertNull(f.vm.uiState.value.shareQRCodeBitmap)
+            doThrow(IllegalStateException("test failure")).whenever(f.source).copySubscriptionLink(any())
+            f.vm.onAction(MainAction.ShareSubscription("two", false)); runCurrent()
+            assertEquals(R.string.toast_failure, f.vm.uiState.value.subscriptionShareMessage)
+        }
+    }
+
+    @Test fun countryEnrichesOnlyTheCurrentExitAddress() = runTest {
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            whenever(f.source.fetchExitIp(10809)).thenReturn("203.0.113.7")
+            val reply = kotlinx.coroutines.CompletableDeferred<String?>()
+            doSuspendableAnswer { reply.await() }.whenever(f.source).fetchExitCountry("203.0.113.7", 10809)
+            f.events.emit(MainServiceEvent.StateRunning); runCurrent()
+            f.events.emit(MainServiceEvent.Traffic(com.v2ray.ang.dto.SessionTraffic(httpProxyPort = 10809))); runCurrent()
+            assertEquals(ExitIpState.Address("203.0.113.7"), f.vm.uiState.value.exitIp)
+            f.events.emit(MainServiceEvent.StateStopSuccess); runCurrent()
+            reply.complete("NL"); runCurrent()
+            assertEquals(ExitIpState.Off, f.vm.uiState.value.exitIp)
+        }
+    }
     @Test fun exitIpUsesDaemonPortAndClearsOnStop() = runTest {
         Fixture(testScheduler).use { f ->
             runCurrent()

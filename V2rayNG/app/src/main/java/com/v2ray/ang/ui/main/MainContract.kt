@@ -11,7 +11,7 @@ sealed interface ExitIpState {
     data object Off : ExitIpState
     data object Loading : ExitIpState
     data object Unavailable : ExitIpState
-    data class Address(val value: String) : ExitIpState
+    data class Address(val value: String, val countryCode: String? = null) : ExitIpState
 }
 
 sealed interface MainStatus {
@@ -48,7 +48,8 @@ data class MainUiState(
     val locateTarget: LocateTarget? = null,
     val confirmRemove: Boolean = false,
     val doubleColumnDisplay: Boolean = false,
-    val shareQRCodeBitmap: android.graphics.Bitmap? = null
+    val shareQRCodeBitmap: android.graphics.Bitmap? = null,
+    val subscriptionShareMessage: Int? = null
 )
 
 /**
@@ -84,6 +85,8 @@ sealed interface MainAction {
     data class SelectGroup(val groupId: String) : MainAction
     data class SelectDashboardSubscription(val id: String) : MainAction
     data class DeleteSubscription(val id: String) : MainAction
+    data class EditSubscription(val id: String) : MainAction
+    data class ShareSubscription(val id: String, val qr: Boolean) : MainAction
     data class SelectServer(val guid: String) : MainAction
     data class RemoveServer(val guid: String) : MainAction
     data class EditServer(val guid: String, val profile: com.v2ray.ang.dto.entities.ProfileItem) : MainAction

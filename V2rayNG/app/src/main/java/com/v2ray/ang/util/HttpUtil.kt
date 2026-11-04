@@ -263,13 +263,33 @@ object HttpUtil {
 
     /** Strictly uses the daemon's local HTTP proxy. Never retries over the device's direct network. */
     suspend fun getExitIpViaProxy(httpPort: Int, username: String?, password: String?): String? =
+        proxyJson("https://api64.ipify.org?format=json", httpPort, username, password)?.let(::parseExitIpResponse)
+
+    suspend fun getExitCountryViaProxy(ip: String, httpPort: Int, username: String?, password: String?): String? {
+        if (!Utils.isPureIpAddress(ip) || ip.any { it == '%' || it == '[' || it == ']' }) return null
+        val response = proxyJson("https://api.country.is/$ip", httpPort, username, password) ?: return null
+        return parseExitCountryResponse(response, ip)
+    }
+
+    internal fun parseExitCountryResponse(text: String, expectedIp: String): String? = try {
+        if (text.length > 256 || !Utils.isPureIpAddress(expectedIp)) null else {
+            val json = com.google.gson.JsonParser.parseString(text).asJsonObject
+            val ip = json.get("ip")?.asString.orEmpty()
+            val code = json.get("country")?.asString.orEmpty()
+            if (Utils.isPureIpAddress(ip) && ip.none { it == '%' || it == '[' || it == ']' } &&
+                java.net.InetAddress.getByName(ip) == java.net.InetAddress.getByName(expectedIp) &&
+                code in java.util.Locale.getISOCountries()) code else null
+        }
+    } catch (_: Exception) { null }
+
+    private suspend fun proxyJson(url: String, httpPort: Int, username: String?, password: String?): String? =
         kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
             if (httpPort !in 1..65535) {
                 continuation.resumeWith(Result.success(null))
                 return@suspendCancellableCoroutine
             }
             val call = exitIpClient(httpPort, username, password).newCall(Request.Builder()
-                .url("https://api64.ipify.org?format=json").header("Accept", "application/json").get().build())
+                .url(url).header("Accept", "application/json").get().build())
             continuation.invokeOnCancellation { call.cancel() }
             call.enqueue(object : okhttp3.Callback {
                 override fun onFailure(call: okhttp3.Call, error: IOException) {
@@ -287,7 +307,7 @@ object HttpUtil {
                                     if (count < 0) break
                                     size += count
                                 }
-                                if (size > 256) null else parseExitIpResponse(String(buffer, 0, size, Charsets.UTF_8))
+                                if (size > 256) null else String(buffer, 0, size, Charsets.UTF_8)
                             }
                         }
                     } catch (_: Exception) { null }

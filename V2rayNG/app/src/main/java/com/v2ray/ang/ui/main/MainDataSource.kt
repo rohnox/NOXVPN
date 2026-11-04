@@ -19,6 +19,9 @@ interface MainDataSource : Closeable {
     fun removeSubscription(id: String)
 
     suspend fun fetchExitIp(httpPort: Int): String?
+    suspend fun fetchExitCountry(ip: String, httpPort: Int): String?
+    fun copySubscriptionLink(url: String)
+    fun createSubscriptionQr(url: String): android.graphics.Bitmap?
 
     fun getSelectServer(): String?
     fun setSelectServer(guid: String)

@@ -148,6 +148,7 @@ class PremiumVisualTest {
     @Test fun keyboardSelectsSubscription() {
         render(plans = true, populated = true)
         compose.runOnIdle { inputModes.requestInputMode(InputMode.Keyboard) }
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Work plan") and hasClickAction())
         val row = compose.onNode(hasText("Work plan") and hasClickAction()).performScrollTo()
         row.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
         row.assertIsFocused().performKeyInput { pressKey(Key.Enter) }
@@ -156,6 +157,7 @@ class PremiumVisualTest {
     @Test fun dpadSelectsSubscription() {
         render(plans = true, populated = true)
         compose.runOnIdle { inputModes.requestInputMode(InputMode.Keyboard) }
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Work plan") and hasClickAction())
         val row = compose.onNode(hasText("Work plan") and hasClickAction()).performScrollTo()
         row.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
         row.assertIsFocused().performKeyInput { pressKey(Key.DirectionCenter) }
@@ -165,6 +167,7 @@ class PremiumVisualTest {
     fun subscriptionDesignThreePersian() { render(plans = true, populated = true, rtl = true); capture("subscriptions-fa") }
     @Test fun selectingSubscriptionChangesHomeInformation() {
         render(plans = true, populated = true)
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Work plan") and hasClickAction())
         compose.onNode(hasText("Work plan") and hasClickAction()).performScrollTo().performClick().assertIsSelected()
         capture("subscriptions-work-selected")
         compose.onNodeWithText("Home").performClick()
@@ -302,6 +305,38 @@ class PremiumVisualTest {
     @Test fun exitIpIsHiddenWhileDisconnected() {
         render()
         compose.onNodeWithText("Exit IP").assertDoesNotExist()
+    }
+
+    @Test fun countryIsLocalizedBesideExitIp() {
+        render(populated = true, exitIp = ExitIpState.Address("198.51.100.24", "NL"))
+        compose.onNodeWithText("Netherlands").assertIsDisplayed()
+        capture("home-exit-country")
+    }
+
+    @Test @Config(qualifiers = "fa-rIR-w393dp-h852dp-xhdpi")
+    fun countryBadgeAndWatermarkInPersian() {
+        render(populated = true, rtl = true, exitIp = ExitIpState.Address("198.51.100.24", "NL"))
+        compose.onNodeWithText("هلند").assertIsDisplayed()
+        capture("home-country-fa")
+    }
+
+    @Test fun countryBadgeAndWatermarkInLightTheme() {
+        render(populated = true, light = true, exitIp = ExitIpState.Address("198.51.100.24", "NL"))
+        compose.onNodeWithText("Netherlands").assertIsDisplayed()
+        capture("home-country-light")
+    }
+
+    @Test fun subscriptionEditAndShareUseTheChosenId() {
+        render(plans = true, populated = true)
+        compose.onAllNodesWithContentDescription("Edit").onFirst().performClick()
+        org.junit.Assert.assertEquals(MainAction.EditSubscription("family"), commands.last())
+        compose.onAllNodesWithContentDescription("Share subscription link").onFirst().performClick()
+        compose.onNodeWithText("QR code").performClick()
+        org.junit.Assert.assertEquals(MainAction.ShareSubscription("family", true), commands.last())
+        compose.onAllNodesWithContentDescription("Share subscription link").onFirst().performClick()
+        compose.onNodeWithText("Export to clipboard").performClick()
+        org.junit.Assert.assertEquals(MainAction.ShareSubscription("family", false), commands.last())
+        capture("subscriptions-edit-share")
     }
 
 }

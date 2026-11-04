@@ -147,6 +147,7 @@ class MainActivity : HelperBaseComponentActivity() {
                     is MainAction.EditServer -> editServer(action.guid, action.profile)
                     is MainAction.ShareClipboard -> shareToClipboard(action.guid)
                     is MainAction.ShareFullContent -> shareFullContentAsync(action.guid)
+                    is MainAction.EditSubscription -> startActivity(Intent(this, com.v2ray.ang.ui.subscription.SubEditActivity::class.java).putExtra("subId", action.id))
                     is MainAction.OpenSubscriptionLink -> openSubscriptionLink(action.url)
                     else -> mainViewModel.onAction(action)
                 }
