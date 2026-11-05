@@ -360,4 +360,27 @@ class PremiumVisualTest {
         compose.onNodeWithText("آپدیت").assertIsDisplayed()
         capture("home-update-banner-fa")
     }
+
+    @Test fun serverDelayStatesKeepUntestedSeparateFromFailed() {
+        compose.setContent { MaterialTheme(colorScheme = staticAppColorScheme(true)) { Column { ServerDelay(-1); ServerDelay(0); ServerDelay(42) } } }
+        compose.onNodeWithText("Unreachable").assertIsDisplayed()
+        compose.onNodeWithText("Not tested").assertIsDisplayed()
+        compose.onNodeWithText("42 ms").assertIsDisplayed()
+        capture("server-delay-states")
+    }
+    @Test fun actualControlsScreenHasNoConfigurationToolsAndKeepsManualUpdater() {
+        val model = org.mockito.kotlin.mock<MainViewModel>()
+        org.mockito.kotlin.whenever(model.uiState).thenReturn(kotlinx.coroutines.flow.MutableStateFlow(MainUiState()))
+        org.mockito.kotlin.whenever(model.isLoading).thenReturn(kotlinx.coroutines.flow.MutableStateFlow(false))
+        org.mockito.kotlin.whenever(model.serverGroupState(org.mockito.kotlin.any())).thenReturn(kotlinx.coroutines.flow.MutableStateFlow(ServerGroupUiState()))
+        org.mockito.kotlin.whenever(model.formatStatus(org.mockito.kotlin.any())).thenReturn("")
+        compose.setContent { MaterialTheme(colorScheme = staticAppColorScheme(true), typography = AppTypography) { MainScreen(model, {}, { destinations.add(it) }, {}) } }
+        compose.onNodeWithText("Settings").performClick()
+        compose.onNodeWithText("Check for update").performScrollTo().performClick()
+        org.junit.Assert.assertEquals(MainDestination.CheckUpdate, destinations.last())
+        val footer = org.robolectric.RuntimeEnvironment.getApplication().getString(com.v2ray.ang.R.string.ispeed_attribution)
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(footer))
+        compose.onNodeWithText("Configuration tools").assertDoesNotExist()
+        capture("controls-without-configuration-tools")
+    }
 }

@@ -34,6 +34,11 @@ class AngApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+        app.openconnect.core.EmbeddedRuntime.setConnectionGate { context, connect ->
+            com.v2ray.ang.core.LauncherManager.prepareEmbeddedCiscoConnection(context) {
+                connect.run()
+            }
+        }
 
         MmkvManager.initialize(this)
 

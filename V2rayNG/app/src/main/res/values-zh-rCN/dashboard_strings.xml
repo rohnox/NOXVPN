@@ -89,4 +89,5 @@
     <string name="top_app_update">新版本：%1$s</string>
     <string name="top_dismiss_app_update">关闭更新提示</string>
     <string name="top_app_update_action">更新</string>
+    <string name="top_server_unreachable">无法连接</string>
 </resources>

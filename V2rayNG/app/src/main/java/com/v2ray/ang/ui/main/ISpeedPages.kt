@@ -57,7 +57,7 @@ internal fun DashboardServerCard(row: ServerRowUiModel, isSelected: Boolean, onS
                 }
                 Text(row.remarks, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Text(row.typeDescription, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(if (row.testDelayMillis > 0) stringResource(R.string.top_latency, row.testDelayMillis) else stringResource(R.string.top_untested), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                ServerDelay(row.testDelayMillis)
             }
         } else Row(Modifier.padding(start = 14.dp, top = 14.dp, bottom = 14.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Box(Modifier.size(40.dp).background(MaterialTheme.colorScheme.primary.copy(alpha = .12f), RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
@@ -66,8 +66,7 @@ internal fun DashboardServerCard(row: ServerRowUiModel, isSelected: Boolean, onS
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Text(row.remarks, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Text(row.typeDescription, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(if (row.testDelayMillis > 0) stringResource(R.string.top_latency, row.testDelayMillis) else stringResource(R.string.top_untested), style = MaterialTheme.typography.labelSmall,
-                    color = if (row.testDelayMillis > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                ServerDelay(row.testDelayMillis)
             }
             IconButton(onMore) { Icon(painterResource(R.drawable.ic_more_vert_24dp), stringResource(R.string.top_more)) }
         }
@@ -82,8 +81,7 @@ internal fun DashboardMiniServer(row: ServerRowUiModel, isSelected: Boolean, mod
         Row(Modifier.padding(start = 12.dp, end = 2.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(row.remarks, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(if (row.testDelayMillis > 0) stringResource(R.string.top_latency, row.testDelayMillis) else stringResource(R.string.top_untested),
-                    style = MaterialTheme.typography.labelSmall.copy(textDirection = TextDirection.Ltr), color = MaterialTheme.colorScheme.primary, maxLines = 1)
+                ServerDelay(row.testDelayMillis)
             }
             IconButton(onMore, Modifier.size(40.dp)) { Icon(painterResource(R.drawable.ic_more_vert_24dp), stringResource(R.string.top_more), Modifier.size(18.dp)) }
         }
@@ -212,8 +210,8 @@ private fun QuotaValue(label: String, value: String) {
 }
 
 @Composable
-internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) -> Unit, advancedContent: @Composable () -> Unit = {}) {
-    val routes = listOf(MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy, MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore, MainDestination.Logcat, MainDestination.About)
+internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) -> Unit) {
+    val routes = listOf(MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy, MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore, MainDestination.Logcat, MainDestination.CheckUpdate, MainDestination.About)
     LazyColumn(modifier, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item {
             Text(stringResource(R.string.top_tools_hint), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
@@ -228,7 +226,18 @@ internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) ->
                 }
             }
         }
-        item { advancedContent() }
         item { Text(stringResource(R.string.ispeed_attribution), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 12.dp)) }
+    }
+}
+
+@Composable
+internal fun ServerDelay(delayMillis: Long) {
+    val failed = delayMillis < 0
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        if (failed) Icon(painterResource(R.drawable.ic_app_update_close), null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.error)
+        Text(when { delayMillis > 0 -> stringResource(R.string.top_latency, delayMillis)
+            failed -> stringResource(R.string.top_server_unreachable)
+            else -> stringResource(R.string.top_untested) }, style = MaterialTheme.typography.labelSmall,
+            color = if (failed) MaterialTheme.colorScheme.error else if (delayMillis > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

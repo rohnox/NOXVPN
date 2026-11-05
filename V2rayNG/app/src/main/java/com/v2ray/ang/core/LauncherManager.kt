@@ -38,9 +38,13 @@ object LauncherManager {
     }
 
     fun launchEmbeddedCisco(context: Context) {
-        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
-            context.startActivity(Intent(context, app.openconnect.MainActivity::class.java))
-        }
+        // Opening profiles is navigation; handover happens only after an explicit Connect.
+        context.startActivity(Intent(context, app.openconnect.MainActivity::class.java))
+    }
+
+    /** Invoked only by Cisco's confirmed Connect path, never profile browsing. */
+    fun prepareEmbeddedCiscoConnection(context: Context, onReady: () -> Unit) {
+        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") { onReady() }
     }
 
     fun startServiceFromToggle(context: Context): Boolean {

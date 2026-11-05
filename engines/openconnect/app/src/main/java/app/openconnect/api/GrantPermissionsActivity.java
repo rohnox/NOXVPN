@@ -43,6 +43,7 @@ public class GrantPermissionsActivity extends Activity {
 	public static final String EXTRA_UUID = ".UUID";
 
 	private String mUUID;
+    private boolean mConnectPending;
 	private String mStartActivity;
 	private static final int REQUEST_POST_NOTIFICATIONS = 1;
 
@@ -108,17 +109,20 @@ public class GrantPermissionsActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		setResult(resultCode);
 
-		if (resultCode == RESULT_OK) {
-	    	Intent intent = new Intent(getBaseContext(), OpenVpnService.class);
-	    	intent.putExtra(OpenVpnService.EXTRA_UUID, mUUID);
-			ContextCompat.startForegroundService(this, intent);
-
-	    	if (mStartActivity != null) {
-	    		intent = new Intent();
-	    		intent.setClassName(this, mStartActivity);
-	    		startActivity(intent);
-	    	}
-		}
-		finish();
+        if (resultCode != RESULT_OK) { finish(); return; }
+        if (mConnectPending) return;
+        mConnectPending = true;
+        app.openconnect.core.EmbeddedRuntime.beforeConnect(this, () -> {
+            if (isFinishing() || isDestroyed()) return;
+            Intent intent = new Intent(getBaseContext(), OpenVpnService.class);
+            intent.putExtra(OpenVpnService.EXTRA_UUID, mUUID);
+            ContextCompat.startForegroundService(this, intent);
+            if (mStartActivity != null) {
+                Intent screen = new Intent();
+                screen.setClassName(this, mStartActivity);
+                startActivity(screen);
+            }
+            finish();
+        });
 	}
 }

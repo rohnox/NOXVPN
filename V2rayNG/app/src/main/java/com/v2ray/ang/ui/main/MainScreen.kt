@@ -45,7 +45,6 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
         onPauseOrDispose { onAction(MainAction.UsageVisibility(false)) }
     }
     var importOpen by rememberSaveable { mutableStateOf(false) }
-    var menu by rememberSaveable { mutableStateOf(false) }
     var shareGuid by rememberSaveable { mutableStateOf<String?>(null) }
     var removeTarget by rememberSaveable(stateSaver = ServerDeleteTarget.Saver) { mutableStateOf<ServerDeleteTarget?>(null) }
     var deleteAll by rememberSaveable { mutableStateOf(false) }
@@ -90,28 +89,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                 onImport = { importOpen = true }, onMore = { shareGuid = it.guid })
             DashboardTab.Plans -> ISpeedPlans(state, content, onAction, onImport = { importOpen = true })
             DashboardTab.Protocols -> protocolsContent(content)
-            DashboardTab.Controls -> ISpeedControls(content, onNavigate) {
-                Box {
-                    TextButton(onClick = { menu = true }) { Text(stringResource(R.string.top_advanced)) }
-                    DropdownMenu(menu, { menu = false }) {
-                        MoreMenuContent { action ->
-                            menu = false
-                            when (action) {
-                                MainMoreMenuAction.DeleteAll -> deleteAll = true
-                                MainMoreMenuAction.DeleteDuplicate -> deleteDuplicate = true
-                                MainMoreMenuAction.DeleteInvalid -> deleteInvalid = true
-                                MainMoreMenuAction.RestartService -> onAction(MainAction.RestartService)
-                                MainMoreMenuAction.ExportAll -> onAction(MainAction.ExportAll)
-                                MainMoreMenuAction.LocateSelected -> { selectedTab = DashboardTab.Servers.name; onAction(MainAction.LocateSelectedServer) }
-                                MainMoreMenuAction.SortByTestResults -> onAction(MainAction.SortByTestResults)
-                                MainMoreMenuAction.TestAll -> onAction(MainAction.TestAllServers)
-                                MainMoreMenuAction.TestAllRealPing -> onAction(MainAction.TestRealAllServers)
-                                MainMoreMenuAction.UpdateSubscriptions -> onAction(MainAction.UpdateSubscriptions)
-                            }
-                        }
-                    }
-                }
-            }
+            DashboardTab.Controls -> ISpeedControls(content, onNavigate)
         }
     }
 }

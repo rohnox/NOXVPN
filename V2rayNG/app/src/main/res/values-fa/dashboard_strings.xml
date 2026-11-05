@@ -90,4 +90,5 @@
     <string name="top_app_update">نسخهٔ جدید: %1$s</string>
     <string name="top_dismiss_app_update">بستن اعلان به‌روزرسانی</string>
     <string name="top_app_update_action">آپدیت</string>
+    <string name="top_server_unreachable">در دسترس نیست</string>
 </resources>

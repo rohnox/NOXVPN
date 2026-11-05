@@ -94,4 +94,5 @@
     <string name="top_app_update">إصدار جديد: %1$s</string>
     <string name="top_dismiss_app_update">إغلاق إشعار التحديث</string>
     <string name="top_app_update_action">تحديث</string>
+    <string name="top_server_unreachable">غير متاح</string>
 </resources>

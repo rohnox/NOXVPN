@@ -77,6 +77,7 @@ class MainViewModel(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
     private val entryClock: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 ) : BaseViewModel(application) {
+    private var entryPingJob: Job? = null
     private var appUpdateJob: Job? = null
     private var appUpdateCheckedAt: Long? = null
     private var dismissedAppVersion: String? = null
@@ -339,6 +340,7 @@ class MainViewModel(
                 checkAppUpdate()
                 if (entryRefresh.shouldRefresh(entryClock())) {
                     importConfigViaSub("", quiet = true)
+                    scheduleEntryPing()
                 }
             }
             is MainAction.UsageVisibility -> setUsageVisible(action.visible)
@@ -346,7 +348,7 @@ class MainViewModel(
             MainAction.RefreshGroups -> setupGroupTab(forceRefresh = true)
             MainAction.TestAllServers -> testAllRealPing(true)
             MainAction.TestRealAllServers -> testAllRealPing()
-            MainAction.CancelTesting -> cancelAllPing()
+            MainAction.CancelTesting -> { entryPingJob?.cancel(); cancelAllPing() }
             MainAction.RemoveAllServers -> removeAllServerAsync()
             MainAction.RemoveDuplicateServers -> removeDuplicateServerAsync()
             MainAction.RemoveInvalidServers -> removeInvalidServerAsync()
@@ -979,6 +981,7 @@ class MainViewModel(
             MainAction.UpdateSubscriptions, is MainAction.UpdateGroupSubscription,
             is MainAction.SelectServer, is MainAction.SelectGroup, is MainAction.EditServer,
             is MainAction.DeleteSubscription, is MainAction.RemoveServer, is MainAction.ImportManually, is MainAction.ImportBatchConfig -> {
+                entryPingJob?.cancel()
                 cancelAutoConnect()
                 selectionJob?.cancel()
                 selectionGeneration.incrementAndGet()
@@ -1202,19 +1205,25 @@ class MainViewModel(
             )
         }
         bulkTestJob = viewModelScope.launch {
-            withContext(ioDispatcher) {
-                dataSource.clearAllTestDelayResults(serverGuids)
-                val resetGuids = serverGuids.toHashSet()
-                cacheMutex.withLock {
-                    groupDataCache[groupId]?.let { cached ->
-                        groupDataCache[groupId] = cached.map { server ->
-                            if (server.guid !in resetGuids || server.testDelayMillis == 0L) server
-                            else server.copy(testDelayMillis = 0L)
+            try {
+                withContext(ioDispatcher) {
+                    dataSource.clearAllTestDelayResults(serverGuids)
+                    val resetGuids = serverGuids.toHashSet()
+                    cacheMutex.withLock {
+                        groupDataCache[groupId]?.let { cached ->
+                            groupDataCache[groupId] = cached.map { server ->
+                                if (server.guid !in resetGuids || server.testDelayMillis == 0L) server
+                                else server.copy(testDelayMillis = 0L)
+                            }
                         }
                     }
                 }
+                dataSource.sendMsg2TestService(message, request.id)
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (error: Exception) {
+                if (testRequests.bulk?.id == request.id) { testRequests.cancelBulk(); resetTestStatus() }
+                LogUtil.w(AppConfig.TAG, "Main operation=start-real-delay group=" + groupId, IllegalStateException(error.javaClass.simpleName))
             }
-            dataSource.sendMsg2TestService(message, request.id)
         }
     }
 
@@ -1286,6 +1295,17 @@ class MainViewModel(
                 LogUtil.e(AppConfig.TAG, "Subscription operation=share failed", IllegalStateException(error.javaClass.simpleName))
                 _uiState.update { it.copy(subscriptionShareMessage = R.string.toast_failure) }
             }
+        }
+    }
+
+    private fun scheduleEntryPing() {
+        entryPingJob?.cancel()
+        entryPingJob = viewModelScope.launch {
+            // Wait for the entry subscription replacement and its selected-group load.
+            subscriptionRefreshMutex.withLock { }
+            initialPageReady.await()
+            setupGroupJob?.join()
+            if (!_uiState.value.isTesting && !_uiState.value.isAutoSelecting && currentServers().isNotEmpty()) testAllRealPing()
         }
     }
 
@@ -1398,6 +1418,7 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        entryPingJob?.cancel()
         appUpdateJob?.cancel()
         usageRefreshJob?.cancel()
         subscriptionShareJob?.cancel()

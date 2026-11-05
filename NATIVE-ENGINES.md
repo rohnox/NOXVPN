@@ -41,3 +41,5 @@ cd V2rayNG
 The source archive includes the native build inputs used by the host. No signing private key is included. Use the existing release signing guide and an external private key for release. The delivered release uses the pre-existing host certificate; changing that certificate prevents in-place upgrades. Reproducing the signature requires the owner’s private key, not the public PEM.
 
 The temporary local Maven cache helper used on this Windows host is outside the source archive and is not a runtime dependency. Production repository URLs were not replaced with loopback URLs. Build tools/native inputs were not represented as having passed a third-party security audit. See VALIDATION.md for actual checks and untested device behavior.
+
+Version1.6.3 moves the host stop/handover request from Cisco profile-list navigation to the confirmed connection path. EmbeddedRuntime exposes a host-installed connection gate; AngApplication registers LauncherManager as its owner. GrantPermissionsActivity guards duplicate/pending callbacks and skips destroyed owners. Native inputs and persisted profile formats are unchanged.

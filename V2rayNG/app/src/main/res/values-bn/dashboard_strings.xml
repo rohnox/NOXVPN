@@ -90,4 +90,5 @@
     <string name="top_app_update">নতুন সংস্করণ: %1$s</string>
     <string name="top_dismiss_app_update">আপডেট বিজ্ঞপ্তি বন্ধ করুন</string>
     <string name="top_app_update_action">আপডেট</string>
+    <string name="top_server_unreachable">পৌঁছানো যায়নি</string>
 </resources>

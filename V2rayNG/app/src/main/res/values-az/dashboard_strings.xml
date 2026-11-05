@@ -90,4 +90,5 @@
     <string name="top_app_update">Yeni versiya: %1$s</string>
     <string name="top_dismiss_app_update">Yeniləmə bildirişini bağla</string>
     <string name="top_app_update_action">Yenilə</string>
+    <string name="top_server_unreachable">Əlçatan deyil</string>
 </resources>

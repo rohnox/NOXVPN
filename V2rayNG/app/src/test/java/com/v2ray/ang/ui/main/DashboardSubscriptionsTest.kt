@@ -112,7 +112,7 @@ class DashboardSubscriptionsTest {
             assertEquals(ExitIpState.Off, f.vm.uiState.value.exitIp)
         }
     }
-    private class Fixture(scheduler: TestCoroutineScheduler, initial: String? = null) : AutoCloseable {
+    private class Fixture(scheduler: TestCoroutineScheduler, initial: String? = null, withServers: Boolean = false) : AutoCloseable {
         val dispatcher = StandardTestDispatcher(scheduler)
         val source = mock<MainDataSource>()
         val events = MutableSharedFlow<MainServiceEvent>(extraBufferCapacity = 16)
@@ -131,7 +131,9 @@ class DashboardSubscriptionsTest {
             whenever(source.getSelectedSubscriptionId()).thenReturn("")
             whenever(source.getSubscriptions()).thenAnswer { items.toList() }
             whenever(source.getSubscriptionItem(any())).thenAnswer { call -> items.firstOrNull { it.guid == call.getArgument<String>(0) }?.subscription }
-            whenever(source.getServerGuidList(any())).thenReturn(emptyList())
+            whenever(source.getServerGuidList(any())).thenReturn(if (withServers) listOf("ping-one", "ping-two") else emptyList())
+            if (withServers) whenever(source.decodeServerConfig(any())).thenReturn(ProfileItem(configType = com.v2ray.ang.enums.EConfigType.VLESS, subscriptionId = "one", remarks = "Fixture"))
+            whenever(source.updateConfigViaSubAll()).thenReturn(com.v2ray.ang.dto.SubscriptionUpdateResult())
             whenever(source.getDashboardSubscriptionId()).thenAnswer { persisted }
             doAnswer { persisted = it.getArgument(0); null }.whenever(source).setDashboardSubscriptionId(any())
             doAnswer { call -> items.removeAll { it.guid == call.getArgument<String>(0) }; null }.whenever(source).removeSubscription(any())
@@ -272,6 +274,57 @@ class DashboardSubscriptionsTest {
             f.store.clear(); runCurrent()
             response.complete(com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3")); runCurrent()
             assertNull(f.vm.uiState.value.appUpdate)
+        }
+    }
+
+    @Test fun appEntryStartsRealServiceTestAndPreservesFailedResultsByGuid() = runTest {
+        Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent()
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            val message = argumentCaptor<com.v2ray.ang.dto.TestServiceMessage>()
+            val request = argumentCaptor<String>()
+            verify(f.source).sendMsg2TestService(message.capture(), request.capture())
+            assertFalse(message.firstValue.onlyTcp)
+            assertEquals(f.vm.uiState.value.selectedGroupId, message.firstValue.subscriptionId)
+            assertTrue(f.vm.uiState.value.isTesting)
+            // The task process commits affiliation values before broadcasting each result.
+            whenever(f.source.decodeAffiliationInfo("ping-one")).thenReturn(com.v2ray.ang.dto.entities.ServerAffiliationInfo(42))
+            whenever(f.source.decodeAffiliationInfo("ping-two")).thenReturn(com.v2ray.ang.dto.entities.ServerAffiliationInfo(-1))
+            f.events.emit(MainServiceEvent.MeasureConfigSuccess(com.v2ray.ang.dto.RealPingResult("ping-one", 42), request.firstValue))
+            f.events.emit(MainServiceEvent.MeasureConfigSuccess(com.v2ray.ang.dto.RealPingResult("ping-two", -1), request.firstValue))
+            f.events.emit(MainServiceEvent.MeasureConfigFinish(request.firstValue)); runCurrent()
+            val results = f.vm.serverGroupState(message.firstValue.subscriptionId).value.servers.associate { it.guid to it.testDelayMillis }
+            assertEquals(42L, results["ping-one"])
+            assertEquals(-1L, results["ping-two"])
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            verify(f.source, times(1)).sendMsg2TestService(any(), any())
+        }
+    }
+    @Test fun emptyEntryDoesNotStartTestAndStorageFailureDoesNotCrashStartup() = runTest {
+        Fixture(testScheduler).use { f -> runCurrent(); f.vm.onAction(MainAction.AppEntered); runCurrent(); verify(f.source, never()).sendMsg2TestService(any(), any()) }
+        Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent()
+            doThrow(IllegalStateException("fixture")).whenever(f.source).clearAllTestDelayResults(any())
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            assertFalse(f.vm.uiState.value.isTesting)
+            verify(f.source, never()).sendMsg2TestService(any(), any())
+        }
+    }
+
+    @Test fun manualCancelOrTestSupersedesQueuedEntryTest() = runTest {
+        Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent()
+            f.vm.onAction(MainAction.AppEntered)
+            f.vm.onAction(MainAction.CancelTesting)
+            runCurrent()
+            verify(f.source, never()).sendMsg2TestService(any(), any())
+        }
+        Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent()
+            f.vm.onAction(MainAction.AppEntered)
+            f.vm.onAction(MainAction.TestRealAllServers)
+            runCurrent()
+            verify(f.source, times(1)).sendMsg2TestService(any(), any())
         }
     }
 }
