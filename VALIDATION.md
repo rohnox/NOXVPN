@@ -1,18 +1,20 @@
-# Special VPN 1.6.3 — validation
+# Special VPN 1.6.4 — validation
 
-Package com.specialvpn.app; base versionCode776. See CHANGES-1.6.3.md.
+Package: com.specialvpn.app. Base versionCode: 777; universal versionCode: 5077700.
 
-Targeted regressions cover Cisco profile browsing with no stop broadcast, confirmed/cancelled/duplicate connection gating, real-service entry testing with onlyTcp=false, stable GUID success/failure results after the task process persistence contract, entry throttling, empty groups and storage failure. Compose tests exercise real Controls navigation with Configuration tools absent and the manual updater accessible, plus positive/untested/failed delay presentation. Synthetic renders were inspected; they are not real customer measurements.
+## Executed
+
+Targeted DashboardSubscriptionsTest and SpecialUpdateTest passed. They cover successful manual/group refresh dispatching onlyTcp=false after refresh/reload; failed, skipped, missing and empty updates; no duplicate test after quiet app-entry refresh; existing entry cancellation/throttling; trusted SpecialVPN release paths and rejection of debug/upstream/foreign downloads.
+
+Full JVM/Compose test run: 306 total, 302 passed, 4 failed, 0 skipped. All failures are unchanged RootProcessRunnerTest cases requiring an unavailable Windows sh executable. Full command therefore exits FAILED. No tests were disabled. Logs/XML are in verification/1.6.4.
+
+Repository rename to sabialballa/SpecialVPN was observed in GitHub UI. Anonymous GitHub API for the new repository returned HTTP 200 and asset URLs under the new path. About source/privacy links and the release API/path validator now use that path. Earlier installed APKs have the old strict path validator; direct installation of 1.6.4 is required for a reliable migration.
 
 ## Not run
 
-Physical-device native VPN handover (browse without stopping Xray, cancelled consent, successful Cisco connect, repeated Connect, stopping during setup, activity recreation/background races), real server delay testing and Android upgrade installation:no usable Android device/emulator attached. A JVM test or APK assembly does not verify these scenarios. Proxy-only/root behavior uses the unchanged shared stop contract; protocols UI remains gated to VPN mode. TalkBack, D-pad, IME/device restoration and dynamic-color hardware checks remain Not run for the same blocker.
+Physical-device real delay after manual refresh, refresh during active VPN/ongoing tests, activity recreation/background races, Android upgrade installation and subsequent in-app upgrade: no usable device/emulator is attached. No actual phone installation, native VPN connection or real customer server test is claimed. JVM tests use fixture data. No UI layout or accessibility semantics changed.
 
-The public1.6.2 release and anonymous GitHub API were verified before this change. Current1.6.3 update metadata/asset verification is recorded separately after publication. For an end-to-end upgrade test, install1.6.2 first and relaunch it after1.6.3 is published. A current1.6.3 install should not show an update for itself.
+Provider daily history retains the 1.5.9 UTC behavior. No native binaries, permissions, protocols, package identity, signing key or stored profile format changed.
 
-Build/sign instructions:BUILD-FA.md and RELEASE-FA.md. Update publication instructions:UPDATES-FA.md. Keys and customer credentials are not included.
-
-## Executed results
-
-Fdroid Debug and Release assembly and lint completed successfully. Lint: 0 errors, 373 warnings, 1 hint. Final JVM/Compose run: 303 tests, 299 passed, 4 existing RootProcessRunnerTest failures caused by missing Windows sh executable; none skipped. Targeted regressions passed. Both APK signatures/alignment verified; package com.specialvpn.app, universal versionCode 5077600. All 60 native libraries match 1.4.3 byte for byte, permission declarations unchanged. ELF, bundled fonts, XML/locales, native source pins and release test-fixture exclusion checks passed. Logs and renders are under verification/1.6.3.
+Debug/Release assembly and lint completed successfully. Lint: 0 errors, 373 warnings, 1 hint. Both APK signatures and ZIP alignment passed. All 60 native libraries match release 1.4.3 byte for byte; permission declarations unchanged. Font hashes/license and release DEX test-fixture exclusion, ELF, resource XML/locales and pinned native sources passed. See verification/1.6.4.
 

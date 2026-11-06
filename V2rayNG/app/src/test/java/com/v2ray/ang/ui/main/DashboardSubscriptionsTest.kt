@@ -122,6 +122,8 @@ class DashboardSubscriptionsTest {
         var selectedServer: String? = null
         val store = ViewModelStore()
         val log = Mockito.mockStatic(Log::class.java)
+        private val toast = Mockito.mockStatic(Class.forName("com.v2ray.ang.extension.ToastExtKt"))
+        private val contexts = Mockito.mockStatic(androidx.core.content.ContextCompat::class.java)
         private val priority = LogUtil::class.java.getDeclaredField("cachedMinPriority").apply { isAccessible = true }
         private val before = priority.getInt(null)
         val vm: MainViewModel
@@ -138,10 +140,17 @@ class DashboardSubscriptionsTest {
             doAnswer { persisted = it.getArgument(0); null }.whenever(source).setDashboardSubscriptionId(any())
             doAnswer { call -> items.removeAll { it.guid == call.getArgument<String>(0) }; null }.whenever(source).removeSubscription(any())
             whenever(source.getSelectServer()).thenAnswer { selectedServer }
-            vm = MainViewModel(mock<Application>(), source, dispatcher, dispatcher, { clock })
+            val application = mock<com.v2ray.ang.AngApplication>()
+            val localized = mock<android.content.Context>()
+            val resources = mock<android.content.res.Resources>()
+            contexts.`when`<android.content.Context> { androidx.core.content.ContextCompat.getContextForLanguage(application) }.thenReturn(localized)
+            whenever(localized.resources).thenReturn(resources)
+            whenever(resources.getQuantityString(any(), any(), any())).thenReturn("Updated")
+            whenever(source.getString(any(), any(), any(), any(), any())).thenReturn("Updated")
+            vm = MainViewModel(application, source, dispatcher, dispatcher, { clock })
             store.put("main", vm)
         }
-        override fun close() { store.clear(); priority.setInt(null, before); log.close(); Dispatchers.resetMain() }
+        override fun close() { store.clear(); priority.setInt(null, before); contexts.close(); toast.close(); log.close(); Dispatchers.resetMain() }
     }
     @Test fun preferenceWinsOverConnectedServerAndInvalidPreferenceFallsBack() {
         val groups = listOf(GroupMapItem("one", "One"), GroupMapItem("two", "Two"))
@@ -243,7 +252,7 @@ class DashboardSubscriptionsTest {
     @Test fun releaseBannerChecksOnEntryIsThrottledAndCanBeDismissed() = runTest {
         Fixture(testScheduler).use { f ->
             runCurrent()
-            val update = com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3", downloadUrl = "https://github.com/sabialballa/iSpeedTopVPN/releases/download/v1.6.3/SpecialVPN-1.6.3-universal-release.apk")
+            val update = com.v2ray.ang.dto.CheckUpdateResult(true, "1.6.3", downloadUrl = "https://github.com/sabialballa/SpecialVPN/releases/download/v1.6.3/SpecialVPN-1.6.3-universal-release.apk")
             whenever(f.source.checkAppUpdate()).thenReturn(update)
             f.vm.onAction(MainAction.AppEntered); runCurrent()
             assertEquals(update, f.vm.uiState.value.appUpdate)
@@ -311,6 +320,59 @@ class DashboardSubscriptionsTest {
         }
     }
 
+    @Test fun successfulManualSubscriptionUpdateTestsReloadedServersUsingRealDelay() = runTest {
+        for (action in listOf(MainAction.UpdateSubscriptions, MainAction.UpdateGroupSubscription("one"))) {
+            Fixture(testScheduler, withServers = true).use { f ->
+                runCurrent()
+                val response = com.v2ray.ang.dto.SubscriptionUpdateResult(configCount = 2, successCount = 1)
+                doAnswer {
+                    verify(f.source, never()).sendMsg2TestService(any(), any())
+                    response
+                }.whenever(f.source).updateConfigViaSubAll()
+                doAnswer {
+                    verify(f.source, never()).sendMsg2TestService(any(), any())
+                    response
+                }.whenever(f.source).updateConfigViaSub(any())
+                f.vm.onAction(action); runCurrent()
+                val message = argumentCaptor<com.v2ray.ang.dto.TestServiceMessage>()
+                verify(f.source, times(1)).sendMsg2TestService(message.capture(), any())
+                assertFalse(message.firstValue.onlyTcp)
+                assertEquals(f.vm.uiState.value.selectedGroupId, message.firstValue.subscriptionId)
+            }
+        }
+    }
+    @Test fun failedSkippedMissingOrEmptySubscriptionUpdatesDoNotStartRealDelay() = runTest {
+        for (result in listOf(
+            com.v2ray.ang.dto.SubscriptionUpdateResult(),
+            com.v2ray.ang.dto.SubscriptionUpdateResult(failureCount = 1),
+            com.v2ray.ang.dto.SubscriptionUpdateResult(skipCount = 1)
+        )) Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent(); whenever(f.source.updateConfigViaSubAll()).thenReturn(result)
+            f.vm.onAction(MainAction.UpdateSubscriptions); runCurrent()
+            verify(f.source, never()).sendMsg2TestService(any(), any())
+        }
+        Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent(); f.vm.onAction(MainAction.UpdateGroupSubscription("missing")); runCurrent()
+            verify(f.source, never()).sendMsg2TestService(any(), any())
+            doAnswer { throw java.io.IOException("fixture") }.whenever(f.source).updateConfigViaSubAll()
+            f.vm.onAction(MainAction.UpdateSubscriptions); runCurrent()
+            verify(f.source, never()).sendMsg2TestService(any(), any())
+        }
+        Fixture(testScheduler).use { f ->
+            runCurrent()
+            whenever(f.source.updateConfigViaSubAll()).thenReturn(com.v2ray.ang.dto.SubscriptionUpdateResult(successCount = 1))
+            f.vm.onAction(MainAction.UpdateSubscriptions); runCurrent()
+            verify(f.source, never()).sendMsg2TestService(any(), any())
+        }
+    }
+    @Test fun successfulEntryRefreshSchedulesOnlyOneRealDelayTest() = runTest {
+        Fixture(testScheduler, withServers = true).use { f ->
+            runCurrent()
+            whenever(f.source.updateConfigViaSubAll()).thenReturn(com.v2ray.ang.dto.SubscriptionUpdateResult(successCount = 1))
+            f.vm.onAction(MainAction.AppEntered); runCurrent()
+            verify(f.source, times(1)).sendMsg2TestService(any(), any())
+        }
+    }
     @Test fun manualCancelOrTestSupersedesQueuedEntryTest() = runTest {
         Fixture(testScheduler, withServers = true).use { f ->
             runCurrent()

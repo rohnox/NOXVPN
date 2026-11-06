@@ -19,7 +19,7 @@
 
 ## کنترل و پشتیبانی
 
-کاربر می‌تواند اشتراک و پروفایل را حذف کند یا دادهٔ برنامه را از تنظیمات اندروید پاک کند. حذف فایل خروجی‌ای که جداگانه ذخیره شده، نیاز به حذف همان فایل دارد. برای پشتیبانی از [Issues مخزن](https://github.com/sabialballa/iSpeedTopVPN/issues) یا [کانال](https://t.me/iSpeedTopVPN) استفاده کنید؛ اطلاعات ورود را عمومی نفرستید. سورس و ریلیزهای مخزن عمومی و برای همه قابل مشاهده‌اند.
+کاربر می‌تواند اشتراک و پروفایل را حذف کند یا دادهٔ برنامه را از تنظیمات اندروید پاک کند. حذف فایل خروجی‌ای که جداگانه ذخیره شده، نیاز به حذف همان فایل دارد. برای پشتیبانی از [Issues مخزن](https://github.com/sabialballa/SpecialVPN/issues) یا [کانال](https://t.me/iSpeedTopVPN) استفاده کنید؛ اطلاعات ورود را عمومی نفرستید. سورس و ریلیزهای مخزن عمومی و برای همه قابل مشاهده‌اند.
 
 مجوزها و اعتبار مؤلفان متن‌باز در بخش About برنامه و سورس حفظ شده‌اند. سیاست تاریخی بالادستی در [CR.md](CR.md) نگه داشته شده و جایگزین توضیح رفتار این فورک نیست.
 
@@ -29,4 +29,4 @@ Special VPN stores user-supplied subscription/configuration and VPN profiles on 
 
 No advertising or tracking SDK was added to this fork. Sharing a subscription link, QR or exported configuration is user initiated and may disclose access credentials. Release artifacts do not embed customer accounts or private signing keys. Remove secrets before sending support reports. Users can remove subscriptions/profiles or clear Android app data; independently exported files must be removed separately.
 
-Source and support: [repository](https://github.com/sabialballa/iSpeedTopVPN), [Issues](https://github.com/sabialballa/iSpeedTopVPN/issues), [Telegram](https://t.me/iSpeedTopVPN). Update checks contact this repository’s GitHub releases API; downloading is user initiated and installation requires Android/user confirmation. No GitHub credential is embedded. Source and releases are public and available without login. Original open-source notices are retained.
+Source and support: [repository](https://github.com/sabialballa/SpecialVPN), [Issues](https://github.com/sabialballa/SpecialVPN/issues), [Telegram](https://t.me/iSpeedTopVPN). Update checks contact this repository’s GitHub releases API; downloading is user initiated and installation requires Android/user confirmation. No GitHub credential is embedded. Source and releases are public and available without login. Original open-source notices are retained.

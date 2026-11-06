@@ -631,6 +631,7 @@ class MainViewModel(
     private fun importConfigViaSub(subId: String, quiet: Boolean = false) {
         if (!subscriptionRefreshMutex.tryLock()) return
         val update: suspend kotlinx.coroutines.CoroutineScope.() -> Unit = {
+            var refreshed = false
             try {
                 withContext(ioDispatcher) {
                     try {
@@ -666,6 +667,7 @@ class MainViewModel(
                         if (result.successCount > 0) {
                             setupGroupTab(forceRefresh = true)
                             refreshSelectedGuid()
+                            refreshed = true
                         }
                     } catch (cancelled: CancellationException) {
                         throw cancelled
@@ -678,6 +680,8 @@ class MainViewModel(
             } finally {
                 subscriptionRefreshMutex.unlock()
             }
+            // App entry already schedules its own test, including when no subscription exists.
+            if (refreshed && !quiet) scheduleEntryPing()
         }
         if (quiet) viewModelScope.launch(block = update) else launchLoading(update)
     }

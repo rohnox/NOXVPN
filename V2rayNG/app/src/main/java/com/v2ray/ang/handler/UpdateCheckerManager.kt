@@ -75,7 +75,7 @@ object UpdateCheckerManager {
             ?: error("No compatible Special VPN Release APK")
         val uri = java.net.URI(asset.browserDownloadUrl)
         require(uri.scheme == "https" && uri.host == "github.com" && uri.userInfo == null && uri.fragment == null && uri.query == null)
-        require(uri.rawPath == "/sabialballa/iSpeedTopVPN/releases/download/" + release.tagName + "/" + asset.name)
+        require(uri.rawPath == "/sabialballa/SpecialVPN/releases/download/" + release.tagName + "/" + asset.name)
         return CheckUpdateResult(hasUpdate = true, latestVersion = latest, releaseNotes = release.body,
             downloadUrl = asset.browserDownloadUrl, isPreRelease = release.prerelease)
     }
