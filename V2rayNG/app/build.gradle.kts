@@ -13,8 +13,8 @@ android {
         applicationId = "com.specialvpn.app"
         minSdk = 24
         targetSdk = 37
-        versionCode = 777
-        versionName = "1.6.4"
+        versionCode = 778
+        versionName = "1.6.5"
 
         val abiFilterList = (properties["ABI_FILTERS"] as? String)?.split(';')
         splits {
@@ -164,6 +164,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.wireguard.tunnel) { isTransitive = false }
     implementation(project(":engine-openvpn"))
     implementation(project(":engine-openconnect"))
     // Core Libraries

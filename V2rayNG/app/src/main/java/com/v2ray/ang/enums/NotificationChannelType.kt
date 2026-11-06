@@ -12,6 +12,7 @@ enum class NotificationChannelType(
     @StringRes val channelNameRes: Int,
     val notificationId: Int
 ) {
+    WIREGUARD("wireguard_connection", R.string.protocol_wireguard, 22),
     SUBSCRIPTION_UPDATE(
         channelId = "subscription_update_channel",
         channelNameRes = R.string.notification_channel_subscription_updates,

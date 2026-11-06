@@ -1,5 +1,5 @@
 <resources>
- <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_title">پروفایل‌های VPN</string>
  <string name="protocol_back">بازگشت</string>
  <string name="protocol_intro">پروفایل‌های OpenVPN و اتصال‌های سیسکو را اینجا مدیریت کنید. در هر لحظه فقط یک اتصال VPN می‌تواند فعال باشد.</string>
  <string name="protocol_vpn_only">ابتدا در تنظیمات، حالت VPN را انتخاب کنید. حالت پروکسی و روت، عملکرد فعلی Xray را حفظ می‌کنند.</string>
@@ -22,8 +22,8 @@
  <string name="protocol_cisco_manage">پروفایل‌ها و اتصال سیسکو</string>
  <string name="protocol_unavailable">راه‌اندازی این موتور روی دستگاه انجام نشد.</string>
  <string name="protocol_traffic">دریافت: %1$s · ارسال: %2$s</string>
-<string name="protocol_challenge_title">احراز هویت OpenVPN</string><string name="protocol_challenge_response">پاسخ یا کد</string><string name="protocol_challenge_send">ارسال پاسخ</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
-<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_challenge_title">احراز هویت OpenVPN</string><string name="protocol_challenge_response">پاسخ یا کد</string><string name="protocol_challenge_send">ارسال پاسخ</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork. WireGuard tunnel: WireGuard LLC, Apache-2.0; additional native notices accompany the source.</string>
+<string name="protocol_tab">VPN</string>
 <string name="protocol_heading">اتصال‌های پیشرفته</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">راهنمای اتصال</string>
@@ -35,4 +35,20 @@
  <string name="protocol_delete_stop_first">پیش از حذف پروفایل، اتصال OpenVPN را قطع کنید.</string>
  <string name="protocol_delete_done">پروفایل حذف شد.</string>
  <string name="protocol_delete_failed">حذف پروفایل انجام نشد.</string>
+ <string name="protocol_import_wireguard">واردکردن فایل ‎.conf‎</string>
+ <string name="protocol_sub_hint">پروفایل‌های OpenVPN، Cisco و WireGuard را با یک لینک اشتراک اضافه کنید.</string>
+ <string name="protocol_sub_link">لینک اشتراک</string>
+ <string name="protocol_sub_title">نام اشتراک</string>
+ <string name="protocol_sub_done">اشتراک به‌روزرسانی شد.</string>
+ <string name="protocol_sub_failed">به‌روزرسانی اشتراک ممکن نشد. لینک، اینترنت و فرمت پروفایل‌ها را بررسی کنید.</string>
+ <string name="protocol_updated">به‌روز شد</string>
+ <string name="protocol_sub_label">اشتراک</string>
+ <string name="protocol_no_subprofiles">در این بخش پروفایلی نیست.</string>
+ <string name="protocol_manual">پروفایل‌های دستی</string>
+ <string name="protocol_edit_sub">ویرایش اشتراک</string>
+ <string name="protocol_stop">قطع اتصال</string>
+ <string name="protocol_wireguard_failed">اتصال وایرگارد برقرار نشد.</string>
+ <string name="protocol_wireguard">WireGuard</string>
+ <string name="protocol_count">%1$d %2$s</string>
+ <string name="protocol_wg_connecting">وایرگارد: در حال اتصال</string>
 </resources>

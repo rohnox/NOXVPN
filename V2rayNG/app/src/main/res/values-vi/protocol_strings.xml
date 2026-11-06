@@ -1,5 +1,5 @@
 <resources>
- <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_title">Hồ sơ VPN</string>
  <string name="protocol_back">Back</string>
  <string name="protocol_intro">Quản lý hồ sơ OpenVPN và kết nối Cisco. Android chỉ cho phép một kết nối VPN hoạt động tại một thời điểm.</string>
  <string name="protocol_vpn_only">Select VPN mode in Settings before using these protocols. Proxy-only and root mode keep their existing Xray behavior.</string>
@@ -22,8 +22,8 @@
  <string name="protocol_cisco_manage">Cisco profiles and connection</string>
  <string name="protocol_unavailable">This engine could not initialize on this device.</string>
  <string name="protocol_traffic">Received: %1$s · Sent: %2$s</string>
-<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
-<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork. WireGuard tunnel: WireGuard LLC, Apache-2.0; additional native notices accompany the source.</string>
+<string name="protocol_tab">VPN</string>
 <string name="protocol_heading">Kết nối nâng cao</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
@@ -35,4 +35,20 @@
  <string name="protocol_delete_stop_first">Ngắt kết nối OpenVPN trước khi xóa hồ sơ.</string>
  <string name="protocol_delete_done">Đã xóa hồ sơ.</string>
  <string name="protocol_delete_failed">Không thể xóa hồ sơ.</string>
+ <string name="protocol_import_wireguard">Nhập tệp .conf</string>
+ <string name="protocol_sub_hint">Thêm hồ sơ OpenVPN, Cisco và WireGuard bằng một liên kết đăng ký.</string>
+ <string name="protocol_sub_link">Liên kết đăng ký</string>
+ <string name="protocol_sub_title">Tên đăng ký</string>
+ <string name="protocol_sub_done">Đã cập nhật đăng ký.</string>
+ <string name="protocol_sub_failed">Không thể cập nhật. Hãy kiểm tra liên kết, kết nối và định dạng hồ sơ.</string>
+ <string name="protocol_updated">Đã cập nhật</string>
+ <string name="protocol_sub_label">Đăng ký</string>
+ <string name="protocol_no_subprofiles">Chưa có hồ sơ trong mục này.</string>
+ <string name="protocol_manual">Hồ sơ thủ công</string>
+ <string name="protocol_edit_sub">Sửa đăng ký</string>
+ <string name="protocol_stop">Ngắt kết nối</string>
+ <string name="protocol_wireguard_failed">Không thể kết nối WireGuard.</string>
+ <string name="protocol_wireguard">WireGuard</string>
+ <string name="protocol_count">%1$d %2$s</string>
+ <string name="protocol_wg_connecting">WireGuard: đang kết nối</string>
 </resources>

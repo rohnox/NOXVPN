@@ -194,6 +194,55 @@ public class ProfileManager {
 		return profile;
 	}
 
+    /** Materialize a validated subscription profile only when the user chooses Connect. */
+    public synchronized static void importSubscription(String uuid, String name, String address, String username, String password) {
+        UUID.fromString(uuid);
+        SharedPreferences prefs = mContext.getSharedPreferences(getPrefsName(uuid), Activity.MODE_PRIVATE);
+        java.util.Map<String, ?> before = new java.util.HashMap<String, Object>(prefs.getAll());
+        if (!prefs.edit().putString("profile_uuid", uuid).putString("profile_name", name)
+                .putString("server_address", address).putString("subscription_username", username)
+                .putString("subscription_password", password).commit()) {
+            // A single preferences file contains the whole imported profile; restore its previous snapshot.
+            SharedPreferences.Editor rollback = prefs.edit().clear();
+            for (java.util.Map.Entry<String, ?> entry : before.entrySet()) {
+                Object value = entry.getValue(); String key = entry.getKey();
+                if (value instanceof String) rollback.putString(key, (String)value);
+                else if (value instanceof Boolean) rollback.putBoolean(key, (Boolean)value);
+                else if (value instanceof Integer) rollback.putInt(key, (Integer)value);
+                else if (value instanceof Long) rollback.putLong(key, (Long)value);
+                else if (value instanceof Float) rollback.putFloat(key, (Float)value);
+            }
+            if (!rollback.commit()) throw new IllegalStateException("Profile rollback failed");
+            throw new IllegalStateException("Profile save failed");
+        }
+        mProfiles.put(uuid, new VpnProfile(prefs));
+    }
+
+    public synchronized static java.util.Map<String, ?> snapshotSubscription(String uuid) {
+        VpnProfile profile = get(uuid);
+        return profile == null ? null : new java.util.HashMap<String, Object>(profile.mPrefs.getAll());
+    }
+
+    public synchronized static void restoreSubscription(String uuid, java.util.Map<String, ?> snapshot) {
+        SharedPreferences prefs = mContext.getSharedPreferences(getPrefsName(uuid), Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit().clear();
+        for (java.util.Map.Entry<String, ?> entry : snapshot.entrySet()) {
+            Object value = entry.getValue(); String key = entry.getKey();
+            if (value instanceof String) editor.putString(key, (String)value);
+            else if (value instanceof Boolean) editor.putBoolean(key, (Boolean)value);
+            else if (value instanceof Integer) editor.putInt(key, (Integer)value);
+            else if (value instanceof Long) editor.putLong(key, (Long)value);
+            else if (value instanceof Float) editor.putFloat(key, (Float)value);
+            else if (value instanceof Set) {
+                java.util.Set<String> strings = new java.util.HashSet<String>();
+                for (Object item : (Set<?>)value) strings.add((String)item);
+                editor.putStringSet(key, strings);
+            }
+        }
+        if (!editor.commit()) throw new IllegalStateException("Profile restore failed");
+        mProfiles.put(uuid, new VpnProfile(prefs));
+    }
+
 	public synchronized static VpnProfile getProfileByName(String name) {
 		String lower = name.toLowerCase(Locale.getDefault());
 		for (VpnProfile vpnp : mProfiles.values()) {

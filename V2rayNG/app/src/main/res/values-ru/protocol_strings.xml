@@ -1,5 +1,5 @@
 <resources>
- <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_title">Профили VPN</string>
  <string name="protocol_back">Back</string>
  <string name="protocol_intro">Управление профилями OpenVPN и подключениями Cisco. В Android одновременно может быть активно только одно VPN-подключение.</string>
  <string name="protocol_vpn_only">Select VPN mode in Settings before using these protocols. Proxy-only and root mode keep their existing Xray behavior.</string>
@@ -22,8 +22,8 @@
  <string name="protocol_cisco_manage">Cisco profiles and connection</string>
  <string name="protocol_unavailable">This engine could not initialize on this device.</string>
  <string name="protocol_traffic">Received: %1$s · Sent: %2$s</string>
-<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
-<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork. WireGuard tunnel: WireGuard LLC, Apache-2.0; additional native notices accompany the source.</string>
+<string name="protocol_tab">VPN</string>
 <string name="protocol_heading">Расширенные подключения</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
@@ -35,4 +35,20 @@
  <string name="protocol_delete_stop_first">Перед удалением профиля отключите OpenVPN.</string>
  <string name="protocol_delete_done">Профиль удалён.</string>
  <string name="protocol_delete_failed">Не удалось удалить профиль.</string>
+ <string name="protocol_import_wireguard">Импорт файла .conf</string>
+ <string name="protocol_sub_hint">Добавьте профили OpenVPN, Cisco и WireGuard по одной ссылке подписки.</string>
+ <string name="protocol_sub_link">Ссылка подписки</string>
+ <string name="protocol_sub_title">Название подписки</string>
+ <string name="protocol_sub_done">Подписка обновлена.</string>
+ <string name="protocol_sub_failed">Не удалось обновить подписку. Проверьте ссылку, соединение и форматы профилей.</string>
+ <string name="protocol_updated">Обновлено</string>
+ <string name="protocol_sub_label">Подписка</string>
+ <string name="protocol_no_subprofiles">В этом разделе нет профилей.</string>
+ <string name="protocol_manual">Ручные профили</string>
+ <string name="protocol_edit_sub">Изменить подписку</string>
+ <string name="protocol_stop">Отключить</string>
+ <string name="protocol_wireguard_failed">Не удалось подключить WireGuard.</string>
+ <string name="protocol_wireguard">WireGuard</string>
+ <string name="protocol_count">%1$d %2$s</string>
+ <string name="protocol_wg_connecting">WireGuard: подключение</string>
 </resources>

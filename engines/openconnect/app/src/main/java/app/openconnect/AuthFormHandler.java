@@ -90,6 +90,11 @@ public class AuthFormHandler extends UserDialog
 		mAuthgroupSet = authgroupSet;
 		formPfx = getFormPrefix(mForm);
 		noSave = getBooleanPref("disable_username_caching");
+        // Fill only the ordinary account fields; OTP/passcode and server certificate consent remain interactive.
+        if (!noSave) for (LibOpenConnect.FormOpt opt : mForm.opts) {
+            opt.value = subscriptionFieldDefault(opt.type, opt.name, opt.value,
+                    getStringPref("subscription_username"), getStringPref("subscription_password"));
+        }
 
 		String s = getStringPref("batch_mode");
 		if (s.equals("empty_only")) {
@@ -113,6 +118,13 @@ public class AuthFormHandler extends UserDialog
 	public String getFormDigest() {
 		return formPfx;
 	}
+
+    public static String subscriptionFieldDefault(int type, String name, String current, String username, String password) {
+        if (current != null && !current.isEmpty()) return current;
+        if (type == LibOpenConnect.OC_FORM_OPT_TEXT && "username".equalsIgnoreCase(name)) return username;
+        if (type == LibOpenConnect.OC_FORM_OPT_PASSWORD && "password".equalsIgnoreCase(name)) return password;
+        return current;
+    }
 
 	@Override
 	public void onDismiss(DialogInterface dialog) {

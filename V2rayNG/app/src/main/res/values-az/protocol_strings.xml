@@ -1,5 +1,5 @@
 <resources>
- <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_title">VPN profilləri</string>
  <string name="protocol_back">Back</string>
  <string name="protocol_intro">OpenVPN profillərini və Cisco bağlantılarını idarə edin. Android eyni vaxtda yalnız bir aktiv VPN bağlantısına icazə verir.</string>
  <string name="protocol_vpn_only">Select VPN mode in Settings before using these protocols. Proxy-only and root mode keep their existing Xray behavior.</string>
@@ -22,8 +22,8 @@
  <string name="protocol_cisco_manage">Cisco profiles and connection</string>
  <string name="protocol_unavailable">This engine could not initialize on this device.</string>
  <string name="protocol_traffic">Received: %1$s · Sent: %2$s</string>
-<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
-<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork. WireGuard tunnel: WireGuard LLC, Apache-2.0; additional native notices accompany the source.</string>
+<string name="protocol_tab">VPN</string>
 <string name="protocol_heading">Qabaqcıl bağlantılar</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
@@ -35,4 +35,20 @@
  <string name="protocol_delete_stop_first">Profili silməzdən əvvəl OpenVPN bağlantısını kəsin.</string>
  <string name="protocol_delete_done">Profil silindi.</string>
  <string name="protocol_delete_failed">Profili silmək mümkün olmadı.</string>
+ <string name="protocol_import_wireguard">.conf faylı idxal et</string>
+ <string name="protocol_sub_hint">OpenVPN, Cisco və WireGuard profillərini bir abunə linki ilə əlavə edin.</string>
+ <string name="protocol_sub_link">Abunə linki</string>
+ <string name="protocol_sub_title">Abunə adı</string>
+ <string name="protocol_sub_done">Abunə yeniləndi.</string>
+ <string name="protocol_sub_failed">Abunəni yeniləmək mümkün olmadı. Linki, bağlantını və profil formatlarını yoxlayın.</string>
+ <string name="protocol_updated">Yeniləndi</string>
+ <string name="protocol_sub_label">Abunə</string>
+ <string name="protocol_no_subprofiles">Bu bölmədə profil yoxdur.</string>
+ <string name="protocol_manual">Əl ilə əlavə olunan profillər</string>
+ <string name="protocol_edit_sub">Abunəni redaktə et</string>
+ <string name="protocol_stop">Bağlantını kəs</string>
+ <string name="protocol_wireguard_failed">WireGuard bağlantısı alınmadı.</string>
+ <string name="protocol_wireguard">WireGuard</string>
+ <string name="protocol_count">%1$d %2$s</string>
+ <string name="protocol_wg_connecting">WireGuard: qoşulur</string>
 </resources>

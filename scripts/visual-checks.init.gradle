@@ -18,7 +18,7 @@ allprojects { project ->
                 systemProperty('maven.repo.local', new File(project.layout.buildDirectory.get().asFile, 'visual-maven').absolutePath)
                 def repo = System.getProperty('ispeed.visual.maven')
                 if (repo != null) systemProperty('robolectric.dependency.repo.url', repo)
-                systemProperty('ispeed.visual.output', new File(project.rootDir.parentFile, 'verification/1.6.3/renders').absolutePath)
+                systemProperty('ispeed.visual.output', new File(project.rootDir.parentFile, 'verification/1.6.5/renders').absolutePath)
             }
         }
     }

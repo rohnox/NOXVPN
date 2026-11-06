@@ -1,6 +1,6 @@
 # Special VPN — حریم خصوصی / Privacy
 
-این صفحه رفتار نرم‌افزار Special VPN را توصیف می‌کند. نسخهٔ به‌روزرسانی: ۲۰۲۶/۱۱/۰۵.
+این صفحه رفتار نرم‌افزار Special VPN را توصیف می‌کند. نسخهٔ به‌روزرسانی: ۲۰۲۶/۱۱/۰۶.
 
 ## داده‌های اتصال
 
@@ -30,3 +30,9 @@ Special VPN stores user-supplied subscription/configuration and VPN profiles on 
 No advertising or tracking SDK was added to this fork. Sharing a subscription link, QR or exported configuration is user initiated and may disclose access credentials. Release artifacts do not embed customer accounts or private signing keys. Remove secrets before sending support reports. Users can remove subscriptions/profiles or clear Android app data; independently exported files must be removed separately.
 
 Source and support: [repository](https://github.com/sabialballa/SpecialVPN), [Issues](https://github.com/sabialballa/SpecialVPN/issues), [Telegram](https://t.me/iSpeedTopVPN). Update checks contact this repository’s GitHub releases API; downloading is user initiated and installation requires Android/user confirmation. No GitHub credential is embedded. Source and releases are public and available without login. Original open-source notices are retained.
+
+## اشتراک‌های OpenVPN / Cisco / WireGuard
+
+لینک اشتراک مشتری، فایل‌های کانفیگ، کلیدهای خصوصی و اطلاعات ورود دریافتی در فضای خصوصی برنامه، در کاتالوگ MMKV و کش موتور مربوط نگهداری می‌شوند. این توضیح ادعای رمزگذاری مستقل کاتالوگ در حالت ذخیره نیست. دریافت و آپدیت از مسیر HTTPS همان ارائه‌دهنده انجام می‌شود؛ تغییر مسیر به میزبان دیگر و دانلود خارجی پروفایل پذیرفته نمی‌شود. کلید API مدیریتی استفاده نمی‌شود. حذف اشتراک، پروفایل‌های مدیریت‌شدهٔ آن را حذف می‌کند؛ فایل اصلی واردشده یا خروجی ذخیره‌شده جداست. دادهٔ ورود معمولی Cisco می‌تواند در فرم ورود پیشنهاد شود؛ تأیید گواهی و رمز یک‌بارمصرف خودکار تأیید نمی‌شوند.
+
+Protocol subscriptions keep their customer link, configurations, private keys and supplied login credentials in app-private MMKV/catalog and engine caches. This is not a claim of separate at-rest encryption. Downloads use HTTPS on the same provider origin, without administrative API credentials. Removing a subscription removes its managed profiles, not independently exported files. WireGuard connects to the user-configured peer endpoints using the official embedded tunnel library.

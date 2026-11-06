@@ -1,5 +1,5 @@
 <resources>
- <string name="protocol_title">OpenVPN / Cisco</string>
+ <string name="protocol_title">VPN 配置</string>
  <string name="protocol_back">Back</string>
  <string name="protocol_intro">管理 OpenVPN 配置和 Cisco 连接。Android 同时只允许一个活动的 VPN 连接。</string>
  <string name="protocol_vpn_only">Select VPN mode in Settings before using these protocols. Proxy-only and root mode keep their existing Xray behavior.</string>
@@ -22,8 +22,8 @@
  <string name="protocol_cisco_manage">Cisco profiles and connection</string>
  <string name="protocol_unavailable">This engine could not initialize on this device.</string>
  <string name="protocol_traffic">Received: %1$s · Sent: %2$s</string>
-<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork.</string>
-<string name="protocol_tab">Open/Cisco</string>
+<string name="protocol_challenge_title">OpenVPN authentication</string><string name="protocol_challenge_response">Response or code</string><string name="protocol_challenge_send">Submit response</string><string name="protocol_xray">V2ray / Xray</string><string name="protocol_credits">OpenVPN for Android: Arne Schwabe. OpenConnect for Android: Kevin Cernekee, OConnect contributors. GPL-2.0-or-later; licenses and corresponding source accompany this fork. WireGuard tunnel: WireGuard LLC, Apache-2.0; additional native notices accompany the source.</string>
+<string name="protocol_tab">VPN</string>
 <string name="protocol_heading">高级连接</string>
 <string name="protocol_cisco_short">Cisco</string>
 <string name="protocol_details">Connection guide</string>
@@ -35,4 +35,20 @@
  <string name="protocol_delete_stop_first">删除配置前请先断开 OpenVPN。</string>
  <string name="protocol_delete_done">配置已删除。</string>
  <string name="protocol_delete_failed">无法删除配置。</string>
+ <string name="protocol_import_wireguard">导入 .conf 文件</string>
+ <string name="protocol_sub_hint">通过一个订阅链接添加 OpenVPN、Cisco 和 WireGuard 配置。</string>
+ <string name="protocol_sub_link">订阅链接</string>
+ <string name="protocol_sub_title">订阅名称</string>
+ <string name="protocol_sub_done">订阅已更新。</string>
+ <string name="protocol_sub_failed">无法更新订阅，请检查链接、网络和配置格式。</string>
+ <string name="protocol_updated">已更新</string>
+ <string name="protocol_sub_label">订阅</string>
+ <string name="protocol_no_subprofiles">此分类暂无配置。</string>
+ <string name="protocol_manual">手动配置</string>
+ <string name="protocol_edit_sub">编辑订阅</string>
+ <string name="protocol_stop">断开连接</string>
+ <string name="protocol_wireguard_failed">WireGuard 连接失败。</string>
+ <string name="protocol_wireguard">WireGuard</string>
+ <string name="protocol_count">%1$d %2$s</string>
+ <string name="protocol_wg_connecting">WireGuard：正在连接</string>
 </resources>

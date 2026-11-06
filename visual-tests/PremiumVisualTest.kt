@@ -127,8 +127,8 @@ class PremiumVisualTest {
     @Test fun lightHome() { render(light = true, populated = true); capture("home-en-light") }
     @Test fun bottomNavigationOpensProtocolScreen() {
         render()
-        compose.onNodeWithText("Open/Cisco").performClick()
-        compose.onNodeWithText("Open/Cisco").assertIsSelected()
+        compose.onNodeWithText("VPN").performClick()
+        compose.onNodeWithText("VPN").assertIsSelected()
         compose.onNodeWithText("Import .ovpn file").assertIsDisplayed()
         compose.onNodeWithText("Disconnect OpenVPN").assertDoesNotExist()
         capture("protocol-after-navigation")

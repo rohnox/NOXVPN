@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,13 +36,17 @@ internal fun ProtocolsRoute(model: ProtocolsViewModel, modifier: Modifier, onAct
         model.reload()
         onPauseOrDispose { }
     }
+    LaunchedEffect(state.launch) { if (state.launch != null) onAction(ProtocolAction.LaunchManaged) }
     ProtocolsScreen(state, modifier, onAction)
 }
 
 @Composable
 internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction: (ProtocolAction) -> Unit) {
     var pendingDelete by rememberSaveable { mutableStateOf<String?>(null) }
-    var cisco by rememberSaveable { mutableStateOf(false) }
+    var protocol by rememberSaveable { mutableStateOf(ProfileProtocol.OpenVPN.name) }
+    val selectedProtocol = ProfileProtocol.valueOf(protocol)
+    val cisco = selectedProtocol == ProfileProtocol.Cisco
+    SubscriptionEditorDialog(state, onAction)
     var details by rememberSaveable { mutableStateOf(false) }
     if (details) AlertDialog(onDismissRequest = { details = false }, title = { Text(stringResource(if (cisco) R.string.protocol_cisco else R.string.protocol_import)) },
         text = { Text(stringResource(if (cisco) R.string.protocol_cisco_hint else R.string.protocol_import_hint)) },
@@ -56,19 +61,24 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
     LazyColumn(modifier.imePadding(), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         item {
             Text(stringResource(R.string.protocol_title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            OutlinedButton(onClick = { onAction(ProtocolAction.EditSubscription(null)) }, enabled = !state.busy, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .65f)), colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)) { Text(stringResource(R.string.top_add_subscription)) }
         }
+        item { ProtocolSubscriptionCard(state, onAction) }
         item {
             Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surfaceContainerLow, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .4f))) {
                 Row(Modifier.fillMaxWidth().padding(4.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    ProtocolSelector(stringResource(R.string.protocol_openvpn), !cisco, Modifier.weight(1f)) { cisco = false }
-                    ProtocolSelector(stringResource(R.string.protocol_cisco_short), cisco, Modifier.weight(1f)) { cisco = true }
+                    ProfileProtocol.entries.forEach { item -> ProtocolSelector(stringResource(protocolLabel(item)), selectedProtocol == item, Modifier.weight(1f)) { protocol = item.name } }
                 }
             }
         }
-        if (state.busy) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
+        if (state.busy) item { LinearProgressIndicator(Modifier.fillMaxWidth()); TextButton(onClick = { onAction(ProtocolAction.CancelEditor) }) { Text(stringResource(android.R.string.cancel)) } }
         if (!state.vpnMode && !state.busy) item { Text(stringResource(R.string.protocol_vpn_only), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
         state.message?.let { message -> item { Text(stringResource(message), style = MaterialTheme.typography.bodySmall) } }
-        if (!cisco) {
+        item { ManagedProfiles(state, selectedProtocol, onAction) }
+        if (selectedProtocol == ProfileProtocol.WireGuard) item {
+            OutlinedButton(onClick = { onAction(ProtocolAction.ImportWireGuard) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth(), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .65f)), colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)) { Text(stringResource(R.string.protocol_import_wireguard)) }
+        }
+        if (selectedProtocol == ProfileProtocol.OpenVPN) {
             item {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary.copy(alpha = .12f)) {
@@ -107,7 +117,8 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
             }
             item {
                 DashboardPanel {
-                    if (state.profiles.isEmpty() && !state.busy) {
+                    Text(stringResource(R.string.protocol_manual), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                    if (state.profiles.isEmpty() && state.subscriptions.isEmpty() && !state.busy) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             ProfileEmblem()
                             Text(stringResource(R.string.protocol_no_profiles), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -122,7 +133,7 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
                     if (!state.openVpnReady && !state.busy) Text(stringResource(R.string.protocol_unavailable), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             }
-        } else item {
+        } else if (cisco) item {
             DashboardPanel {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     ProfileEmblem()
@@ -143,7 +154,7 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
 @Composable
 private fun ProtocolSelector(label: String, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val colors = if (selected) listOf(Color(0xFFBC9441), Color(0xFFFFE5A0), Color(0xFFD7B361)) else listOf(Color.Transparent, Color.Transparent)
-    Surface(modifier = modifier.selectable(selected = selected, role = Role.Tab, onClick = onClick), shape = CircleShape, color = Color.Transparent) {
+    Surface(modifier = modifier.clip(CircleShape).selectable(selected = selected, role = Role.Tab, onClick = onClick), shape = CircleShape, color = Color.Transparent) {
         Box(Modifier.background(Brush.linearGradient(colors)).heightIn(min = 42.dp).padding(horizontal = 12.dp, vertical = 10.dp), contentAlignment = Alignment.Center) {
             Text(label, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = if (selected) Color(0xFF261E0D) else MaterialTheme.colorScheme.onSurface)
         }

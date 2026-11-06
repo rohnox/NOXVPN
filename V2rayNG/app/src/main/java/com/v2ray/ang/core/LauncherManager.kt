@@ -22,14 +22,20 @@ import com.v2ray.ang.util.Utils
 object LauncherManager {
 
     /** Embedded protocol entry points; the upstream activities retain VPN consent and service ownership. */
-    fun launchEmbeddedOpenVpn(context: Context, guid: String) {
+    fun launchEmbeddedOpenVpn(context: Context, guid: String, onFailure: (Throwable) -> Unit = {}) {
         // Ordered delivery lets the existing daemon stop handler run before switching VPN owners.
         // Its actual STOP_SUCCESS event, not this callback, updates the Xray dashboard state.
         MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
-            context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
-                .setAction(Intent.ACTION_MAIN)
-                .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
-                .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
+            if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@sendMsg2ServiceForResult
+            try {
+                context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
+                    .setAction(Intent.ACTION_MAIN)
+                    .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
+                    .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
+            } catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "OpenVPN mode=VPN operation=dispatch profile=$guid", IllegalStateException(error.javaClass.simpleName))
+                onFailure(error)
+            }
         }
     }
 
@@ -40,6 +46,32 @@ object LauncherManager {
     fun launchEmbeddedCisco(context: Context) {
         // Opening profiles is navigation; handover happens only after an explicit Connect.
         context.startActivity(Intent(context, app.openconnect.MainActivity::class.java))
+    }
+
+    fun launchCiscoProfile(context: Context, guid: String) {
+        context.startActivity(Intent(context, app.openconnect.api.GrantPermissionsActivity::class.java)
+            .putExtra(context.packageName + app.openconnect.api.GrantPermissionsActivity.EXTRA_UUID, guid)
+            .putExtra(context.packageName + app.openconnect.api.GrantPermissionsActivity.EXTRA_START_ACTIVITY, app.openconnect.MainActivity::class.java.name))
+    }
+
+    /** Called only after Android VPN consent. Backend status, not this dispatch, reports connection. */
+    fun launchWireGuard(context: Context, guid: String, onFailure: (Throwable) -> Unit = {}) {
+        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
+            if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@sendMsg2ServiceForResult
+            try {
+                androidx.core.content.ContextCompat.startForegroundService(context,
+                    Intent(context, com.v2ray.ang.service.WireGuardControllerService::class.java)
+                        .putExtra(com.v2ray.ang.service.WireGuardControllerService.PROFILE, guid))
+            } catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "WireGuard mode=VPN operation=dispatch profile=$guid", IllegalStateException(error.javaClass.simpleName))
+                onFailure(error)
+            }
+        }
+    }
+
+    fun stopWireGuard(context: Context) {
+        context.startService(Intent(context, com.v2ray.ang.service.WireGuardControllerService::class.java)
+            .setAction(com.v2ray.ang.service.WireGuardControllerService.STOP))
     }
 
     /** Invoked only by Cisco's confirmed Connect path, never profile browsing. */

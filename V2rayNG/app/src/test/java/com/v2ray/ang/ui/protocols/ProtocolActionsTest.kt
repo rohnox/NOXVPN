@@ -28,9 +28,13 @@ class ProtocolActionsTest {
     private val actions = listOf(ProtocolAction.Import, ProtocolAction.Connect("a"), ProtocolAction.Disconnect, ProtocolAction.Cisco)
 
     @Test fun `cold loading failed and busy states cannot launch engines`() {
-        for (state in listOf(ProtocolsState(), ProtocolsState(busy = false), ready.copy(busy = true))) {
+        for (state in listOf(ProtocolsState(), ProtocolsState(busy = false))) {
             actions.forEach { assertFalse(canHandleProtocolAction(state, it)) }
         }
+        val busy = ready.copy(busy = true)
+        actions.filterNot { it == ProtocolAction.Disconnect }.forEach { assertFalse(canHandleProtocolAction(busy, it)) }
+        assertTrue(canHandleProtocolAction(busy, ProtocolAction.Disconnect))
+        assertTrue(canHandleProtocolAction(busy.copy(wireguard = com.v2ray.ang.core.WireGuardState("wg", com.v2ray.ang.core.WireGuardState.Phase.Up)), ProtocolAction.DisconnectWireGuard))
     }
     @Test fun `ready operations use profile identity and reject empty unknown or removed IDs`() {
         actions.forEach { assertTrue(canHandleProtocolAction(ready, it)) }

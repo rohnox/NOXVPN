@@ -1,4 +1,4 @@
-نسخه فعلی: Special VPN ۱٫۶٫۴؛ شناسه com.specialvpn.app. راهنمای امضا RELEASE-FA.md و گزارش این نسخه VALIDATION-1.6.4.md است. ورودی‌های بومی و نسخه ابزارها تغییر نکرده‌اند. مطالب نسخه‌های پیشین در ادامه تاریخی هستند.
+نسخه فعلی: Special VPN ۱٫۶٫۵؛ شناسه com.specialvpn.app. گزارش VALIDATION-1.6.5.md و امضا RELEASE-FA.md. موتور WireGuard رسمی اضافه شده؛ منشأ و سورس متناظر در NATIVE-ENGINES.md. سورس ZIP ورودی vendor-maven را هم دارد؛ checkout گیت از Maven Central دریافت می‌کند.
 
 نسخه فعلی ۱٫۴٫۳: OpenVPN/Cisco حفظ شده؛ دو دکمه مشخص‌شدهٔ صفحه اصلی حذف و مقداردهی شروع اتصال OpenVPN اصلاح شده است. گزارش: VALIDATION.md.
 
