@@ -16,7 +16,7 @@ class ProtocolSubscriptionUpdateTest {
         val old = ProtocolSubscription("id", "Old", "https://example.invalid/sub/a/demo", 1, emptyList())
         var commits = 0
         val result = ProtocolSubscriptionRepository.replace(mock<Application>(), listOf(other, old), "id", "Plan", old.url, fetchBytes = { url ->
-            if (url.encodedPath.startsWith("/get_subpage")) manifest().toByteArray() else config.toByteArray()
+            if (url.encodedPath.startsWith("/get_subpage")) manifest().toByteArray() else if (url.encodedPath.startsWith("/get_user_data")) """{"user":{"username":"demo"}}""".toByteArray() else config.toByteArray()
         }) { previous, next ->
             commits++
             assertEquals(old, previous)
@@ -33,7 +33,8 @@ class ProtocolSubscriptionUpdateTest {
             var downloads = 0
             val failure = runCatching {
                 ProtocolSubscriptionRepository.replace(mock<Application>(), emptyList(), "id", "Plan", "https://example.invalid/sub/a/demo", fetchBytes = { url ->
-                    if (url.encodedPath.startsWith("/get_subpage")) manifest(two = true).toByteArray()
+                    if (url.encodedPath.startsWith("/get_user_data")) """{"user":{"username":"demo"}}""".toByteArray()
+                    else if (url.encodedPath.startsWith("/get_subpage")) manifest(two = true).toByteArray()
                     else { downloads++; if (invalid) "invalid".toByteArray() else if (downloads == 1) config.toByteArray() else throw IOException("fixture") }
                 }) { _, _ -> commits++ }
             }
@@ -49,10 +50,24 @@ class ProtocolSubscriptionUpdateTest {
         }
         assertTrue(duplicate.isFailure); assertFalse(requested)
         val storage = runCatching {
-            ProtocolSubscriptionRepository.replace(mock<Application>(), listOf(existing), "old", "Plan", existing.url, fetchBytes = { url -> if (url.encodedPath.startsWith("/get_subpage")) manifest().toByteArray() else config.toByteArray() }) { _, _ -> throw IOException("storage") }
+            ProtocolSubscriptionRepository.replace(mock<Application>(), listOf(existing), "old", "Plan", existing.url, fetchBytes = { url -> if (url.encodedPath.startsWith("/get_subpage")) manifest().toByteArray() else if (url.encodedPath.startsWith("/get_user_data")) """{"user":{"username":"demo"}}""".toByteArray() else config.toByteArray() }) { _, _ -> throw IOException("storage") }
         }
         assertTrue(storage.isFailure)
         assertEquals("Old", existing.title)
         assertTrue(existing.profiles.isEmpty())
+    }
+    @Test fun failedOrForeignAccountMetadataKeepsPreviousGenerationUntouched() = runTest {
+        val info = parseProtocolSubscriptionInfo("""{"user":{"username":"demo","data_limit":0,"expiry_date_iso":null}}""", "demo")
+        val existing = ProtocolSubscription("id", "Old", "https://example.invalid/sub/a/demo", 1, emptyList(), info)
+        for (foreign in listOf(false, true)) {
+            var commits = 0
+            val result = runCatching {
+                ProtocolSubscriptionRepository.replace(mock<Application>(), listOf(existing), "id", "Plan", existing.url, fetchBytes = { url ->
+                    if (url.encodedPath.startsWith("/get_subpage")) manifest().toByteArray()
+                    else if (foreign) """{"user":{"username":"other"}}""".toByteArray() else throw IOException("fixture")
+                }) { _, _ -> commits++ }
+            }
+            assertTrue(result.isFailure); assertEquals(0, commits); assertEquals(info, existing.info)
+        }
     }
 }

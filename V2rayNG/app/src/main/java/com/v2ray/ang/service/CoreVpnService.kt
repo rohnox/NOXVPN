@@ -33,6 +33,27 @@ class CoreVpnService : VpnService(), ServiceControl {
     private var isRunning = false
     private var tun2SocksService: Tun2SocksControl? = null
     private val isStartingLock = AtomicBoolean(false)
+    private val handoverWorker = java.util.concurrent.Executors.newSingleThreadExecutor()
+    private val handover = android.os.Messenger(android.os.Handler(android.os.Looper.getMainLooper()) { message ->
+        val reply = androidx.core.os.BundleCompat.getParcelable(message.data, "stopReply", android.os.ResultReceiver::class.java)
+        handoverWorker.execute {
+            var stopped = false
+            try {
+                stopAllService()
+                val deadline = android.os.SystemClock.elapsedRealtime() + 8_000L
+                while (CoreServiceManager.isRunning() && android.os.SystemClock.elapsedRealtime() < deadline) Thread.sleep(25)
+                stopped = !CoreServiceManager.isRunning()
+            } catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "Xray mode=VPN phase=handover operation=stop", IllegalStateException(error.javaClass.simpleName))
+            } finally {
+                reply?.send(if (stopped) android.app.Activity.RESULT_OK else android.app.Activity.RESULT_CANCELED, null)
+            }
+        }
+        true
+    })
+
+    override fun onBind(intent: Intent?): android.os.IBinder? =
+        if (intent?.action == packageName + ".STOP_FOR_HANDOVER") handover.binder else super.onBind(intent)
 
     override fun onCreate() {
         super.onCreate()
@@ -60,15 +81,18 @@ class CoreVpnService : VpnService(), ServiceControl {
         // going through stopAllService() (e.g. when killed unexpectedly). isRunning is
         // set to false at the start of stopAllService(), so this guard prevents a double-close.
         if (isRunning) {
-            try {
+            isRunning = false
+            handoverWorker.execute { try {
                 if (::mInterface.isInitialized) {
                     mInterface.close()
                     LogUtil.i(AppConfig.TAG, "StartCore-VPN: VPN interface closed in onDestroy")
                 }
             } catch (e: Exception) {
                 LogUtil.e(AppConfig.TAG, "StartCore-VPN: Failed to close interface in onDestroy", e)
-            }
+            } }
         }
+        // Drain accepted teardown before ending its owner; no task may start/reload a VPN here.
+        handoverWorker.shutdown()
 
         unlockStart()
         NotificationManager.cancelNotification()

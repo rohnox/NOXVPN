@@ -29,16 +29,26 @@ internal enum class DashboardTab(val label: Int, val icon: Int) {
     Overview(R.string.top_overview, R.drawable.ic_top_home),
     Servers(R.string.top_servers, R.drawable.ic_top_servers),
     Plans(R.string.top_plans, R.drawable.ic_subscriptions_24dp),
-    Protocols(R.string.protocol_tab, R.drawable.ic_top_shield),
+    Protocols(R.string.protocol_tab, R.drawable.ic_openvpn_menu),
     Controls(R.string.top_controls, R.drawable.ic_settings_24dp)
 }
 
 @Composable
 fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit,
-    protocolsContent: @Composable (Modifier) -> Unit) {
+    protocolsContent: @Composable (Modifier) -> Unit,
+    connectedProtocolKey: String? = null, anyProtocolConnected: Boolean = false, protocolStatusReady: Boolean = true) {
     val state by mainViewModel.uiState.collectAsStateWithLifecycle()
     val loading by mainViewModel.isLoading.collectAsStateWithLifecycle()
-    var selectedTab by rememberSaveable { mutableStateOf(DashboardTab.Overview.name) }
+    var selectedTab by rememberSaveable { mutableStateOf(if (connectedProtocolKey != null) DashboardTab.Protocols.name else DashboardTab.Overview.name) }
+    var handledProtocol by rememberSaveable { mutableStateOf<String?>(null) }
+    LaunchedEffect(connectedProtocolKey, anyProtocolConnected, protocolStatusReady) {
+        if (protocolStatusReady) {
+            if (connectedProtocolKey != null && connectedProtocolKey != handledProtocol) {
+                selectedTab = DashboardTab.Protocols.name
+                handledProtocol = connectedProtocolKey
+            } else if (!anyProtocolConnected) handledProtocol = null
+        }
+    }
     val tab = dashboardTab(selectedTab)
     androidx.lifecycle.compose.LifecycleResumeEffect(tab, state.dashboardSubscriptionId) {
         onAction(MainAction.UsageVisibility(tab == DashboardTab.Overview))

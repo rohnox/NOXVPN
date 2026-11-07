@@ -61,6 +61,12 @@ class WireGuardConsentTest {
         val controller = Robolectric.buildActivity(ConsentActivity::class.java).setup()
         val activity = controller.get(); val app = activity.application
         shadowOf(app).grantPermissions(android.Manifest.permission.POST_NOTIFICATIONS)
+        var stopReply: android.os.ResultReceiver? = null
+        val binder = android.os.Messenger(android.os.Handler(Looper.getMainLooper()) { message ->
+            stopReply = androidx.core.os.BundleCompat.getParcelable(message.data, "stopReply", android.os.ResultReceiver::class.java)
+            true
+        }).binder
+        shadowOf(app).setComponentNameAndServiceForBindService(android.content.ComponentName(app, com.v2ray.ang.service.VpnHandoverService::class.java), binder)
         Mockito.mockStatic(VpnService::class.java).use { vpn ->
             vpn.`when`<Intent?> { VpnService.prepare(activity) }.thenReturn(Intent("fixture.VPN_CONSENT"))
             activity.host.onAction(ProtocolAction.LaunchManaged)
@@ -70,11 +76,15 @@ class WireGuardConsentTest {
             val restored = Robolectric.buildActivity(ConsentActivity::class.java).create(bundle).start().resume().visible()
             restored.get().activityResultRegistry.dispatchResult(request.requestCode, Activity.RESULT_OK, null)
             shadowOf(Looper.getMainLooper()).idle()
+            assertEquals(com.v2ray.ang.service.VpnHandoverService::class.java.name, shadowOf(app).nextStartedService.component!!.className)
+            assertNotNull(stopReply)
+            stopReply!!.send(Activity.RESULT_OK, null)
+            shadowOf(Looper.getMainLooper()).idle()
             val intent = shadowOf(app).nextStartedService
             assertNotNull(intent)
             assertEquals(WireGuardControllerService::class.java.name, intent.component!!.className)
             assertEquals("5f5c7c2b-77d3-4393-85d1-1dfac11ef8c7", intent.getStringExtra(WireGuardControllerService.PROFILE))
-            assertTrue(shadowOf(app).broadcastIntents.any { it.action == AppConfig.BROADCAST_ACTION_SERVICE && it.`package` == AppConfig.ANG_PACKAGE })
+            assertFalse(shadowOf(app).broadcastIntents.any { it.action == AppConfig.BROADCAST_ACTION_SERVICE })
             restored.pause().stop().destroy()
         }
     }

@@ -51,4 +51,7 @@
  <string name="protocol_wireguard">WireGuard</string>
  <string name="protocol_count">%1$d %2$s</string>
  <string name="protocol_wg_connecting">WireGuard：正在連線</string>
+ <string name="protocol_account_username">使用者名稱</string>
+ <string name="protocol_activation_pending">等待啟用</string>
+ <string name="protocol_xray_group">Xray</string>
 </resources>

@@ -92,7 +92,7 @@ public class OpenVpnService extends VpnService {
 	private String mUUID;
 	private int mStartId;
 
-	private Thread mVPNThread;
+	private volatile Thread mVPNThread;
 	private OpenConnectManagementThread mVPN;
 
 	private UserDialog mDialog;
@@ -118,9 +118,36 @@ public class OpenVpnService extends VpnService {
 		}
 	}
 
+    private final java.util.concurrent.ExecutorService mHandoverWorker = java.util.concurrent.Executors.newSingleThreadExecutor();
+    private final android.os.Messenger mHandover = new android.os.Messenger(new Handler(android.os.Looper.getMainLooper(), message -> {
+        final android.os.ResultReceiver reply = androidx.core.os.BundleCompat.getParcelable(message.getData(), "stopReply", android.os.ResultReceiver.class);
+        mHandoverWorker.execute(() -> {
+            boolean stopped = false;
+            try {
+                Thread process = mVPNThread;
+                doStopVPN();
+                if (process != null) process.join(9000);
+                stopped = process == null || !process.isAlive();
+            } catch (Exception error) {
+                EmbeddedRuntime.reportFailure("stop", error);
+            }
+            final boolean complete = stopped;
+            mHandler.post(() -> {
+                if (complete) {
+                    ProfileManager.setConnectedVpnProfileDisconnected();
+                    stopForegroundNotification();
+                    stopSelf();
+                }
+                if (reply != null) reply.send(complete ? android.app.Activity.RESULT_OK : android.app.Activity.RESULT_CANCELED, null);
+            });
+        });
+        return true;
+    }));
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		String action = intent.getAction();
+        if ((getPackageName() + ".STOP_FOR_HANDOVER").equals(action)) return mHandover.getBinder();
 		if( action !=null && action.equals(START_SERVICE))
 			return mBinder;
 		else
@@ -173,10 +200,16 @@ public class OpenVpnService extends VpnService {
 	@Override
 	public void onDestroy() {
 		mPrefs.unregisterOnSharedPreferenceChangeListener(mPreferenceListener);
-		killVPNThread(true);
 		unregisterReceivers();
 		stopForegroundNotification();
-		mVPNLog.saveToFile(getCacheDir().getAbsolutePath() + "/logdata.ser");
+		// Final owner work can only release resources; native cancellation/join and disk stay off main.
+        mHandoverWorker.execute(() -> {
+            try {
+                killVPNThread(true);
+                mVPNLog.saveToFile(getCacheDir().getAbsolutePath() + "/logdata.ser");
+            } catch (Exception error) { EmbeddedRuntime.reportFailure("destroy", error); }
+        });
+        mHandoverWorker.shutdown();
 		super.onDestroy();
 	}
 
@@ -537,6 +570,7 @@ public class OpenVpnService extends VpnService {
 			startTime = new Date();
 		}
 		mConnectionState = state;
+        EmbeddedRuntime.publishConnectionStatus(profile == null ? null : profile.getUUIDString(), state == OpenConnectManagementThread.STATE_CONNECTED);
 		wakeUpActivity();
 	}
 

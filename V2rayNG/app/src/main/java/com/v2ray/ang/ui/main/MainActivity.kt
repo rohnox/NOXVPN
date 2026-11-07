@@ -9,6 +9,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -130,6 +132,7 @@ class MainActivity : HelperBaseComponentActivity() {
     @Composable
     override fun ScreenContent() {
         BackHandler { moveTaskToBack(false) }
+        val protocols by protocolsModel.state.collectAsStateWithLifecycle()
         MainScreen(
             mainViewModel = mainViewModel,
             onAction = { action ->
@@ -154,6 +157,9 @@ class MainActivity : HelperBaseComponentActivity() {
             },
             onNavigate = { route -> navigateTo(route) },
             protocolsContent = { modifier -> ProtocolsRoute(protocolsModel, modifier, protocolsHost::onAction) },
+            connectedProtocolKey = com.v2ray.ang.ui.protocols.connectedProtocol(protocols)?.key,
+            anyProtocolConnected = com.v2ray.ang.ui.protocols.hasConnectedProtocol(protocols),
+            protocolStatusReady = !protocols.busy,
         )
     }
 

@@ -34,9 +34,24 @@ class ProtocolSubscriptionsVisualTest {
     @get:Rule val compose = createComposeRule()
     private val commands = mutableListOf<ProtocolAction>()
     private lateinit var inputModes: InputModeManager
+    @Test fun connectedTabDefaultsOnceAllowsBrowsingAndRestoresManualChoiceByProtocol() {
+        val state = mutableStateOf(ProtocolsState(busy = false, openVpnReady = true, ciscoReady = true, ciscoActiveId = "cisco-id"))
+        val restoration = androidx.compose.ui.test.junit4.StateRestorationTester(compose)
+        restoration.setContent { MaterialTheme { ProtocolsScreen(state.value, Modifier.fillMaxSize(), {}) } }
+        protocolTab("Cisco").assertIsSelected()
+        protocolTab("WireGuard").performClick().assertIsSelected()
+        compose.runOnIdle { state.value = state.value.copy(received = 42) }
+        protocolTab("WireGuard").assertIsSelected()
+        restoration.emulateSavedInstanceStateRestore()
+        protocolTab("WireGuard").assertIsSelected()
+        compose.runOnIdle { state.value = state.value.copy(ciscoActiveId = null) }
+        compose.waitForIdle()
+        compose.runOnIdle { state.value = state.value.copy(connected = true, activeProfileId = "open-id") }
+        protocolTab("OpenVPN").assertIsSelected()
+    }
     private fun fixture(light: Boolean = false, rtl: Boolean = false, editor: Boolean = false, empty: Boolean = false) {
         val profiles = listOf(SubscriptionProfile("ovpn-fixture", "Germany", ProfileProtocol.OpenVPN), SubscriptionProfile("cisco-fixture", "Sweden", ProfileProtocol.Cisco), SubscriptionProfile("wg-fixture", "Netherlands", ProfileProtocol.WireGuard))
-        val record = ProtocolSubscription("plan", "Premium Plan", "https://example.invalid/sub/token/demo", 100, profiles)
+        val record = ProtocolSubscription("plan", "Premium Plan", "https://example.invalid/sub/token/demo", 100, profiles, ProtocolSubscriptionInfo("demo-user", 1073741824L, 53687091200L, false, 1893542400L, false, null))
         val state = ProtocolsState(busy = false, openVpnReady = true, ciscoReady = true, vpnMode = true, subscriptions = if (empty) emptyList() else listOf(record), selectedSubscriptionId = "plan", status = com.v2ray.ang.R.string.protocol_state_stopped,
             editor = if (editor) SubscriptionEditor(title = "Example", link = "https://example.invalid/sub/token/demo") else null)
         compose.setContent {
@@ -58,10 +73,12 @@ class ProtocolSubscriptionsVisualTest {
     }
     @Test fun darkWireguardCardConnectAndUpdateDispatchStableIds() {
         fixture()
+        compose.onNodeWithText("Username: demo-user").assertIsDisplayed()
+        compose.onNodeWithText("Remaining").assertIsDisplayed()
         protocolTab("WireGuard").performClick().assertIsSelected()
         compose.onNodeWithText("Netherlands").assertIsDisplayed()
         compose.onNodeWithText("Germany").assertDoesNotExist()
-        compose.onNodeWithText("Connect", substring = false).performClick()
+        compose.onNodeWithText("Connect", substring = false).performScrollTo().performClick()
         assertEquals(ProtocolAction.ConnectManaged("wg-fixture"), commands.last())
         compose.onNodeWithText("Update Sub").performClick()
         assertEquals(ProtocolAction.RefreshSubscription("plan"), commands.last())

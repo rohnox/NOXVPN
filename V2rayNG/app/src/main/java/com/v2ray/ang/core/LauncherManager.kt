@@ -23,19 +23,16 @@ object LauncherManager {
 
     /** Embedded protocol entry points; the upstream activities retain VPN consent and service ownership. */
     fun launchEmbeddedOpenVpn(context: Context, guid: String, onFailure: (Throwable) -> Unit = {}) {
-        // Ordered delivery lets the existing daemon stop handler run before switching VPN owners.
-        // Its actual STOP_SUCCESS event, not this callback, updates the Xray dashboard state.
-        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
-            if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@sendMsg2ServiceForResult
-            try {
-                context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
-                    .setAction(Intent.ACTION_MAIN)
-                    .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
-                    .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
-            } catch (error: Exception) {
-                LogUtil.e(AppConfig.TAG, "OpenVPN mode=VPN operation=dispatch profile=$guid", IllegalStateException(error.javaClass.simpleName))
-                onFailure(error)
-            }
+        // The engine invokes the host handover gate only after consent and password prompts succeed.
+        if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return
+        try {
+            context.startActivity(Intent(context, de.blinkt.openvpn.LaunchVPN::class.java)
+                .setAction(Intent.ACTION_MAIN)
+                .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY, guid)
+                .putExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_HIDELOG, true))
+        } catch (error: Exception) {
+            LogUtil.e(AppConfig.TAG, "OpenVPN mode=VPN operation=dispatch profile=$guid", IllegalStateException(error.javaClass.simpleName))
+            onFailure(error)
         }
     }
 
@@ -56,8 +53,9 @@ object LauncherManager {
 
     /** Called only after Android VPN consent. Backend status, not this dispatch, reports connection. */
     fun launchWireGuard(context: Context, guid: String, onFailure: (Throwable) -> Unit = {}) {
-        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") {
-            if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@sendMsg2ServiceForResult
+        MessageHelper.prepareVpnHandover(context, VpnEngine.WireGuard) { stopped ->
+            if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@prepareVpnHandover
+            if (!stopped) { context.toast(R.string.protocol_unavailable); return@prepareVpnHandover }
             try {
                 androidx.core.content.ContextCompat.startForegroundService(context,
                     Intent(context, com.v2ray.ang.service.WireGuardControllerService::class.java)
@@ -70,13 +68,29 @@ object LauncherManager {
     }
 
     fun stopWireGuard(context: Context) {
-        context.startService(Intent(context, com.v2ray.ang.service.WireGuardControllerService::class.java)
-            .setAction(com.v2ray.ang.service.WireGuardControllerService.STOP))
+        MessageHelper.stopVpnHandover(context, VpnEngine.WireGuard)
     }
 
     /** Invoked only by Cisco's confirmed Connect path, never profile browsing. */
     fun prepareEmbeddedCiscoConnection(context: Context, onReady: () -> Unit) {
-        MessageHelper.sendMsg2ServiceForResult(context, AppConfig.MSG_STATE_STOP, "") { onReady() }
+        prepareEmbeddedConnection(context, VpnEngine.Cisco, onReady)
+    }
+
+    fun prepareEmbeddedOpenVpnConnection(context: Context, onReady: () -> Unit) {
+        prepareEmbeddedConnection(context, VpnEngine.OpenVpn, onReady)
+    }
+
+    private fun prepareEmbeddedConnection(context: Context, target: VpnEngine, onReady: () -> Unit) {
+        if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return
+        MessageHelper.prepareVpnHandover(context, target) { stopped ->
+            if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@prepareVpnHandover
+            if (!stopped) {
+                context.toast(R.string.protocol_unavailable)
+                (context as? android.app.Activity)?.finish()
+                return@prepareVpnHandover
+            }
+            onReady()
+        }
     }
 
     fun startServiceFromToggle(context: Context): Boolean {
@@ -110,8 +124,8 @@ object LauncherManager {
     }
 
     fun stopService(context: Context) {
-        //context.toast(R.string.toast_services_stop)
-        MessageHelper.sendMsg2Service(context, AppConfig.MSG_STATE_STOP, "")
+        if (SettingsManager.isVpnMode() && !SettingsManager.isRootMode()) MessageHelper.stopVpnHandover(context, VpnEngine.Xray)
+        else MessageHelper.sendMsg2Service(context, AppConfig.MSG_STATE_STOP, "")
     }
 
     /** Restarts the active daemon without starting a stopped service. */
@@ -181,6 +195,22 @@ object LauncherManager {
             Intent(context.applicationContext, CoreProxyOnlyService::class.java)
         }
 
+        if (!isRootMode && SettingsManager.isVpnMode()) {
+            MessageHelper.prepareVpnHandover(context, VpnEngine.Xray) { stopped ->
+                if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@prepareVpnHandover
+                // An asynchronous handover must never start a deleted or subsequently selected server.
+                if (!stopped) { context.toast(R.string.protocol_unavailable); return@prepareVpnHandover }
+                if (MmkvManager.getSelectServer() != guid || MmkvManager.decodeServerConfig(guid) == null) return@prepareVpnHandover
+                try { dispatchService(context, intent) }
+                catch (error: Exception) {
+                    LogUtil.e(AppConfig.TAG, "Xray mode=VPN phase=handover operation=start profile=$guid", IllegalStateException(error.javaClass.simpleName))
+                    context.toast(R.string.protocol_unavailable)
+                }
+            }
+        } else dispatchService(context, intent)
+    }
+
+    private fun dispatchService(context: Context, intent: Intent) {
         try {
             ContextCompat.startForegroundService(context, intent)
         } catch (e: SecurityException) {

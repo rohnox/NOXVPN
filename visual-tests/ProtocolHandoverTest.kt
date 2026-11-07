@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(application = Application::class, sdk = [35])
 class ProtocolHandoverTest {
-    @Test fun stopCommandPrecedesOpenVpnLaunch() {
+    @Test fun selectingOpenVpnProfileOpensConsentFlowWithoutStoppingAnyVpn() {
         val app = RuntimeEnvironment.getApplication()
         val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
         val commands = mutableListOf<Int>()
@@ -35,7 +35,7 @@ class ProtocolHandoverTest {
         try {
             LauncherManager.launchEmbeddedOpenVpn(activity, "test-profile")
             shadowOf(Looper.getMainLooper()).idle()
-            assertEquals(listOf(AppConfig.MSG_STATE_STOP), commands)
+            assertTrue(commands.isEmpty())
             val next = shadowOf(app).nextStartedActivity
             assertEquals("de.blinkt.openvpn.LaunchVPN", next.component!!.className)
             assertEquals("test-profile", next.getStringExtra(de.blinkt.openvpn.LaunchVPN.EXTRA_KEY))

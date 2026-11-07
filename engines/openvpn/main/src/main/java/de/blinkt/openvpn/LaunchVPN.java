@@ -70,6 +70,10 @@ import de.blinkt.openvpn.activities.LogWindow;
  * or start a particular operation.
  */
 public class LaunchVPN extends Activity {
+    private boolean mConnectPending;
+    // This Activity owns the profile-LRU write; destruction cancels work and any late VPN launch.
+    private final java.util.concurrent.ExecutorService mConnectWorker = java.util.concurrent.Executors.newSingleThreadExecutor();
+    private java.util.concurrent.Future<?> mConnectWork;
 
     public static final String EXTRA_KEY = "de.blinkt.openvpn.shortcutProfileUUID";
     public static final String EXTRA_NAME = "de.blinkt.openvpn.shortcutProfileName";
@@ -247,14 +251,9 @@ public class LaunchVPN extends Activity {
                             ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);
                     askForPW(needpw);
                 } else {
-                    SharedPreferences prefs = Preferences.getDefaultSharedPreferences(this);
-                    boolean showLogWindow = prefs.getBoolean("showlogwindow", true);
-
-                    if (!mhideLog && showLogWindow)
-                        showLogWindow();
-                    ProfileManager.updateLRU(this, mSelectedProfile);
-                    VPNLaunchHelper.startOpenVpn(mSelectedProfile, getBaseContext(), mSelectedProfileReason, true);
-                    finish();
+                    if (mConnectPending) return;
+                    mConnectPending = true;
+                    prepareConnection();
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // User does not want us to start, so we just vanish
@@ -267,6 +266,43 @@ public class LaunchVPN extends Activity {
                 finish();
             }
         }
+    }
+
+    private void prepareConnection() {
+        if (isFinishing() || isDestroyed()) return;
+        final VpnProfile profile = mSelectedProfile;
+        final String reason = mSelectedProfileReason;
+        mConnectWork = mConnectWorker.submit(() -> {
+            try {
+                boolean showLog = Preferences.getDefaultSharedPreferences(this).getBoolean("showlogwindow", true);
+                ProfileManager.updateLRU(this, profile);
+                if (Thread.currentThread().isInterrupted()) return;
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed() || mConnectWorker.isShutdown()) return;
+                    // Finish disk preparation before acquiring the handover lease. Its callback
+                    // must dispatch the service immediately, without another delayed worker.
+                    de.blinkt.openvpn.core.EmbeddedRuntime.beforeConnect(this, () -> {
+                    if (isFinishing() || isDestroyed() || mConnectWorker.isShutdown()) return;
+                    try {
+                        if (!mhideLog && showLog) showLogWindow();
+                        VPNLaunchHelper.startOpenVpnAfterHandover(profile, getBaseContext(), reason, true);
+                    } catch (Exception error) {
+                        de.blinkt.openvpn.core.EmbeddedRuntime.reportFailure("dispatch-connect", profile.getUUIDString(), error);
+                    }
+                    finish();
+                    });
+                });
+            } catch (Exception error) {
+                de.blinkt.openvpn.core.EmbeddedRuntime.reportFailure("prepare-connect", profile.getUUIDString(), error);
+                runOnUiThread(() -> { if (!isFinishing() && !isDestroyed()) finish(); });
+            }
+        });
+    }
+
+    @Override protected void onDestroy() {
+        if (mConnectWork != null) mConnectWork.cancel(true);
+        mConnectWorker.shutdownNow();
+        super.onDestroy();
     }
 
     void showLogWindow() {

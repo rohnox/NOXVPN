@@ -53,6 +53,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.protocols.ProtocolsActivity" android:exported="false" />
         <!-- Android 14+ requires a declared foreground use case; this controller owns the user-started WireGuard tunnel lifecycle and stop notification. -->
+        <service android:name=".service.VpnHandoverService" android:exported="false" />
         <service android:name=".service.WireGuardControllerService" android:exported="false" android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User-started WireGuard VPN tunnel lifecycle and disconnect notification" />
         </service>

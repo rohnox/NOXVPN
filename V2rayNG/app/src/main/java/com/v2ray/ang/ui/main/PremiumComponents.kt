@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -75,7 +76,18 @@ internal fun DashboardHeader(onRefresh: (() -> Unit)?) {
 internal fun DashboardNavigation(tab: DashboardTab, onSelect: (DashboardTab) -> Unit) {
     Surface(Modifier.navigationBarsPadding().padding(start = 12.dp, end = 12.dp, bottom = 8.dp), shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = .5f))) {
-        NavigationBar(Modifier.height(70.dp), containerColor = Color.Transparent, tonalElevation = 0.dp, windowInsets = WindowInsets(0, 0, 0, 0)) {
+        Box(Modifier.padding(top = 12.dp, bottom = 4.dp)) {
+            Box(Modifier.align(Alignment.TopStart).fillMaxWidth(.6f).height(78.dp).padding(horizontal = 5.dp)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = .045f), RoundedCornerShape(22.dp))
+                .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .6f), RoundedCornerShape(22.dp)))
+            Box(Modifier.align(Alignment.TopStart).fillMaxWidth(.6f)) {
+                Surface(Modifier.align(Alignment.TopCenter).offset(y = (-9).dp), shape = CircleShape,
+                    color = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary) {
+                    Text(stringResource(R.string.protocol_xray_group), Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+                }
+            }
+        NavigationBar(Modifier.height(78.dp).padding(top = 8.dp), containerColor = Color.Transparent, tonalElevation = 0.dp, windowInsets = WindowInsets(0, 0, 0, 0)) {
             DashboardTab.entries.forEach { destination ->
                 NavigationBarItem(selected = destination == tab, onClick = { onSelect(destination) },
                     icon = {
@@ -86,6 +98,7 @@ internal fun DashboardNavigation(tab: DashboardTab, onSelect: (DashboardTab) -> 
                     }, label = { Text(stringResource(destination.label), maxLines = 1, style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(indicatorColor = Color.Transparent, selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
             }
+        }
         }
     }
 }

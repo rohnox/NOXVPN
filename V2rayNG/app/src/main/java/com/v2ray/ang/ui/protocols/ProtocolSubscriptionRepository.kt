@@ -42,6 +42,8 @@ internal object ProtocolSubscriptionRepository {
     suspend fun fetch(context: Context, id: String, title: String, link: String, fetchBytes: suspend (HttpUrl) -> ByteArray = ::download): ProtocolSubscription {
         val source = EylanSubscription.source(link)
         val manifest = withContext(Dispatchers.Default) { EylanSubscription.parse(id, source, fetchBytes(EylanSubscription.manifestUrl(source)).toString(Charsets.UTF_8)) }
+        val accountBytes = fetchBytes(EylanSubscription.userDataUrl(source))
+        val info = withContext(Dispatchers.Default) { parseProtocolSubscriptionInfo(accountBytes.toString(Charsets.UTF_8), source.pathSegments[2]) }
         val profiles = manifest.cisco.toMutableList()
         var total = 0
         for (item in manifest.downloads) {
@@ -57,7 +59,7 @@ internal object ProtocolSubscriptionRepository {
             }
             profiles += SubscriptionProfile(item.id, item.name, item.protocol, config)
         }
-        return ProtocolSubscription(id, title.trim().take(100).ifBlank { source.host }, source.toString(), System.currentTimeMillis(), profiles)
+        return ProtocolSubscription(id, title.trim().take(100).ifBlank { info.username }, source.toString(), System.currentTimeMillis(), profiles, info)
     }
 
     suspend fun replace(context: Context, records: List<ProtocolSubscription>, id: String, title: String, link: String,

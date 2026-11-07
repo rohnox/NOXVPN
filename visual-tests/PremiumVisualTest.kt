@@ -376,11 +376,32 @@ class PremiumVisualTest {
         org.mockito.kotlin.whenever(model.formatStatus(org.mockito.kotlin.any())).thenReturn("")
         compose.setContent { MaterialTheme(colorScheme = staticAppColorScheme(true), typography = AppTypography) { MainScreen(model, {}, { destinations.add(it) }, {}) } }
         compose.onNodeWithText("Settings").performClick()
-        compose.onNodeWithText("Check for update").performScrollTo().performClick()
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("Check for update"))
+        compose.onNodeWithText("Check for update").performClick()
         org.junit.Assert.assertEquals(MainDestination.CheckUpdate, destinations.last())
         val footer = org.robolectric.RuntimeEnvironment.getApplication().getString(com.v2ray.ang.R.string.ispeed_attribution)
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(footer))
         compose.onNodeWithText("Configuration tools").assertDoesNotExist()
         capture("controls-without-configuration-tools")
     }
+    @Test @Config(qualifiers = "en-w840dp-h600dp-xhdpi")
+    fun groupedXrayNavigationKeepsVpnIndependentOnWideLayout() {
+        render(populated = true)
+        compose.onNodeWithText("Xray", substring = false).assertIsDisplayed()
+        compose.onNodeWithText("VPN", substring = false).performClick().assertIsSelected()
+        compose.onNodeWithText("Xray", substring = false).assertIsDisplayed()
+        capture("xray-group-wide-en")
+    }
+    @Test fun groupedNavigationRetainsKeyboardAndDpadActivation() {
+        render()
+        compose.runOnIdle { inputModes.requestInputMode(InputMode.Keyboard) }
+        val vpn = compose.onNodeWithText("VPN", substring = false)
+        vpn.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        vpn.performKeyInput { pressKey(Key.Enter) }.assertIsSelected()
+        val home = compose.onNodeWithText("Home", substring = false)
+        home.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        home.performKeyInput { pressKey(Key.DirectionCenter) }.assertIsSelected()
+        capture("xray-group-home-en")
+    }
+
 }

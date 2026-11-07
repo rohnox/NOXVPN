@@ -372,6 +372,7 @@ public class ProfileManager {
 
 	public synchronized static void setConnectedVpnProfileDisconnected() {
 		mLastConnectedVpn = null;
+        EmbeddedRuntime.publishConnectionStatus(null, false);
 		mAppPrefs.edit()
 			.remove(ON_BOOT_PROFILE)
 			.commit();

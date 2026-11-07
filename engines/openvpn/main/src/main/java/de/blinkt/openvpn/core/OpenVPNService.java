@@ -113,6 +113,33 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     private final Object mProcessLock = new Object();
     private String lastChannel;
     private Thread mProcessThread = null;
+    // Retain the real thread until it exits, even when a revoke/status callback clears mProcessThread.
+    private volatile Thread mLastProcessThread;
+    private volatile boolean mHandoverStopping;
+    private final android.os.Messenger mHandover = new android.os.Messenger(new Handler(android.os.Looper.getMainLooper(), message -> {
+        final android.os.ResultReceiver reply = androidx.core.os.BundleCompat.getParcelable(message.getData(), "stopReply", android.os.ResultReceiver.class);
+        mHandoverStopping = true;
+        this.mCommandHandler.post(() -> {
+            boolean stopped = false;
+            try {
+                Thread process = mLastProcessThread;
+                OpenVPNService.this.stopVPN(false);
+                if (process != null) {
+                    process.join(8000);
+                    if (process.isAlive()) { process.interrupt(); process.join(1000); }
+                }
+                stopped = process == null || !process.isAlive();
+            } catch (Exception error) {
+                EmbeddedRuntime.reportFailure("handover-stop", null, error);
+            }
+            final boolean complete = stopped;
+            this.guiHandler.post(() -> {
+                if (complete) { endVpnService(); VpnStatus.updateStateString("NOPROCESS", "", R.string.state_noprocess, ConnectionStatus.LEVEL_NOTCONNECTED); mHandoverStopping = false; }
+                if (reply != null) reply.send(complete ? android.app.Activity.RESULT_OK : android.app.Activity.RESULT_CANCELED, null);
+            });
+        });
+        return true;
+    }));
     private VpnProfile mProfile;
 
     private DeviceStateReceiver mDeviceStateReceiver;
@@ -236,6 +263,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     @Override
     public IBinder onBind(Intent intent) {
         String action = intent.getAction();
+        if ((getPackageName() + ".STOP_FOR_HANDOVER").equals(action)) return mHandover.getBinder();
         if (action != null && action.equals(START_SERVICE))
             return mBinder;
         else
@@ -637,6 +665,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
 
     private void startOpenVPN(Intent intent, int startId) {
+        if (mHandoverStopping) return;
         VpnProfile vp = fetchVPNProfile(intent);
         if (vp == null) {
             stopSelf(startId);
@@ -714,6 +743,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
         synchronized (mProcessLock) {
             mProcessThread = new Thread(processThread, "OpenVPNProcessThread");
+            mLastProcessThread = mProcessThread;
             mProcessThread.start();
         }
 

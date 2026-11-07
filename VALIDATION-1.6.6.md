@@ -1,0 +1,36 @@
+# Special VPN 1.6.6 — validation
+
+Package com.specialvpn.app; base versionCode779, universal5077900. F-Droid universal; existing native inputs and signer retained.
+
+Account metadata comes from the same-origin customer /get_user_data/username route used by the supplied Eylan subscription web page. A live response returned HTTP200 and the expected schema. The response is private and excluded from source. Upload/download counters are added with overflow checks; MB/GB use the provider's binary factors. Remaining quota is clamped at zero. Explicit unlimited, missing/invalid values and flexible-day activation are distinct; date-only expiry uses UTC midnight as the provider's JS does. The shared existing day-rounding helper is reused. Legacy 1.6.5 catalog records without the new optional info field remain readable. An existing subscription needs one manual Update to receive metadata. No background polling was added; the displayed local remaining-days clock refreshes every minute.
+
+The VPN bottom-tab icon follows selected proposal1: a tintable OpenVPN-style symbol using the existing gold selection and underline. The first three bottom tabs are framed as the Xray group (selected proposal2); the app's S logo is retained.
+
+## VPN ownership and handover
+
+A non-exported bound service serializes app-initiated VPN handovers across caller processes. It binds existing VPN owners without creating inactive VPN services. It stops the other three owners before acknowledging readiness: WireGuard joins every unfinished setup before requiring backend DOWN; OpenVPN waits for its retained process thread to terminate on the command worker; Cisco waits for its management thread to terminate; Xray's VPN daemon closes its interface and confirms its native controller has stopped. Merely sending a stop command is not success. Missing owners, failed acknowledgements and reply timeouts are separate cases. Failure aborts the new dispatch; a failed WireGuard DOWN retains a reachable owner for retry.
+
+Newer queued requests supersede older pending starts. The queue also waits for the preceding caller to dispatch its service start (with a bounded dispatch receipt), preventing a slow caller process from starting after the next handover. OpenVPN performs preference/profile disk preparation before acquiring that lease. Explicit Xray/WireGuard stops invalidate queued starts through the same owner. Xray proxy-only and root start/stop dispatch keep their existing branches. Android-owned VPN start paths remain intact. Embedded OpenVPN background/API starts use the host gate as well; cancelled consent/password flows and navigation alone do not invoke handover.
+
+Cisco status now comes from management STATE_CONNECTED, rather than the last-selected profile. The main VPN tab and inner protocol tab select a newly confirmed connection by stable profile ID. Manual tab browsing survives routine status updates and saved-state restoration; disconnected, connecting, ambiguous and incomplete profile states do not invent a connected selection. WireGuard Up still denotes an enabled local tunnel, not independently proven peer reachability.
+
+## Android15 installation report
+
+The user subsequently confirmed the customer had made a mistake and the installation issue was resolved. No installation/signing compatibility change was made for that report. The original1.6.5 Release passed apksigner verification at API24,26,28,30,31,32,33,34,35,36,37. The customer phone was not accessed and this is not a claim of an executed device upgrade test.
+## Not run
+
+Install/upgrade on the affected customer Android15 phone; comparing its installed certificate/version and local download hash; actual VPN connections and live in-app metadata import/update/reopen. No Android device/emulator was available for runtime checks. Specifically Not run: all 12 directed on-device handovers among Xray/OpenVPN/Cisco/WireGuard, repeated starts/stops, stop during setup, stop racing dispatch, service revoke/destroy/process death, cold bind and timeout/native-stop failure, OS always-on starts, and real activity recreation/connected-tab behavior. TalkBack spoken labels/state/focus and real-device RTL, keyboard/IME and dynamic-color checks remain Not run. Synthetic screenshots and fake backends do not verify native handshakes or these device behaviors.
+
+## Executed tests and appearance
+
+Tests cover provider byte units, fractional quota, overflow/negative/unknown values, expiry/day rounding, pending activation, old-catalog compatibility and new-field round-trip, same-account identity, private provider metadata parsing without publishing values, and failed/foreign metadata retaining the old generation. Handover policy tests cover all 12 directed pairs with fake owners, failure abort, stale requests, teardown serialization, slow dispatch receipt and stop racing a queued start. Service fixture tests cover WireGuard native-stop acknowledgement, duplicate stop, setup/destroy races, cold stop and backend failure. Existing consent/cache checks and connected-tab saved-state/keyboard/D-pad checks remain in the run. The final command totals and APK checks are recorded below after execution.
+
+The final targeted run passed all 68 tests in the seven handover/selection/navigation classes. The final full JVM/Compose run completed 354 tests: 350 passed, 4 failed, 0 skipped. All four failures are unchanged RootProcessRunnerTest cases requiring the unavailable Windows `sh` executable; the full task exits FAILED and none were disabled. Command: `gradlew.bat --offline -I scripts/visual-checks.init.gradle -Pispeed.visualChecks=true :app:testFdroidDebugUnitTest` (executed through the workspace toolchain/cache wrapper, with private fixture paths passed by environment). Full XML/logs are in `verification/1.6.6`.
+
+English/light and Persian/RTL account-card renders and the real bottom navigation render were inspected with synthetic fixture data. Compose checks assert the account label and remaining-quota content, tab selection, stable-ID actions, keyboard and D-pad behavior. These are not customer measurements or device installation tests. Logs/XML/renders accompany the full source ZIP in verification/1.6.6.
+
+## Final APK build and inspection
+
+`gradlew.bat --offline --continue :app:assembleFdroidDebug :app:assembleFdroidRelease :app:lintFdroidDebug` passed in 5m41s. Lint: 0 errors, 373 warnings, 1 hint. Both universal APKs passed signature and ZIP alignment verification. Release uses the existing signer SHA-256 `3e70db5bbca2256d8df6b23d459302416e414c53a018d09d46778ddbc2c241a8`; package and upgrade identity are unchanged. Release APK SHA-256: `80807de17ccbbf79a2c552b7ab68d61342236f0ca4c6a597f86427529100a54a`.
+
+All 60 previous native libraries remain byte-identical to 1.4.3; all 12 WireGuard libraries match the pinned official AAR. All four ABIs and required HEV/Xray/OpenVPN/OpenConnect libraries, host/engine/font licenses, packaged labels, absence of UI test fixtures and unchanged permission declarations passed inspection. All 72 ELF files were checked; 64-bit LOAD segments have at least 16KiB alignment. Recursive native sources match pinned gitlinks. This is packaging evidence, not a device installation or native-connection test.

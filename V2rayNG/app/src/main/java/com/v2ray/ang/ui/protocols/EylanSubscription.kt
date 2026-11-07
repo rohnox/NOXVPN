@@ -8,7 +8,7 @@ import java.util.UUID
 
 internal enum class ProfileProtocol { OpenVPN, Cisco, WireGuard }
 internal data class SubscriptionProfile(val id: String, val name: String, val protocol: ProfileProtocol, val config: String = "", val address: String = "", val username: String = "", val password: String = "") { override fun toString() = "SubscriptionProfile(id=$id, protocol=$protocol)" }
-internal data class ProtocolSubscription(val id: String, val title: String, val url: String, val updatedAt: Long, val profiles: List<SubscriptionProfile>) { override fun toString() = "ProtocolSubscription(id=$id, profiles=${profiles.size})" }
+internal data class ProtocolSubscription(val id: String, val title: String, val url: String, val updatedAt: Long, val profiles: List<SubscriptionProfile>, val info: ProtocolSubscriptionInfo? = null) { override fun toString() = "ProtocolSubscription(id=$id, profiles=${profiles.size})" }
 internal data class ProfileDownload(val id: String, val name: String, val protocol: ProfileProtocol, val url: HttpUrl)
 internal data class SubscriptionManifest(val downloads: List<ProfileDownload>, val cisco: List<SubscriptionProfile>)
 
@@ -22,6 +22,7 @@ internal object EylanSubscription {
         return url
     }
     fun manifestUrl(source: HttpUrl): HttpUrl = source.newBuilder().encodedPath("/").addPathSegment("get_subpage_download_data").addPathSegment(source.pathSegments[1]).addPathSegment(source.pathSegments[2]).build()
+    fun userDataUrl(source: HttpUrl): HttpUrl = source.newBuilder().encodedPath("/").addPathSegment("get_user_data").addPathSegment(source.pathSegments[2]).build()
     fun profileId(subscriptionId: String, kind: ProfileProtocol, identity: String): String = UUID.nameUUIDFromBytes("$subscriptionId/$kind/$identity".toByteArray()).toString()
     fun parse(id: String, source: HttpUrl, json: String): SubscriptionManifest {
         require(json.length <= 2 * 1024 * 1024)

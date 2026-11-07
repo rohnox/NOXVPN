@@ -56,6 +56,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
     private var subscriptionJob: kotlinx.coroutines.Job? = null
     private var launchJob: kotlinx.coroutines.Job? = null
     private var reloadJob: kotlinx.coroutines.Job? = null
+    private val ciscoStatusListener = CiscoRuntime.ConnectionStatusListener { id -> _state.update { it.copy(ciscoActiveId = id) } }
     private val wireguardJob = viewModelScope.launch {
         com.v2ray.ang.core.WireGuardRuntime.state.collect { value -> _state.update { it.copy(wireguard = value) } }
     }
@@ -78,6 +79,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                         _state.update { if (it.connected) it.copy(received = received, sent = sent) else it }
                     }, { uuid -> _state.update { it.copy(activeProfileId = uuid) } }).also { it.start() }
                 }
+                if (ready.second) CiscoRuntime.addStatusListener(ciscoStatusListener)
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (e: Exception) {
                 report("initialize", e)
@@ -107,8 +109,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
                         ?: withContext(Dispatchers.IO) { com.v2ray.ang.handler.MmkvManager.decodeSettingsString("protocol_selected_subscription_v1") }?.takeIf { id -> subscriptions.any { it.id == id } }
                         ?: subscriptions.firstOrNull()?.id
                     val vpnMode = withContext(Dispatchers.IO) { SettingsManager.isVpnMode() }
-                    val ciscoActive = withContext(Dispatchers.IO) { if (_state.value.ciscoReady) CiscoProfiles.getLastConnectedVpn()?.uuidString else null }
-                    _state.update { it.copy(subscriptions = subscriptions, selectedSubscriptionId = selected, ciscoActiveId = ciscoActive, vpnMode = vpnMode) }
+                    _state.update { it.copy(subscriptions = subscriptions, selectedSubscriptionId = selected, ciscoActiveId = if (it.ciscoReady) CiscoRuntime.getConnectedProfileId() else null, vpnMode = vpnMode) }
                     val profiles = if (!_state.value.openVpnReady) emptyList() else withContext(Dispatchers.IO) {
                         val managed = subscriptions.flatMap { it.profiles }.map { it.id }.toSet()
                         ProfileManager.getInstance(app).apply { refreshVPNList(app) }.profiles.filterNot { it.getUUIDString() in managed }.map { OpenVpnRow(it.getUUIDString(), it.getName()) }.sortedBy { it.name }
@@ -345,6 +346,7 @@ class ProtocolsViewModel(application: Application) : AndroidViewModel(applicatio
         LogUtil.e(AppConfig.TAG, "Embedded VPN phase=$phase", safe)
     }
     override fun onCleared() {
+        CiscoRuntime.removeStatusListener(ciscoStatusListener)
         subscriptionJob?.cancel(); launchJob?.cancel(); reloadJob?.cancel(); wireguardJob.cancel()
         statusClient?.close()
         statusClient = null

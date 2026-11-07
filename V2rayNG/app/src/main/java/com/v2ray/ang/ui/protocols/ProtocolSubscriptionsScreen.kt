@@ -10,14 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import com.v2ray.ang.R
 import com.v2ray.ang.core.WireGuardState
 import com.v2ray.ang.ui.main.DashboardPanel
+import com.v2ray.ang.ui.main.subscriptionDaysRemaining
+import com.v2ray.ang.extension.toTrafficString
 
 internal fun protocolLabel(protocol: ProfileProtocol): Int = when (protocol) {
     ProfileProtocol.OpenVPN -> R.string.protocol_openvpn
@@ -67,6 +71,7 @@ internal fun protocolLabel(protocol: ProfileProtocol): Int = when (protocol) {
                 Text(record.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                 if (record.updatedAt > 0) Text(stringResource(R.string.protocol_updated), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
             }
+            if (record.url.isNotBlank()) ProtocolAccountDetails(record.info)
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 ProfileProtocol.entries.forEach { kind -> Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerHigh) {
                     Text(stringResource(R.string.protocol_count, record.profiles.count { it.protocol == kind }, stringResource(protocolLabel(kind))), Modifier.padding(horizontal = 10.dp, vertical = 8.dp), style = MaterialTheme.typography.labelMedium)
@@ -81,6 +86,37 @@ internal fun protocolLabel(protocol: ProfileProtocol): Int = when (protocol) {
                 IconButton(onClick = { deleting = true }, enabled = !state.busy) { Icon(painterResource(R.drawable.ic_delete_24dp), stringResource(R.string.top_delete_named, record.title)) }
             }
         }
+    }
+}
+
+@Composable private fun ProtocolAccountDetails(info: ProtocolSubscriptionInfo?) {
+    val absent = stringResource(R.string.ispeed_unavailable)
+    val now by produceState(System.currentTimeMillis() / 1000, info?.expireSeconds) {
+        while (true) { value = System.currentTimeMillis() / 1000; kotlinx.coroutines.delay(60_000) }
+    }
+    val days = subscriptionDaysRemaining(info?.expireSeconds, now)
+    val remainingTime = when {
+        info?.pendingDays != null -> pluralStringResource(R.plurals.top_days_remaining, info.pendingDays, info.pendingDays) + " · " + stringResource(R.string.protocol_activation_pending)
+        info?.unlimitedTime == true -> stringResource(R.string.top_unlimited)
+        days == null -> absent
+        days == 0 -> stringResource(R.string.top_plan_expired)
+        else -> pluralStringResource(R.plurals.top_days_remaining, days, days)
+    }
+    val total = if (info?.unlimitedTraffic == true) stringResource(R.string.top_unlimited) else info?.limitBytes?.toTrafficString() ?: absent
+    val remaining = if (info?.unlimitedTraffic == true) stringResource(R.string.top_unlimited) else info?.remainingBytes?.toTrafficString() ?: absent
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(stringResource(R.string.protocol_account_username) + ": " + (info?.username ?: absent), style = MaterialTheme.typography.bodyMedium)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf(R.string.top_used to (info?.usedBytes?.toTrafficString() ?: absent), R.string.top_total to total, R.string.top_remaining to remaining).forEach { (label, value) ->
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(stringResource(label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(value, style = MaterialTheme.typography.bodyMedium.copy(textDirection = TextDirection.Ltr), fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+        if (info?.usedBytes != null && info.limitBytes != null && info.limitBytes > 0) LinearProgressIndicator(
+            progress = { (info.usedBytes.toDouble() / info.limitBytes).toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth())
+        Text(remainingTime, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
     }
 }
 

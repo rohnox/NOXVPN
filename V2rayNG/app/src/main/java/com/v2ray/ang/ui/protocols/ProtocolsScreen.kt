@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -43,7 +45,16 @@ internal fun ProtocolsRoute(model: ProtocolsViewModel, modifier: Modifier, onAct
 @Composable
 internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction: (ProtocolAction) -> Unit) {
     var pendingDelete by rememberSaveable { mutableStateOf<String?>(null) }
-    var protocol by rememberSaveable { mutableStateOf(ProfileProtocol.OpenVPN.name) }
+    val connected = connectedProtocol(state)
+    val anyConnected = hasConnectedProtocol(state)
+    var protocol by rememberSaveable { mutableStateOf(connected?.protocol?.name ?: ProfileProtocol.OpenVPN.name) }
+    var handledConnection by rememberSaveable { mutableStateOf<String?>(null) }
+    LaunchedEffect(connected?.key, anyConnected) {
+        if (connected != null && connected.key != handledConnection) {
+            protocol = connected.protocol.name
+            handledConnection = connected.key
+        } else if (!anyConnected) handledConnection = null
+    }
     val selectedProtocol = ProfileProtocol.valueOf(protocol)
     val cisco = selectedProtocol == ProfileProtocol.Cisco
     SubscriptionEditorDialog(state, onAction)
@@ -67,7 +78,7 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
         item {
             Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surfaceContainerLow, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .4f))) {
                 Row(Modifier.fillMaxWidth().padding(4.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    ProfileProtocol.entries.forEach { item -> ProtocolSelector(stringResource(protocolLabel(item)), selectedProtocol == item, Modifier.weight(1f)) { protocol = item.name } }
+                    ProfileProtocol.entries.forEach { item -> ProtocolSelector(stringResource(protocolLabel(item)), selectedProtocol == item, connected?.protocol == item, Modifier.weight(1f)) { protocol = item.name } }
                 }
             }
         }
@@ -152,10 +163,14 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
 }
 
 @Composable
-private fun ProtocolSelector(label: String, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
+private fun ProtocolSelector(label: String, selected: Boolean, connected: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val colors = if (selected) listOf(Color(0xFFBC9441), Color(0xFFFFE5A0), Color(0xFFD7B361)) else listOf(Color.Transparent, Color.Transparent)
-    Surface(modifier = modifier.clip(CircleShape).selectable(selected = selected, role = Role.Tab, onClick = onClick), shape = CircleShape, color = Color.Transparent) {
-        Box(Modifier.background(Brush.linearGradient(colors)).heightIn(min = 42.dp).padding(horizontal = 12.dp, vertical = 10.dp), contentAlignment = Alignment.Center) {
+    val connectedLabel = stringResource(R.string.protocol_profile_connected)
+    Surface(modifier = modifier.clip(CircleShape).selectable(selected = selected, role = Role.Tab, onClick = onClick).semantics {
+        if (connected) stateDescription = connectedLabel
+    }, shape = CircleShape, color = Color.Transparent) {
+        Row(Modifier.background(Brush.linearGradient(colors)).heightIn(min = 42.dp).padding(horizontal = 10.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+            if (connected) Box(Modifier.padding(end = 5.dp).size(5.dp).background(Color(0xFF51CF8F), CircleShape))
             Text(label, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = if (selected) Color(0xFF261E0D) else MaterialTheme.colorScheme.onSurface)
         }
     }

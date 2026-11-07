@@ -39,6 +39,15 @@ class AngApplication : Application() {
                 connect.run()
             }
         }
+        de.blinkt.openvpn.core.EmbeddedRuntime.setConnectionGate { context, connect ->
+            com.v2ray.ang.core.LauncherManager.prepareEmbeddedOpenVpnConnection(context) { connect.run() }
+        }
+        de.blinkt.openvpn.core.EmbeddedRuntime.setFailureListener { operation, profileId, error ->
+            com.v2ray.ang.util.LogUtil.e(AppConfig.TAG, "OpenVPN mode=VPN phase=handover operation=$operation profile=$profileId", IllegalStateException(error.javaClass.simpleName))
+        }
+        app.openconnect.core.EmbeddedRuntime.setFailureListener { operation, error ->
+            com.v2ray.ang.util.LogUtil.e(AppConfig.TAG, "Cisco mode=VPN phase=handover operation=$operation", IllegalStateException(error.javaClass.simpleName))
+        }
 
         MmkvManager.initialize(this)
 

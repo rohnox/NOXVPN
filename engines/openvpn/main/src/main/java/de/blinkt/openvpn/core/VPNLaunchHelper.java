@@ -102,6 +102,12 @@ public class VPNLaunchHelper {
 
 
     public static void startOpenVpn(VpnProfile startprofile, Context context, String startReason, boolean replace_running_vpn) {
+        // Background/embedded entry points use the same host handover as the consent activity.
+        EmbeddedRuntime.beforeConnect(context, () -> startOpenVpnAfterHandover(startprofile, context, startReason, replace_running_vpn));
+    }
+
+    /** Caller already holds the host's dispatch lease; do not queue a second handover. */
+    public static void startOpenVpnAfterHandover(VpnProfile startprofile, Context context, String startReason, boolean replace_running_vpn) {
         Intent startVPN = startprofile.getStartServiceIntent(context, startReason, replace_running_vpn);
         if (startVPN != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
