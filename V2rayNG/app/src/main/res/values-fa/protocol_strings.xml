@@ -54,4 +54,5 @@
  <string name="protocol_account_username">نام کاربری</string>
  <string name="protocol_activation_pending">در انتظار فعال‌سازی</string>
  <string name="protocol_xray_group">Xray</string>
+ <string name="protocol_handover_failed">آماده‌سازی اتصال کامل نشد. دوباره تلاش کنید.</string>
 </resources>

@@ -7,6 +7,13 @@ import android.os.Build;
 
 /** Host integration only: keeps the upstream status IPC owner, without another Application. */
 public final class EmbeddedRuntime {
+    public interface OwnerRegistration { AutoCloseable register(android.app.Service service, android.os.IBinder endpoint); }
+    private static volatile OwnerRegistration ownerRegistration;
+    public static void setOwnerRegistration(OwnerRegistration registration) { ownerRegistration = registration; }
+    public static AutoCloseable registerOwner(android.app.Service service, android.os.IBinder endpoint) {
+        OwnerRegistration registration = ownerRegistration;
+        return registration == null ? () -> {} : registration.register(service, endpoint);
+    }
     public interface ConnectionGate { void beforeConnect(Context context, Runnable connect); }
     private static volatile ConnectionGate connectionGate;
     public interface FailureListener { void onFailure(String operation, String profileId, Exception error); }

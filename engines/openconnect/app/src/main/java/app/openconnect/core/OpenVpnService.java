@@ -119,6 +119,7 @@ public class OpenVpnService extends VpnService {
 	}
 
     private final java.util.concurrent.ExecutorService mHandoverWorker = java.util.concurrent.Executors.newSingleThreadExecutor();
+    private AutoCloseable mHandoverRegistration;
     private final android.os.Messenger mHandover = new android.os.Messenger(new Handler(android.os.Looper.getMainLooper(), message -> {
         final android.os.ResultReceiver reply = androidx.core.os.BundleCompat.getParcelable(message.getData(), "stopReply", android.os.ResultReceiver.class);
         mHandoverWorker.execute(() -> {
@@ -171,6 +172,7 @@ public class OpenVpnService extends VpnService {
 		mVPNLog.restoreFromFile(getCacheDir().getAbsolutePath() + "/logdata.ser");
 		mConnectionStateNames = getResources().getStringArray(R.array.connection_states);
 		createNotificationChannel();
+        mHandoverRegistration = EmbeddedRuntime.registerOwner(this, mHandover.getBinder());
 	}
 
 	private void createNotificationChannel() {
@@ -199,6 +201,10 @@ public class OpenVpnService extends VpnService {
 
 	@Override
 	public void onDestroy() {
+        if (mHandoverRegistration != null) {
+            try { mHandoverRegistration.close(); } catch (Exception error) { EmbeddedRuntime.reportFailure("unregister-owner", error); }
+            mHandoverRegistration = null;
+        }
 		mPrefs.unregisterOnSharedPreferenceChangeListener(mPreferenceListener);
 		unregisterReceivers();
 		stopForegroundNotification();

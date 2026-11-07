@@ -55,7 +55,7 @@ object LauncherManager {
     fun launchWireGuard(context: Context, guid: String, onFailure: (Throwable) -> Unit = {}) {
         MessageHelper.prepareVpnHandover(context, VpnEngine.WireGuard) { stopped ->
             if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@prepareVpnHandover
-            if (!stopped) { context.toast(R.string.protocol_unavailable); return@prepareVpnHandover }
+            if (!stopped) { context.toast(R.string.protocol_handover_failed); return@prepareVpnHandover }
             try {
                 androidx.core.content.ContextCompat.startForegroundService(context,
                     Intent(context, com.v2ray.ang.service.WireGuardControllerService::class.java)
@@ -85,7 +85,7 @@ object LauncherManager {
         MessageHelper.prepareVpnHandover(context, target) { stopped ->
             if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@prepareVpnHandover
             if (!stopped) {
-                context.toast(R.string.protocol_unavailable)
+                context.toast(R.string.protocol_handover_failed)
                 (context as? android.app.Activity)?.finish()
                 return@prepareVpnHandover
             }
@@ -199,7 +199,7 @@ object LauncherManager {
             MessageHelper.prepareVpnHandover(context, VpnEngine.Xray) { stopped ->
                 if (context is android.app.Activity && (context.isFinishing || context.isDestroyed)) return@prepareVpnHandover
                 // An asynchronous handover must never start a deleted or subsequently selected server.
-                if (!stopped) { context.toast(R.string.protocol_unavailable); return@prepareVpnHandover }
+                if (!stopped) { context.toast(R.string.protocol_handover_failed); return@prepareVpnHandover }
                 if (MmkvManager.getSelectServer() != guid || MmkvManager.decodeServerConfig(guid) == null) return@prepareVpnHandover
                 try { dispatchService(context, intent) }
                 catch (error: Exception) {

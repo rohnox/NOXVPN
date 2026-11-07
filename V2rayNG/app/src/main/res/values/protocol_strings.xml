@@ -54,4 +54,5 @@
  <string name="protocol_account_username">Username</string>
  <string name="protocol_activation_pending">Awaiting activation</string>
  <string name="protocol_xray_group">Xray</string>
+ <string name="protocol_handover_failed">Could not prepare the connection. Please try again.</string>
 </resources>

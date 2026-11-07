@@ -36,12 +36,17 @@ class WireGuardControllerService : Service() {
     private var completedStop: Boolean? = null
     private val stopReplies = mutableListOf<ResultReceiver>()
     @Volatile private var tunnel: Tunnel? = null
+    private var handoverRegistration: AutoCloseable? = null
     private val handover = android.os.Messenger(android.os.Handler(android.os.Looper.getMainLooper()) { message ->
         requestStop(androidx.core.os.BundleCompat.getParcelable(message.data, "stopReply", ResultReceiver::class.java))
         true
     })
     override fun onBind(intent: Intent?): IBinder? =
         if (intent?.action == packageName + ".STOP_FOR_HANDOVER") handover.binder else null
+    override fun onCreate() {
+        super.onCreate()
+        handoverRegistration = com.v2ray.ang.helper.MessageHelper.registerVpnOwner(this, com.v2ray.ang.core.VpnEngine.WireGuard, handover.binder)
+    }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val stop = PendingIntent.getService(this, 0, Intent(this, WireGuardControllerService::class.java).setAction(STOP), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         NotificationHelper.startForeground(this, NotificationChannelType.WIREGUARD, getString(R.string.protocol_wireguard), getString(if (intent?.action == STOP || stopping) R.string.protocol_stop else R.string.protocol_wg_connecting),
@@ -144,6 +149,7 @@ class WireGuardControllerService : Service() {
         return true
     }
     override fun onDestroy() {
+        handoverRegistration?.close(); handoverRegistration = null
         stopping = true
         generation.incrementAndGet()
         val previous = (setupJobs + listOfNotNull(command)).distinct(); previous.forEach { it.cancel() }

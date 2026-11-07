@@ -54,4 +54,5 @@
  <string name="protocol_account_username">İstifadəçi adı</string>
  <string name="protocol_activation_pending">Aktivləşmə gözlənilir</string>
  <string name="protocol_xray_group">Xray</string>
+ <string name="protocol_handover_failed">Bağlantını hazırlamaq mümkün olmadı. Yenidən cəhd edin.</string>
 </resources>

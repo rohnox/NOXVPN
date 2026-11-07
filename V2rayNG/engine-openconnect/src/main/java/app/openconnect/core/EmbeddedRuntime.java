@@ -4,6 +4,13 @@ import android.content.Context;
 
 /** Initializes only the VPN libraries/profile owner. No upstream crash reporter is initialized. */
 public final class EmbeddedRuntime {
+    public interface OwnerRegistration { AutoCloseable register(android.app.Service service, android.os.IBinder endpoint); }
+    private static volatile OwnerRegistration ownerRegistration;
+    public static void setOwnerRegistration(OwnerRegistration registration) { ownerRegistration = registration; }
+    public static AutoCloseable registerOwner(android.app.Service service, android.os.IBinder endpoint) {
+        OwnerRegistration registration = ownerRegistration;
+        return registration == null ? () -> {} : registration.register(service, endpoint);
+    }
     public interface FailureListener { void onFailure(String operation, Exception error); }
     private static volatile FailureListener failureListener;
     public static void setFailureListener(FailureListener listener) { failureListener = listener; }

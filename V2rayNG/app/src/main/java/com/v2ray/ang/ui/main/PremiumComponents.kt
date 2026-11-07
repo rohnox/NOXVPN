@@ -74,31 +74,32 @@ internal fun DashboardHeader(onRefresh: (() -> Unit)?) {
 
 @Composable
 internal fun DashboardNavigation(tab: DashboardTab, onSelect: (DashboardTab) -> Unit) {
-    Surface(Modifier.navigationBarsPadding().padding(start = 12.dp, end = 12.dp, bottom = 8.dp), shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow, border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = .5f))) {
-        Box(Modifier.padding(top = 12.dp, bottom = 4.dp)) {
-            Box(Modifier.align(Alignment.TopStart).fillMaxWidth(.6f).height(78.dp).padding(horizontal = 5.dp)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = .045f), RoundedCornerShape(22.dp))
-                .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .6f), RoundedCornerShape(22.dp)))
-            Box(Modifier.align(Alignment.TopStart).fillMaxWidth(.6f)) {
-                Surface(Modifier.align(Alignment.TopCenter).offset(y = (-9).dp), shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary) {
-                    Text(stringResource(R.string.protocol_xray_group), Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
-                        style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+    Surface(Modifier.navigationBarsPadding().padding(horizontal = 12.dp, vertical = 6.dp),
+        shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f))) {
+        Column(Modifier.padding(horizontal = 4.dp, vertical = 4.dp)) {
+            Row(Modifier.fillMaxWidth().height(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(Modifier.weight(3f).padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    HorizontalDivider(Modifier.weight(1f), color = MaterialTheme.colorScheme.primary.copy(alpha = .22f))
+                    Text(stringResource(R.string.protocol_xray_group), style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = .8f))
+                    HorizontalDivider(Modifier.weight(1f), color = MaterialTheme.colorScheme.primary.copy(alpha = .22f))
+                }
+                Spacer(Modifier.weight(2f))
+            }
+            NavigationBar(Modifier.height(60.dp), containerColor = Color.Transparent, tonalElevation = 0.dp,
+                windowInsets = WindowInsets(0, 0, 0, 0)) {
+                DashboardTab.entries.forEach { destination ->
+                    NavigationBarItem(selected = destination == tab, onClick = { onSelect(destination) },
+                        icon = { Icon(painterResource(destination.icon), null, Modifier.size(21.dp)) },
+                        label = { Text(stringResource(destination.label), maxLines = 1, style = MaterialTheme.typography.labelSmall) },
+                        colors = NavigationBarItemDefaults.colors(
+                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = .14f),
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary))
                 }
             }
-        NavigationBar(Modifier.height(78.dp).padding(top = 8.dp), containerColor = Color.Transparent, tonalElevation = 0.dp, windowInsets = WindowInsets(0, 0, 0, 0)) {
-            DashboardTab.entries.forEach { destination ->
-                NavigationBarItem(selected = destination == tab, onClick = { onSelect(destination) },
-                    icon = {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Icon(painterResource(destination.icon), null, Modifier.size(23.dp))
-                            Box(Modifier.width(16.dp).height(2.dp).clip(CircleShape).background(if (destination == tab) MaterialTheme.colorScheme.primary else Color.Transparent))
-                        }
-                    }, label = { Text(stringResource(destination.label), maxLines = 1, style = MaterialTheme.typography.labelSmall) },
-                    colors = NavigationBarItemDefaults.colors(indicatorColor = Color.Transparent, selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
-            }
-        }
         }
     }
 }

@@ -13,7 +13,6 @@ import com.v2ray.ang.AppConfig
 import com.v2ray.ang.dto.SubscriptionUpdateMessage
 import com.v2ray.ang.dto.TestServiceMessage
 import com.v2ray.ang.service.CoreTestService
-import com.v2ray.ang.service.CoreVpnService
 import com.v2ray.ang.service.SubscriptionUpdateService
 import com.v2ray.ang.util.LogUtil
 import com.v2ray.ang.core.VpnEngine
@@ -30,33 +29,73 @@ object MessageHelper {
      */
     internal fun prepareVpnHandover(ctx: Context, target: VpnEngine, onReady: (Boolean) -> Unit) {
         boundResult(ctx.applicationContext, Intent(ctx, VpnHandoverService::class.java),
-            Context.BIND_AUTO_CREATE, target.ordinal, 40_000L, false, result = onReady)
+            target.ordinal, 40_000L, result = onReady)
     }
 
     internal fun stopVpnHandover(ctx: Context, target: VpnEngine) {
         boundResult(ctx.applicationContext, Intent(ctx, VpnHandoverService::class.java),
-            Context.BIND_AUTO_CREATE, target.ordinal, 40_000L, false, command = 2) { success ->
+            target.ordinal, 40_000L, command = 2) { success ->
             if (!success) LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=user-stop target=$target", IllegalStateException("Stop not acknowledged"))
         }
     }
 
-    internal suspend fun stopVpnOwner(ctx: Context, engine: VpnEngine): Boolean = withContext(Dispatchers.Main.immediate) {
-        val service = when (engine) {
-            VpnEngine.Xray -> CoreVpnService::class.java
-            VpnEngine.OpenVpn -> de.blinkt.openvpn.core.OpenVPNService::class.java
-            VpnEngine.Cisco -> app.openconnect.core.OpenVpnService::class.java
-            VpnEngine.WireGuard -> com.v2ray.ang.service.WireGuardControllerService::class.java
+    /** Registered only by a live service owner, in that owner's process and lifecycle. */
+    internal fun registerVpnOwner(service: android.app.Service, engine: VpnEngine, endpoint: IBinder): AutoCloseable {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                // Initial OK means absent. A live owner claims the request and replies separately
+                // only when teardown finishes; the ordered broadcast itself never blocks on JNI.
+                resultCode = Activity.RESULT_CANCELED
+                val reply = intent?.let { androidx.core.content.IntentCompat.getParcelableExtra(it, "stopReply", ResultReceiver::class.java) }
+                try {
+                    Messenger(endpoint).send(Message.obtain().apply { what = 1; data = Bundle().apply { putParcelable("stopReply", reply) } })
+                } catch (error: Exception) {
+                    LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=owner-dispatch component=$engine", IllegalStateException(error.javaClass.simpleName))
+                    reply?.send(Activity.RESULT_CANCELED, null)
+                }
+            }
         }
+        ContextCompat.registerReceiver(service, receiver, android.content.IntentFilter(ownerStopAction(service, engine)), ContextCompat.RECEIVER_NOT_EXPORTED)
+        return AutoCloseable { service.unregisterReceiver(receiver) }
+    }
+
+    private fun ownerStopAction(ctx: Context, engine: VpnEngine) = ctx.packageName + ".STOP_OWNER." + engine.name
+
+    internal suspend fun stopVpnOwner(ctx: Context, engine: VpnEngine): Boolean = withContext(Dispatchers.Main.immediate) {
         suspendCancellableCoroutine { continuation ->
-            val request = boundResult(ctx, Intent(ctx, service).setAction(ctx.packageName + ".STOP_FOR_HANDOVER"),
-                0, 0, 12_000L, true) { if (continuation.isActive) continuation.resume(it) }
-            continuation.invokeOnCancellation { android.os.Handler(android.os.Looper.getMainLooper()).post { request.close() } }
+            val handler = Handler(Looper.getMainLooper())
+            val timeout = Runnable {
+                LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=owner-timeout component=$engine", IllegalStateException("Owner stop not acknowledged"))
+                if (continuation.isActive) continuation.resume(false)
+            }
+            fun finish(success: Boolean) {
+                handler.removeCallbacks(timeout)
+                if (continuation.isActive) continuation.resume(success)
+            }
+            val reply = object : ResultReceiver(handler) {
+                override fun onReceiveResult(code: Int, data: Bundle?) = finish(code == Activity.RESULT_OK)
+            }
+            val delivered = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    if (resultCode == Activity.RESULT_OK) finish(true)
+                    // Otherwise the live owner owes a native-cleanup reply, not a bind callback.
+                }
+            }
+            handler.postDelayed(timeout, 12_000L)
+            continuation.invokeOnCancellation { handler.removeCallbacks(timeout) }
+            try {
+                ctx.sendOrderedBroadcast(Intent(ownerStopAction(ctx, engine)).setPackage(AppConfig.ANG_PACKAGE)
+                    .putExtra("stopReply", reply), null, delivered, handler, Activity.RESULT_OK, null, null)
+            } catch (error: Exception) {
+                LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=owner-stop component=$engine", IllegalStateException(error.javaClass.simpleName))
+                finish(false)
+            }
         }
     }
 
-    /** A bounded binding owns its timeout, reply and unbind; flag=0 never creates a VPN owner. */
-    private fun boundResult(ctx: Context, intent: Intent, flags: Int, target: Int, timeout: Long,
-                            absentIsStopped: Boolean, command: Int = 1, result: (Boolean) -> Unit): AutoCloseable {
+    /** Only the lightweight coordinator is bound. VPN owners use the lifecycle-owned stop channel. */
+    private fun boundResult(ctx: Context, intent: Intent, target: Int, timeout: Long,
+                            command: Int = 1, result: (Boolean) -> Unit): AutoCloseable {
         val handler = Handler(Looper.getMainLooper())
         var finished = false
         var bound = false
@@ -72,7 +111,13 @@ object MessageHelper {
             }
             finally {
                 receipt?.send(Activity.RESULT_OK, null)
-                if (bound) { ctx.unbindService(connection); bound = false }
+                if (bound) {
+                    try { ctx.unbindService(connection) }
+                    catch (error: IllegalArgumentException) {
+                        LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=coordinator-unbind", IllegalStateException(error.javaClass.simpleName))
+                    }
+                    bound = false
+                }
             }
         }
         timeoutTask = Runnable {
@@ -104,30 +149,15 @@ object MessageHelper {
         }
         handler.postDelayed(timeoutTask, timeout)
         try {
-            bound = ctx.bindService(intent, connection, flags)
-            if (!bound) complete(absentIsStopped)
+            val connected = ctx.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            // Android requires unbind even when bindService returns false.
+            bound = true
+            if (!connected) complete(false)
         } catch (error: Exception) {
             LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=bind component=${intent.component?.className}", IllegalStateException(error.javaClass.simpleName))
             complete(false)
         }
         return AutoCloseable { complete(false) }
-    }
-
-    /** The WireGuard service replies only after its backend teardown, including an already-stopped owner. */
-    internal fun stopWireGuardForResult(ctx: Context, onStopped: (Boolean) -> Unit) {
-        val receiver = object : android.os.ResultReceiver(android.os.Handler(android.os.Looper.getMainLooper())) {
-            override fun onReceiveResult(resultCode: Int, resultData: android.os.Bundle?) {
-                onStopped(resultCode == Activity.RESULT_OK)
-            }
-        }
-        try {
-            ContextCompat.startForegroundService(ctx, Intent(ctx, com.v2ray.ang.service.WireGuardControllerService::class.java)
-                .setAction(com.v2ray.ang.service.WireGuardControllerService.STOP)
-                .putExtra(com.v2ray.ang.service.WireGuardControllerService.STOP_REPLY, receiver))
-        } catch (error: Exception) {
-            LogUtil.e(AppConfig.TAG, "WireGuard mode=VPN phase=handover operation=stop-dispatch", IllegalStateException(error.javaClass.simpleName))
-            onStopped(false)
-        }
     }
 
     /**

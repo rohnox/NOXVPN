@@ -34,6 +34,7 @@ class CoreVpnService : VpnService(), ServiceControl {
     private var tun2SocksService: Tun2SocksControl? = null
     private val isStartingLock = AtomicBoolean(false)
     private val handoverWorker = java.util.concurrent.Executors.newSingleThreadExecutor()
+    private var handoverRegistration: AutoCloseable? = null
     private val handover = android.os.Messenger(android.os.Handler(android.os.Looper.getMainLooper()) { message ->
         val reply = androidx.core.os.BundleCompat.getParcelable(message.data, "stopReply", android.os.ResultReceiver::class.java)
         handoverWorker.execute {
@@ -61,6 +62,7 @@ class CoreVpnService : VpnService(), ServiceControl {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         CoreServiceManager.serviceControl = SoftReference(this)
+        handoverRegistration = com.v2ray.ang.helper.MessageHelper.registerVpnOwner(this, com.v2ray.ang.core.VpnEngine.Xray, handover.binder)
     }
 
     override fun onRevoke() {
@@ -74,6 +76,7 @@ class CoreVpnService : VpnService(), ServiceControl {
 //    }
 
     override fun onDestroy() {
+        handoverRegistration?.close(); handoverRegistration = null
         super.onDestroy()
         LogUtil.i(AppConfig.TAG, "StartCore-VPN: Service destroyed")
 

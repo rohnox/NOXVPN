@@ -116,6 +116,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     // Retain the real thread until it exits, even when a revoke/status callback clears mProcessThread.
     private volatile Thread mLastProcessThread;
     private volatile boolean mHandoverStopping;
+    private AutoCloseable mHandoverRegistration;
     private final android.os.Messenger mHandover = new android.os.Messenger(new Handler(android.os.Looper.getMainLooper(), message -> {
         final android.os.ResultReceiver reply = androidx.core.os.BundleCompat.getParcelable(message.getData(), "stopReply", android.os.ResultReceiver.class);
         mHandoverStopping = true;
@@ -825,10 +826,15 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         mCommandHandlerThread = new HandlerThread("OpenVPNServiceCommandThread");
         mCommandHandlerThread.start();
         mCommandHandler = new Handler(mCommandHandlerThread.getLooper());
+        mHandoverRegistration = EmbeddedRuntime.registerOwner(this, mHandover.getBinder());
     }
 
     @Override
     public void onDestroy() {
+        if (mHandoverRegistration != null) {
+            try { mHandoverRegistration.close(); } catch (Exception error) { EmbeddedRuntime.reportFailure("unregister-owner", null, error); }
+            mHandoverRegistration = null;
+        }
         synchronized (mProcessLock) {
             if (mProcessThread != null) {
                 mManagement.stopVPN(true);

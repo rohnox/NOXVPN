@@ -54,4 +54,5 @@
  <string name="protocol_account_username">ব্যবহারকারীর নাম</string>
  <string name="protocol_activation_pending">সক্রিয়করণের অপেক্ষায়</string>
  <string name="protocol_xray_group">Xray</string>
+ <string name="protocol_handover_failed">সংযোগ প্রস্তুত করা যায়নি। আবার চেষ্টা করুন।</string>
 </resources>

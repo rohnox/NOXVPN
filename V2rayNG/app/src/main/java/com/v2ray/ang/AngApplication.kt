@@ -34,6 +34,12 @@ class AngApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+        de.blinkt.openvpn.core.EmbeddedRuntime.setOwnerRegistration { service, endpoint ->
+            com.v2ray.ang.helper.MessageHelper.registerVpnOwner(service, com.v2ray.ang.core.VpnEngine.OpenVpn, endpoint)
+        }
+        app.openconnect.core.EmbeddedRuntime.setOwnerRegistration { service, endpoint ->
+            com.v2ray.ang.helper.MessageHelper.registerVpnOwner(service, com.v2ray.ang.core.VpnEngine.Cisco, endpoint)
+        }
         app.openconnect.core.EmbeddedRuntime.setConnectionGate { context, connect ->
             com.v2ray.ang.core.LauncherManager.prepareEmbeddedCiscoConnection(context) {
                 connect.run()
