@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.v2ray.ang.ui.main.ServerDeleteTargetTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-01T23:46:36.460Z" hostname="DESKTOP-3HVDMFH" time="0.01">
-  <properties/>
-  <testcase name="pendingDeletionRestoresItsGuidAndDisplayName()" classname="com.v2ray.ang.ui.main.ServerDeleteTargetTest" time="0.007"/>
-  <testcase name="noPendingDeletionHasNoSavedTarget()" classname="com.v2ray.ang.ui.main.ServerDeleteTargetTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

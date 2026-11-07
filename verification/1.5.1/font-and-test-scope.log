@@ -1,4 +1,0 @@
-PASS: bundled Vazirmatn regular content hash matches source (res/9J.ttf).
-PASS: bundled Vazirmatn medium content hash matches source (res/Zy.ttf).
-PASS: bundled Vazirmatn bold content hash matches source (res/6-.ttf).
-PASS: OFL asset and no project UI test fixture in Release DEX.

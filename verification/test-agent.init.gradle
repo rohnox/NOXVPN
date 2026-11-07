@@ -1,7 +1,0 @@
-// Explicitly load the already-declared test agent: sandboxed Windows forbids JVM self-attach.
-allprojects {
-    tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
-        def agent = System.getProperty('ispeed.test.agent')
-        if (agent != null) jvmArgs("-javaagent:${agent}")
-    }
-}

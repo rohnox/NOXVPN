@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.v2ray.ang.ui.protocols.GlobalPreferencesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-03T14:58:16.252Z" hostname="DESKTOP-3HVDMFH" time="0.017">
-  <properties/>
-  <testcase name="managed overrides work and another process still starts with independent defaults()" classname="com.v2ray.ang.ui.protocols.GlobalPreferencesTest" time="0.013"/>
-  <testcase name="cold notification and launch paths have usable defaults without app restrictions()" classname="com.v2ray.ang.ui.protocols.GlobalPreferencesTest" time="0.002"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

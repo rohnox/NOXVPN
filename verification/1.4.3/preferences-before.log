@@ -1,4 +1,0 @@
-Exception in thread "main" java.lang.RuntimeException: Global preferences instance is not set
-	at de.blinkt.openvpn.core.GlobalPreferences.getInstance(GlobalPreferences.java:44)
-	at de.blinkt.openvpn.core.GlobalPreferences.getForceConnected(GlobalPreferences.java:36)
-	at GlobalPreferencesProbe.main(GlobalPreferencesProbe.java:1)
