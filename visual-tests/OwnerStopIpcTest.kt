@@ -19,15 +19,40 @@ import org.robolectric.Robolectric
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.Implements
 import org.robolectric.RobolectricTestRunner
 import java.time.Duration
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = Application::class, sdk = [24, 31, 35])
+@Config(application = Application::class, sdk = [24, 31, 35], shadows = [BinderResultReceiverShadow::class])
 class OwnerStopIpcTest {
     class FixtureOwner : Service() { override fun onBind(intent: Intent?): IBinder? = null }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private fun drain() { shadowOf(Looper.getMainLooper()).idle() }
+    @Test fun callbackSurvivesMessengerBundleWithFrameworkClassLoader() {
+        var result: Int? = null
+        val callback = object : ResultReceiver(Handler(Looper.getMainLooper())) {
+            override fun onReceiveResult(code: Int, data: Bundle?) { result = code }
+        }
+        val endpoint = MessageHelper.frameworkReceiver(callback)
+        assertEquals(ResultReceiver::class.java, endpoint.javaClass)
+        for (key in listOf("stopReply", "dispatchReceipt")) {
+            val parcel = Parcel.obtain()
+            val received = try {
+                Bundle().apply { putParcelable(key, endpoint) }.writeToParcel(parcel, 0)
+                parcel.setDataPosition(0)
+                Bundle.CREATOR.createFromParcel(parcel).apply {
+                    classLoader = ResultReceiver::class.java.classLoader
+                }
+            } finally { parcel.recycle() }
+            val reply = BundleCompat.getParcelable(received, key, ResultReceiver::class.java)
+            assertNotNull(reply)
+            result = null
+            reply!!.send(Activity.RESULT_OK, null)
+            drain()
+            assertEquals(Activity.RESULT_OK, result)
+        }
+    }
     @Before fun installedAppHasItsMergedAndroidxSignaturePermission() {
         val app = RuntimeEnvironment.getApplication()
         // Android grants the declaring app this AndroidX manifest permission at install time.
@@ -155,3 +180,9 @@ class OwnerStopIpcTest {
         } finally { registration.close(); scope.cancel(); controller.destroy(); priority.setInt(null, previousPriority) }
     }
 }
+
+// Robolectric 4.17's default ShadowResultReceiver.send calls onReceiveResult directly,
+// bypassing the binder in a parcelled framework endpoint. Use Android's implementation;
+// remove this shadow when Robolectric models ResultReceiver's remote send path itself.
+@Implements(ResultReceiver::class)
+class BinderResultReceiverShadow

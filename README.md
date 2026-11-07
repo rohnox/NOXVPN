@@ -23,7 +23,7 @@
 
 پروژهٔ اندروید در `V2rayNG/` است. برای ساخت، سورس کاملِ پیوست ریلیز و [راهنمای ساخت](BUILD-FA.md) را ببینید.
 
-[تغییرات ۱.۶.۶](CHANGES-1.6.7.md) · [نتایج بررسی‌ها و محدودیت‌ها](VALIDATION-1.6.7.md) · [امضای Release](RELEASE-FA.md) · [حریم خصوصی](PRIVACY.md)
+[تغییرات ۱.۶.۶](CHANGES-1.6.8.md) · [نتایج بررسی‌ها و محدودیت‌ها](VALIDATION-1.6.8.md) · [امضای Release](RELEASE-FA.md) · [حریم خصوصی](PRIVACY.md)
 
 فورک اصلاح‌شدهٔ [v2rayNG 2.3.14](https://github.com/2dust/v2rayNG/tree/2.3.14)، تحت مجوز [GPL-3.0](LICENSE). حقوق مؤلفان اصلی و [مجوزهای موتورهای اتصال](NATIVE-ENGINES.md) حفظ شده‌اند. این برنامه محصول رسمی Cisco نیست.
 

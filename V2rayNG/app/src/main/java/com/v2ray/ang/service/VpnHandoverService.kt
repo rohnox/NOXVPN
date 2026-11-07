@@ -37,7 +37,7 @@ class VpnHandoverService : Service() {
                         }
                         replied = true
                         reply?.send(Activity.RESULT_OK, Bundle().apply {
-                            putParcelable("dispatchReceipt", receipt)
+                            putParcelable("dispatchReceipt", MessageHelper.frameworkReceiver(receipt))
                             putLong("dispatchDeadline", SystemClock.elapsedRealtime() + 8_000L)
                         })
                         withTimeoutOrNull(8_000L) { dispatched.await() }

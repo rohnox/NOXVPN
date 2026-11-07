@@ -1,25 +1,25 @@
-# Special VPN 1.6.7 — validation
+# Special VPN 1.6.8 — validation
 
-F-Droid universal, com.specialvpn.app, base versionCode 780 / universal 5078000. Native inputs and release signer are unchanged.
+Package com.specialvpn.app; base versionCode 781, universal 5078100. Native libraries, signing identity and profiles are unchanged.
 
-## Startup regression
+## Reproduced crash and fix
 
-The installed 1.6.6 release reproduced a reply-timeout for CoreVpnService while Android's service record had no live process. A non-creating bind could be accepted without delivering a callback; treating that as a live owner blocked startup. Version 1.6.7 registers a non-exported stop receiver only for the lifetime of each actual VPN owner. An absent owner completes without a native-service bind; an existing owner claims the ordered broadcast and replies only after its real stop handler finishes. Cancellation, timeout and failed teardown still abort the new dispatch. No native engine is started to ask an absent engine to stop.
+The connected API 36 phone had repeated main-process BadParcelableException / ClassNotFoundException crashes while VpnHandoverService read stopReply from a Messenger Bundle sent by the daemon-process Quick Settings tile. The named class was MessageHelper's anonymous ResultReceiver subclass. UI-originated calls in the same process had masked this cross-process serialization problem.
 
-## Tests
+The sender now parcels that callback into a framework ResultReceiver endpoint before adding it to an IPC payload. The owner-stop callback and the coordinator dispatch receipt use the same framework-only representation. Binder still routes results to the original callback, and actual native-stop acknowledgements, deadlines and dispatch ordering are retained. No class-loader relaxation or exception swallowing was added.
 
-Before the navigation redesign, 80 targeted tests passed, including 18 owner-channel cases across Robolectric API 24, 31 and 35. All 12 directed handovers are exercised with simulated owners, plus absent owners, real coordinator IPC, cancellation, failure and timeout. The full JVM run completed 372 tests: 368 passed and four unchanged RootProcessRunnerTest cases failed because Windows lacks the required sh executable. No tests were disabled. These results do not imply all native handovers were tested on a device.
+## Executed checks
 
-After the final navigation redesign, all 42 PremiumVisualTest cases passed. English, Persian/RTL, light and wide renders were generated; phone and wide navigation renders were inspected. Tests include touch selection, keyboard Enter and D-pad center activation. Navigation actions, domain identifiers and localized labels were retained. The thick Xray frame was replaced with a small caption and fine rules; the selected tab uses a soft gold indicator.
+- 27 targeted tests passed: 21 owner/IPC cases across Robolectric API 24, 31 and 35, and six handover-queue cases. The regression test writes and reads callback Bundles with the framework class loader and verifies delivery.
+- Full suite: 375 tests, 371 passed, four unchanged RootProcessRunnerTest failures caused by the unavailable Windows sh executable, zero skipped. No tests were disabled. Robolectric 4.17's default ResultReceiver shadow bypasses remote Binder delivery; the three affected test fixtures use Android's actual ResultReceiver implementation instead. This test-only adapter is excluded from production.
+- Signed Release installed over 1.6.7 on the user's API 36 arm64 phone without clearing data. The user tapped the Quick Settings toggle to connect: user confirmed connection without a crash, and ADB observed CoreVpnService active in the daemon process. The user tapped again to disconnect: user confirmed no crash, and ADB observed CoreVpnService absent. Quick Settings and passive OpenVPN status services remaining are not active VPN owners. The crash-buffer entry count stayed unchanged across both actions.
 
-Physical-device installation and three consecutive handovers are recorded in [DEVICE-CHECKS.md](verification/1.6.7/DEVICE-CHECKS.md). Customer data and raw device logs are not included. That report distinguishes active VPN owners from passive status services and user traffic confirmation from independent traffic testing.
+Raw phone logs, device identifiers and account/configuration data are private and excluded from this source package. Physical test actions were performed by the user because this device blocks injected touch events.
 
 ## Not run
 
-Remaining physical-device handover pairs; process-death/revoke/always-on scenarios and native teardown failure injection; device TalkBack spoken output and focus order; device keyboard, IME and dynamic-color permutations. The full JVM suite has the four Windows sh failures above. Synthetic appearance and IPC tests do not prove these unrun scenarios.
+Repeated rapid tile presses, lock-screen/consent-revoked and background-restriction scenarios on a physical device; physical proxy-only/root-mode toggle checks; other Android versions and vendors; the complete 12-direction native-engine handover matrix after this change. Simulated IPC checks do not establish these runtime behaviors. The device check confirms connect/disconnect and no new crash, not independent packet or internet-reachability measurement.
 
-Build, lint, signature, source-package and final artifact details are recorded in the accompanying verification logs when executed. Do not interpret a prior artifact hash as the hash of a later navigation rebuild.
+Final build and signature verification logs accompany this version under verification/1.6.8.
 
-## Final navigation build
-
-Normal Debug and Release assembly plus lintFdroidDebug passed in 3m 7s after the redesign. Release signature and alignment checks passed with the existing signer. Final Release SHA-256: a39d04230f91d3ccdb2277d0ecedc1bdf8b1f00a6e69dad1a204dc48ccf29617. The rebuilt Release installed successfully over the existing phone installation, and the host UI exposed Xray plus all five navigation destinations. Final navigation device TalkBack and keyboard checks remain Not run.
+Normal Debug/Release assembly and lintFdroidDebug passed in 3m 23s. Lint: zero errors, 373 warnings, one hint. Both APK signatures and alignment passed. Final Release SHA-256: 3ea8192336e9c3cc219ac6883df69caca923e5d7329684d93e08ac25bf37aead.

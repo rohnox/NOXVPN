@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.launch
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = Application::class, sdk = [35])
+@Config(application = Application::class, sdk = [35], shadows = [BinderResultReceiverShadow::class])
 class WireGuardHandoverTest {
     private fun handoverReplies(app: Application): MutableList<ResultReceiver> {
         val replies = mutableListOf<ResultReceiver>()

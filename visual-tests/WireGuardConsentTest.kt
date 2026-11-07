@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = Application::class, sdk = [35])
+@Config(application = Application::class, sdk = [35], shadows = [BinderResultReceiverShadow::class])
 class WireGuardConsentTest {
     class ConsentActivity : ComponentActivity() {
         internal lateinit var host: ProtocolsHost

@@ -24,6 +24,19 @@ import java.io.Serializable
 object MessageHelper {
     const val EXTRA_REQUEST_ID = "requestId"
 
+    /** Messenger Bundles use the framework class loader across processes. Parcel the endpoint
+     * as the framework ResultReceiver, not the anonymous app subclass (which that loader cannot
+     * resolve). Keep this until every handover callback uses a framework-only IPC contract.
+     */
+    internal fun frameworkReceiver(receiver: ResultReceiver): ResultReceiver {
+        val parcel = Parcel.obtain()
+        return try {
+            receiver.writeToParcel(parcel, 0)
+            parcel.setDataPosition(0)
+            ResultReceiver.CREATOR.createFromParcel(parcel)
+        } finally { parcel.recycle() }
+    }
+
     /** Messenger contract shared with embedded modules: what=1, stopReply=ResultReceiver.
      * RESULT_OK means native cleanup completed, not merely that a command was enqueued.
      */
@@ -85,7 +98,7 @@ object MessageHelper {
             continuation.invokeOnCancellation { handler.removeCallbacks(timeout) }
             try {
                 ctx.sendOrderedBroadcast(Intent(ownerStopAction(ctx, engine)).setPackage(AppConfig.ANG_PACKAGE)
-                    .putExtra("stopReply", reply), null, delivered, handler, Activity.RESULT_OK, null, null)
+                    .putExtra("stopReply", frameworkReceiver(reply)), null, delivered, handler, Activity.RESULT_OK, null, null)
             } catch (error: Exception) {
                 LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=owner-stop component=$engine", IllegalStateException(error.javaClass.simpleName))
                 finish(false)
@@ -136,7 +149,7 @@ object MessageHelper {
                 if (finished) return
                 try {
                     Messenger(binder).send(Message.obtain().apply {
-                        what = command; arg1 = target; data = Bundle().apply { putParcelable("stopReply", receiver) }
+                        what = command; arg1 = target; data = Bundle().apply { putParcelable("stopReply", frameworkReceiver(receiver)) }
                     })
                 } catch (error: Exception) {
                     LogUtil.e(AppConfig.TAG, "VPN phase=handover operation=stop-ipc component=${name?.className}", IllegalStateException(error.javaClass.simpleName))
