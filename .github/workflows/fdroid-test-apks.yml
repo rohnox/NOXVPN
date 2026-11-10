@@ -20,7 +20,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: fdroid-test-apks
+  group: fdroid-test-apks-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
