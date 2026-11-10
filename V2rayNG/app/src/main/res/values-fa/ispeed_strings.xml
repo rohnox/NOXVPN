@@ -5,4 +5,7 @@
  <string name="ispeed_data">↑ %1$s · ↓ %2$s</string>
  <string name="ispeed_ready">کانفیگ شما، اتصال شما</string>
  <string name="ispeed_attribution">NOX — فورک تغییریافته v2rayNG 2.3.14. حقوق اثر اصلی متعلق به مشارکت‌کنندگان v2rayNG است. مجوز GNU GPL v3 و سورس همراه برنامه ارائه می‌شوند.</string>
- <string name="ispeed_unavailable">—</string></resources>
+ <string name="ispeed_unavailable">—</string> <string name="nox_live_rate">لحظه‌ای</string>
+ <string name="nox_live_rates">سرعت اندازه‌گیری‌شده در نشست فعلی VPN</string>
+ <string name="nox_samples">%1$d نمونه ترافیک</string>
+</resources>
