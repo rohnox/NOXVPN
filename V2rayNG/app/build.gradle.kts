@@ -13,8 +13,8 @@ android {
         applicationId = "com.specialvpn.app"
         minSdk = 24
         targetSdk = 37
-        versionCode = 782
-        versionName = "1.6.9"
+        versionCode = 783
+        versionName = "1.6.10"
 
         val abiFilterList = (properties["ABI_FILTERS"] as? String)?.split(';')
         splits {
