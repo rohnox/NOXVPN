@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -94,7 +95,7 @@ fun AboutScreen(
             ) {
                 Column(Modifier.fillMaxWidth().padding(22.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(painterResource(R.drawable.nox_logo_mark), contentDescription = "NOX",
-                        modifier = Modifier.heightIn(min = 88.dp).padding(bottom = 8.dp))
+                        modifier = Modifier.size(88.dp).padding(bottom = 8.dp))
                     Text("NOX", style = MaterialTheme.typography.headlineLarge)
                     Text(versionText, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(appIdText, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
