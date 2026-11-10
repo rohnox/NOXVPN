@@ -70,7 +70,7 @@ internal fun DashboardTitle(title: String, action: String? = null, onClick: () -
 @Composable
 internal fun ISpeedOverview(
     state: MainUiState, rows: List<ServerRowUiModel>, status: String, modifier: Modifier,
-    onServers: () -> Unit, onImport: () -> Unit,
+    onServers: () -> Unit, onPlans: () -> Unit, onImport: () -> Unit,
     onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit, onMore: (ServerRowUiModel) -> Unit
 ) {
     val plan = dashboardPlan(state)
@@ -93,6 +93,7 @@ internal fun ISpeedOverview(
         }
         item { ConnectionHero(state, status, onServers) { onAction(MainAction.RefreshExitIp) } }
         item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
+        item { DashboardTitle(stringResource(R.string.top_plan_quota), stringResource(R.string.top_manage), onPlans) }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
             if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id))
         } }

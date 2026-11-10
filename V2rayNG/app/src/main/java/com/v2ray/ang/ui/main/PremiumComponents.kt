@@ -54,19 +54,36 @@ internal fun GoldWave(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun DashboardHeader(onRefresh: (() -> Unit)?) {
+internal fun DashboardHeader(
+    onRefresh: (() -> Unit)?,
+    onLanguageClick: () -> Unit,
+    onTelegramClick: () -> Unit
+) {
     Box(Modifier.fillMaxWidth()) {
         GoldWave(Modifier.matchParentSize())
-        Row(Modifier.fillMaxWidth().heightIn(min = 62.dp).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Image(painterResource(R.drawable.ispeed_logo), null, Modifier.size(32.dp))
-            Text(stringResource(R.string.top_brand), Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontStyle = FontStyle.Italic, fontWeight = FontWeight.Bold, maxLines = 1)
-            if (onRefresh != null) OutlinedButton(onClick = onRefresh, modifier = Modifier.heightIn(min = 40.dp),
-                shape = CircleShape, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .55f)),
-                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .18f), contentColor = MaterialTheme.colorScheme.primary)) {
-                Icon(painterResource(R.drawable.ic_refresh_24dp), null, Modifier.size(16.dp))
-                Spacer(Modifier.width(6.dp))
-                Text(stringResource(R.string.top_update_subscription), style = MaterialTheme.typography.labelSmall)
+        Row(
+            Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Image(painterResource(R.drawable.nox_logo_mark), "NOX", Modifier.size(38.dp).clip(RoundedCornerShape(11.dp)))
+            Text(
+                "NOX",
+                Modifier.weight(1f),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1
+            )
+            if (onRefresh != null) {
+                IconButton(onClick = onRefresh) {
+                    Icon(painterResource(R.drawable.ic_refresh_24dp), "Refresh subscription", tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+            IconButton(onClick = onLanguageClick) {
+                Icon(painterResource(R.drawable.ic_translate_24dp), "Language settings", tint = MaterialTheme.colorScheme.primary)
+            }
+            IconButton(onClick = onTelegramClick) {
+                Icon(painterResource(R.drawable.ic_telegram_24dp), "NOX Telegram channel", tint = MaterialTheme.colorScheme.primary)
             }
         }
     }
@@ -78,19 +95,10 @@ internal fun DashboardNavigation(tab: DashboardTab, onSelect: (DashboardTab) -> 
         shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f))) {
         Column(Modifier.padding(horizontal = 4.dp, vertical = 4.dp)) {
-            Row(Modifier.fillMaxWidth().height(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Row(Modifier.weight(3f).padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    HorizontalDivider(Modifier.weight(1f), color = MaterialTheme.colorScheme.primary.copy(alpha = .22f))
-                    Text(stringResource(R.string.protocol_xray_group), style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = .8f))
-                    HorizontalDivider(Modifier.weight(1f), color = MaterialTheme.colorScheme.primary.copy(alpha = .22f))
-                }
-                Spacer(Modifier.weight(2f))
-            }
-            NavigationBar(Modifier.height(60.dp), containerColor = Color.Transparent, tonalElevation = 0.dp,
+            NavigationBar(Modifier.height(64.dp), containerColor = Color.Transparent, tonalElevation = 0.dp,
                 windowInsets = WindowInsets(0, 0, 0, 0)) {
-                DashboardTab.entries.forEach { destination ->
+                DashboardTab.entries.filter { it != DashboardTab.Plans }.forEach { destination ->
+                    if (destination == DashboardTab.Protocols) Spacer(Modifier.weight(0.85f))
                     NavigationBarItem(selected = destination == tab, onClick = { onSelect(destination) },
                         icon = { Icon(painterResource(destination.icon), null, Modifier.size(21.dp)) },
                         label = { Text(stringResource(destination.label), maxLines = 1, style = MaterialTheme.typography.labelSmall) },
