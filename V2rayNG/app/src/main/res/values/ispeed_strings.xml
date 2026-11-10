@@ -6,4 +6,7 @@
  <string name="ispeed_ready">Your configurations. Your connection.</string>
  <string name="ispeed_attribution">NOX — modified fork of v2rayNG 2.3.14. Original work © v2rayNG contributors. GNU GPL v3. Source and license accompany this application.</string>
  <string name="ispeed_unavailable">—</string> <string name="nox_telegram_url" translatable="false">https://t.me/shoopnox</string>
+ <string name="nox_live_rate">live</string>
+ <string name="nox_live_rates">Measured live throughput from this VPN session.</string>
+ <string name="nox_samples">%1$d traffic samples</string>
 </resources>
