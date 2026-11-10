@@ -42,7 +42,8 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
     val telegramUrl = stringResource(R.string.nox_telegram_url)
     val state by mainViewModel.uiState.collectAsStateWithLifecycle()
     val loading by mainViewModel.isLoading.collectAsStateWithLifecycle()
-    var selectedTab by rememberSaveable { mutableStateOf(if (connectedProtocolKey != null) DashboardTab.Servers.name else DashboardTab.Overview.name) }\n    var showProtocolManager by rememberSaveable { mutableStateOf(connectedProtocolKey != null) }
+    var selectedTab by rememberSaveable { mutableStateOf(if (connectedProtocolKey != null) DashboardTab.Servers.name else DashboardTab.Overview.name) }
+    var showProtocolManager by rememberSaveable { mutableStateOf(connectedProtocolKey != null) }
     var handledProtocol by rememberSaveable { mutableStateOf<String?>(null) }
     LaunchedEffect(connectedProtocolKey, anyProtocolConnected, protocolStatusReady) {
         if (protocolStatusReady) {
@@ -67,7 +68,10 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
     val group by groupFlow.collectAsStateWithLifecycle()
     val shareRow = group.rows.firstOrNull { it.guid == shareGuid }
     LaunchedEffect(shareGuid, group.rows) { if (shareGuid != null && shareRow == null) shareGuid = null }
-    BackHandler(enabled = tab != DashboardTab.Overview || showProtocolManager) {\n        if (tab == DashboardTab.Servers && showProtocolManager) showProtocolManager = false\n        else selectedTab = DashboardTab.Overview.name\n    }
+    BackHandler(enabled = tab != DashboardTab.Overview || showProtocolManager) {
+        if (tab == DashboardTab.Servers && showProtocolManager) showProtocolManager = false
+        else selectedTab = DashboardTab.Overview.name
+    }
 
     MainDialogs(deleteAll, { deleteAll = false }, { deleteAll = false; onAction(MainAction.RemoveAllServers) },
         deleteDuplicate, { deleteDuplicate = false }, { deleteDuplicate = false; onAction(MainAction.RemoveDuplicateServers) },
