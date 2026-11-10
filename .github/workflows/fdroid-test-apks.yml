@@ -39,9 +39,8 @@ jobs:
             ndk;30.0.16248370
 
       - name: Build native inputs and F-Droid debug APKs
-        env:
-          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/30.0.16248370
         run: |
+          export NDK_HOME="$ANDROID_HOME/ndk/30.0.16248370"
           bash scripts/build-ispeed.sh debug
 
       - name: Verify all five APK outputs exist
