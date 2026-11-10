@@ -46,6 +46,7 @@ internal fun ISpeedStatistics(state: MainUiState, modifier: Modifier = Modifier)
                 val maxRate = rates.maxOf { max(it.up, it.down) }.coerceAtLeast(1.0)
                 val upColor = MaterialTheme.colorScheme.tertiary
                 val downColor = MaterialTheme.colorScheme.primary
+                val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f)
                 Canvas(Modifier.fillMaxWidth().height(180.dp)) {
                     val upPath = Path()
                     val downPath = Path()
@@ -58,7 +59,7 @@ internal fun ISpeedStatistics(state: MainUiState, modifier: Modifier = Modifier)
                     }
                     repeat(4) { index ->
                         val y = size.height * index / 3f
-                        drawLine(MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f), Offset(0f, y), Offset(size.width, y), 1.dp.toPx())
+                        drawLine(gridColor, Offset(0f, y), Offset(size.width, y), 1.dp.toPx())
                     }
                     drawPath(upPath, upColor, style = Stroke(2.5.dp.toPx(), cap = StrokeCap.Round))
                     drawPath(downPath, downColor, style = Stroke(2.5.dp.toPx(), cap = StrokeCap.Round))
