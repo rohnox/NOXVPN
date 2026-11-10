@@ -66,7 +66,7 @@ internal fun DashboardHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Image(painterResource(R.drawable.nox_logo), "NOX", Modifier.size(38.dp).clip(RoundedCornerShape(11.dp)))
+            Image(painterResource(R.drawable.nox_logo_mark), "NOX", Modifier.size(38.dp).clip(RoundedCornerShape(11.dp)))
             Text(
                 "NOX",
                 Modifier.weight(1f),
