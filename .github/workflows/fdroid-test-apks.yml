@@ -7,6 +7,7 @@ on:
       - main
       - feature/nox-brand-refresh
       - feature/nox-ui-refresh
+      - feature/nox-full-ui
     paths:
       - '.github/workflows/fdroid-test-apks.yml'
       - 'scripts/build-ispeed.sh'
