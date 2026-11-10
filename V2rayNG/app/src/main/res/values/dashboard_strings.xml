@@ -91,4 +91,6 @@
     <string name="top_dismiss_app_update">Dismiss update notice</string>
     <string name="top_app_update_action">Update</string>
     <string name="top_server_unreachable">Unreachable</string>
+  <string name="nox_stats_title">Connection statistics</string>
+  <string name="nox_stats_chart">Live speed history</string>
 </resources>
