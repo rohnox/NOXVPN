@@ -2,6 +2,15 @@ name: F-Droid test APKs
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fdroid-test-apks.yml'
+      - 'scripts/build-ispeed.sh'
+      - 'compile-hevtun.sh'
+      - 'V2rayNG/app/**'
+      - 'V2rayNG/gradle/**'
 
 permissions:
   contents: write
