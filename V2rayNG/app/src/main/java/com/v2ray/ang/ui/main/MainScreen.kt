@@ -49,7 +49,8 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
     LaunchedEffect(connectedProtocolKey, anyProtocolConnected, protocolStatusReady) {
         if (protocolStatusReady) {
             if (connectedProtocolKey != null && connectedProtocolKey != handledProtocol) {
-                selectedTab = DashboardTab.Protocols.name
+                selectedTab = DashboardTab.Servers.name
+                showProtocolManager = true
                 handledProtocol = connectedProtocolKey
             } else if (!anyProtocolConnected) handledProtocol = null
         }
