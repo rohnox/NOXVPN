@@ -38,6 +38,7 @@ internal enum class DashboardTab(val label: Int, val icon: Int) {
 fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit,
     protocolsContent: @Composable (Modifier) -> Unit,
     connectedProtocolKey: String? = null, anyProtocolConnected: Boolean = false, protocolStatusReady: Boolean = true) {
+    val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
     val state by mainViewModel.uiState.collectAsStateWithLifecycle()
     val loading by mainViewModel.isLoading.collectAsStateWithLifecycle()
     var selectedTab by rememberSaveable { mutableStateOf(if (connectedProtocolKey != null) DashboardTab.Protocols.name else DashboardTab.Overview.name) }
@@ -87,7 +88,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                 DashboardHeader(
                     onRefresh = if (tab == DashboardTab.Overview) ({ onAction(MainAction.UpdateGroupSubscription("")) }) else null,
                     onLanguageClick = { onNavigate(MainDestination.Settings) },
-                    onTelegramClick = { LocalUriHandler.current.openUri("https://t.me/iSpeedTopVPN") }
+                    onTelegramClick = { uriHandler.openUri("https://t.me/iSpeedTopVPN") }
                 )
                 if (loading) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
