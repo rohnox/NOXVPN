@@ -95,7 +95,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                         if (state.selectedGuid == null) importOpen = true
                         else onAction(MainAction.ToggleService)
                     },
-                    modifier = Modifier.align(Alignment.TopCenter).offset(y = (-30).dp).size(64.dp),
+                    modifier = Modifier.align(Alignment.TopCenter).offset(y = (-32).dp).size(64.dp),
                     shape = androidx.compose.foundation.shape.CircleShape,
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(
