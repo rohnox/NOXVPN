@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Special VPN</string>
+    <string name="app_name" translatable="false">NOX</string>
     <string name="app_widget_name">Keçid</string>
-    <string name="app_tile_name">Special VPN</string>
+    <string name="app_tile_name">NOX</string>
     <string name="app_tile_first_use">Bu funksiyanı istifadə etməzdən əvvəl tətbiqə profil əlavə edin.</string>
     <string name="navigation_drawer_open">Naviqasiya menyusunu açın</string>
     <string name="navigation_drawer_close">Naviqasiya menyusunu bağlayın</string>

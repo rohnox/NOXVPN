@@ -1,32 +1,28 @@
-# Special VPN
+# NOX
 
-کلاینت اندروید با رابط مشکی و طلایی، پشتیبانی از فارسی و انگلیسی و اتصال‌های **Xray، OpenVPN، Cisco-compatible و WireGuard**.
+کلاینت اندروید با رابط کاربری مشکی و طلایی، پشتیبانی از فارسی و انگلیسی و اتصال‌های **Xray، OpenVPN، Cisco-compatible و WireGuard**.
 
-[دانلود آخرین نسخه](https://github.com/sabialballa/SpecialVPN/releases/latest) · [کانال تلگرام](https://t.me/iSpeedTopVPN) · [گزارش مشکل](https://github.com/sabialballa/SpecialVPN/issues)
+[دانلود نسخه‌ها](https://github.com/rohnox/NOXVPN/releases) · [کانال تلگرام](https://t.me/iSpeedTopVPN) · [گزارش مشکل](https://github.com/rohnox/NOXVPN/issues)
 
 ## امکانات
 
 - مدیریت اشتراک‌ها، ورود لینک، فایل، کلیپ‌بورد و QR
-- آپدیت خودکار اشتراک و تست Real Delay؛ تست مجدد پس از آپدیت موفق
-- نمایش IP خروجی و کشور، زمان اتصال و ترافیک واقعی
-- سهمیه و روزهای باقی‌مانده؛ نمودار مصرف روزانه برای ارائه‌دهنده‌های سازگار
-- اشتراک سازگار Eylan برای OpenVPN، Cisco و WireGuard؛ ورود دستی فایل و تم روشن و تیره، فارسی راست‌به‌چپ
-- بررسی نسخهٔ جدید از ریلیزهای همین مخزن
+- به‌روزرسانی خودکار اشتراک و تست تأخیر واقعی
+- نمایش IP خروجی، زمان اتصال و ترافیک واقعی
+- سهمیه و روزهای باقی‌مانده برای ارائه‌دهنده‌های سازگار
+- پشتیبانی از Xray، OpenVPN، OpenConnect و WireGuard
+- رابط فارسی راست‌به‌چپ و زبان انگلیسی
 
 ## نصب
 
-از بخش Releases فایل **Universal Release APK** را دریافت کنید. حداقل نسخهٔ اندروید **۷** است. برنامه سرور همراه ندارد؛ اشتراک یا کانفیگ خودتان را اضافه کنید.
+از بخش [Releases](https://github.com/rohnox/NOXVPN/releases) فایل APK متناسب با دستگاه را دریافت کنید. حداقل نسخه اندروید ۷ است. برنامه سرور VPN همراه ندارد؛ باید اشتراک یا کانفیگ خودتان را اضافه کنید.
 
-برای انتقال از نسخه‌های قبل از **۱.۶.۴**، یک‌بار APK جدید را مستقیم نصب کنید؛ آدرس مخزن تغییر کرده است. پکیج و امضای انتشار ثابت‌اند.
+تغییر نام نمایشی برنامه به NOX، شناسه بسته `com.specialvpn.app` را برای حفظ سازگاری نصب تغییر نمی‌دهد.
 
 ## توسعه و مجوز
 
-پروژهٔ اندروید در `V2rayNG/` است. برای ساخت، سورس کاملِ پیوست ریلیز و [راهنمای ساخت](BUILD-FA.md) را ببینید.
+پروژه اندروید در `V2rayNG/` قرار دارد. برای ساخت، سورس کامل و [راهنمای ساخت](BUILD-FA.md) را ببینید.
 
-[تغییرات ۱.۶.۸](CHANGES-1.6.8.md) · [نتایج بررسی‌ها و محدودیت‌ها](VALIDATION-1.6.8.md) · [امضای Release](RELEASE-FA.md) · [حریم خصوصی](PRIVACY.md)
+[راهنمای امضای Release](RELEASE-FA.md) · [حریم خصوصی](PRIVACY.md)
 
-فورک اصلاح‌شدهٔ [v2rayNG 2.3.14](https://github.com/2dust/v2rayNG/tree/2.3.14)، تحت مجوز [GPL-3.0](LICENSE). حقوق مؤلفان اصلی و [مجوزهای موتورهای اتصال](NATIVE-ENGINES.md) حفظ شده‌اند. این برنامه محصول رسمی Cisco نیست.
-
----
-
-**Special VPN** is an Android client with Persian/English support, Xray, OpenVPN, embedded OpenConnect and WireGuard. Download the signed universal APK from [Releases](https://github.com/sabialballa/SpecialVPN/releases/latest). Android 7+; bring your own configuration. Modified v2rayNG fork, GPLv3. See the linked build and validation guides for details.
+NOX فورکی اصلاح‌شده از v2rayNG است و تحت مجوز [GPL-3.0](LICENSE) منتشر می‌شود. حقوق مؤلفان اصلی و مجوز موتورهای اتصال حفظ شده‌اند. این برنامه محصول رسمی Cisco نیست.
