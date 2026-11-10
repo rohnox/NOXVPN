@@ -120,7 +120,6 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
         val content = Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
         when (tab) {
             DashboardTab.Overview -> ISpeedOverview(state, group.rows, mainViewModel.formatStatus(state.status), content,
-                onToggle = { if (state.selectedGuid == null) importOpen = true else onAction(MainAction.ToggleService) },
                 onServers = { selectedTab = DashboardTab.Servers.name }, onImport = { importOpen = true },
                 onAction = onAction, onNavigate = onNavigate, onMore = { shareGuid = it.guid })
             DashboardTab.Servers -> ISpeedServers(state, group.rows, content, onAction,
