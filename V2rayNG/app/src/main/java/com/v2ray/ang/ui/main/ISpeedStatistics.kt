@@ -33,7 +33,7 @@ internal fun ISpeedStatistics(state: MainUiState, modifier: Modifier = Modifier)
     val downloadRate = latestRate?.down?.let { formatHistoryTraffic(it.toLong(), locale) + "/s" } ?: stringResource(R.string.ispeed_unavailable)
 
     Column(modifier.verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        Text(stringResource(R.string.top_traffic), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.nox_stats_title), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Text(stringResource(R.string.top_session), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             StatisticMetric(stringResource(R.string.top_download), download?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
@@ -45,7 +45,7 @@ internal fun ISpeedStatistics(state: MainUiState, modifier: Modifier = Modifier)
         }
         StatisticMetric(stringResource(R.string.top_session), duration?.let { formatSessionDuration(it) } ?: stringResource(R.string.ispeed_unavailable), Modifier.fillMaxWidth())
         DashboardPanel {
-            Text(stringResource(R.string.top_traffic), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.nox_stats_chart), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             Text(stringResource(if (rates.isEmpty()) R.string.top_remote_history_empty else R.string.nox_live_rates),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (rates.size < 2) {
