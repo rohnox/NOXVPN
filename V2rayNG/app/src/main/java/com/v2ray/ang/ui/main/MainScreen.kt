@@ -16,6 +16,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -83,7 +84,11 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
         snackbarHost = { SubscriptionRefreshBanner(state.subscriptionRefresh) },
         topBar = {
             Column(Modifier.statusBarsPadding()) {
-                DashboardHeader(onRefresh = if (tab == DashboardTab.Overview) ({ onAction(MainAction.UpdateGroupSubscription("")) }) else null)
+                DashboardHeader(
+                    onRefresh = if (tab == DashboardTab.Overview) ({ onAction(MainAction.UpdateGroupSubscription("")) }) else null,
+                    onLanguageClick = { onNavigate(MainDestination.Settings) },
+                    onTelegramClick = { LocalUriHandler.current.openUri("https://t.me/iSpeedTopVPN") }
+                )
                 if (loading) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
         },
