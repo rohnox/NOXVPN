@@ -33,7 +33,7 @@ internal enum class DashboardTab(val label: Int, val icon: Int) {
     Servers(R.string.top_servers, R.drawable.ic_top_servers),
     Plans(R.string.top_plans, R.drawable.ic_subscriptions_24dp),
     Protocols(R.string.protocol_tab, R.drawable.ic_openvpn_menu),
-    Statistics(R.string.top_traffic, R.drawable.ic_top_chart),
+    Statistics(R.string.nox_stats_title, R.drawable.ic_top_chart),
     Controls(R.string.top_controls, R.drawable.ic_settings_24dp)
 }
 
