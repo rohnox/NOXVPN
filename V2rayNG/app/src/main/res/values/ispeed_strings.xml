@@ -3,6 +3,6 @@
  <string name="ispeed_no_server">Import a configuration using +</string>
  <string name="ispeed_duration">Session: %1$s</string>
  <string name="ispeed_data">↑ %1$s · ↓ %2$s</string>
- <string name="ispeed_ready">Your configurations. Your connection.</string>
- <string name="ispeed_attribution">Special VPN — modified fork of v2rayNG 2.3.14. Original work © v2rayNG contributors. GNU GPL v3. Source and license accompany this application.</string>
+ <string name="ispeed_ready">NOX VPN · Your connection, your control.</string>
+ <string name="ispeed_attribution">NOX — modified fork of v2rayNG 2.3.14. Original work © v2rayNG contributors. GNU GPL v3. Source and license accompany this application.</string>
  <string name="ispeed_unavailable">—</string></resources>
