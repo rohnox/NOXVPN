@@ -1,5 +1,5 @@
 name: F-Droid test APKs
-# Verifies the complete NOX Android UI and all supported test APK variants.
+# Verifies the NOX dashboard, settings, about page and test APK variants.
 
 on:
   workflow_dispatch:
