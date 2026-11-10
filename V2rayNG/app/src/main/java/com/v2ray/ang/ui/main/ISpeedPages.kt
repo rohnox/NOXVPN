@@ -212,35 +212,114 @@ private fun QuotaValue(label: String, value: String) {
 
 @Composable
 internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) -> Unit) {
-    val routes = listOf(MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy, MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore, MainDestination.Logcat, MainDestination.CheckUpdate, MainDestination.About)
-    LazyColumn(modifier, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item {
-            Surface(shape = RoundedCornerShape(26.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .32f))) {
-                Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    Image(painterResource(R.drawable.nox_logo_mark), contentDescription = "NOX",
-                        modifier = Modifier.size(58.dp))
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("NOX", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                        Text(stringResource(R.string.top_tools_hint), style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+    val routes = listOf(
+        MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy,
+        MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore,
+        MainDestination.Logcat, MainDestination.CheckUpdate, MainDestination.About
+    )
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 148.dp),
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 18.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Surface(
+                    shape = RoundedCornerShape(26.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .38f))
+                ) {
+                    Box {
+                        GoldWave(Modifier.fillMaxWidth().height(116.dp))
+                        Row(
+                            Modifier.fillMaxWidth().padding(18.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            Image(
+                                painterResource(R.drawable.nox_logo_mark),
+                                contentDescription = "NOX",
+                                modifier = Modifier.size(58.dp)
+                            )
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Text("NOX", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                                Text(
+                                    stringResource(R.string.top_tools_hint),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
                     }
                 }
+                Text(
+                    stringResource(R.string.top_settings_hint),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                )
+                Text(
+                    stringResource(R.string.top_controls),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp)
+                )
             }
-            Text(stringResource(R.string.top_settings_hint), Modifier.padding(top = 8.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         items(routes, key = { it.name }) { route ->
-            Surface(onClick = { onNavigate(route) }, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainerLow, modifier = Modifier.fillMaxWidth()) {
-                Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Icon(painterResource(route.iconRes), null, tint = MaterialTheme.colorScheme.primary)
-                    Text(stringResource(route.labelRes), fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-                    Icon(painterResource(R.drawable.ic_expand_more_24dp), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            Surface(
+                onClick = { onNavigate(route) },
+                shape = RoundedCornerShape(20.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = .38f)),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 116.dp)
+            ) {
+                Column(
+                    Modifier.fillMaxSize().padding(14.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            Modifier.size(38.dp).background(
+                                MaterialTheme.colorScheme.primary.copy(alpha = .12f),
+                                RoundedCornerShape(12.dp)
+                            ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painterResource(route.iconRes),
+                                null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(21.dp)
+                            )
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Icon(
+                            painterResource(R.drawable.ic_expand_more_24dp),
+                            null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Text(
+                        stringResource(route.labelRes),
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }
-        item { Text(stringResource(R.string.ispeed_attribution), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 12.dp)) }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
+                stringResource(R.string.ispeed_attribution),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(vertical = 12.dp)
+            )
+        }
     }
 }
 
