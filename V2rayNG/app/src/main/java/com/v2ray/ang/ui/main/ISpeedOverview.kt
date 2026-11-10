@@ -70,7 +70,7 @@ internal fun DashboardTitle(title: String, action: String? = null, onClick: () -
 @Composable
 internal fun ISpeedOverview(
     state: MainUiState, rows: List<ServerRowUiModel>, status: String, modifier: Modifier,
-    onToggle: () -> Unit, onServers: () -> Unit, onImport: () -> Unit,
+    onServers: () -> Unit, onImport: () -> Unit,
     onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit, onMore: (ServerRowUiModel) -> Unit
 ) {
     val plan = dashboardPlan(state)
@@ -91,7 +91,7 @@ internal fun ISpeedOverview(
                 }
             }
         }
-        item { ConnectionHero(state, status, onToggle, onServers) { onAction(MainAction.RefreshExitIp) } }
+        item { ConnectionHero(state, status, onServers) { onAction(MainAction.RefreshExitIp) } }
         item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
             if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id))
@@ -133,7 +133,7 @@ private fun AutoConnectPanel(state: MainUiState, onAction: (MainAction) -> Unit)
 }
 
 @Composable
-private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> Unit, onServers: () -> Unit, onRefreshExitIp: () -> Unit) {
+private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> Unit, onRefreshExitIp: () -> Unit) {
     val sessionSeconds = rememberSessionSeconds(state.sessionTraffic, state.isRunning)
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
@@ -159,17 +159,6 @@ private fun ConnectionHero(state: MainUiState, status: String, onToggle: () -> U
                         TextButton(onServers, contentPadding = PaddingValues(0.dp), modifier = Modifier.heightIn(min = 36.dp)) {
                             Text(state.selectedServerName.ifBlank { stringResource(R.string.top_choose) }, style = MaterialTheme.typography.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
                         }
-                    }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Box(Modifier.size(82.dp).background(MaterialTheme.colorScheme.primary.copy(alpha = .1f), CircleShape).padding(5.dp)) {
-                            Button(onClick = onToggle, modifier = Modifier.fillMaxSize().background(Brush.linearGradient(listOf(Color(0xFFFFE8AD), Color(0xFFE4BD65), Color(0xFFAC812C))), CircleShape),
-                                shape = CircleShape, border = BorderStroke(1.dp, Color(0xFFFFE9B2)), contentPadding = PaddingValues(0.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = Color(0xFF2A210D))) {
-                                Icon(painterResource(if (state.selectedGuid == null) R.drawable.ic_add_24dp else R.drawable.ic_top_power),
-                                    stringResource(if (state.isRunning) R.string.top_disconnect else if (state.selectedGuid == null) R.string.top_add else R.string.top_connect), Modifier.size(32.dp))
-                            }
-                        }
-                        Text(stringResource(if (state.isRunning) R.string.top_disconnect else if (state.selectedGuid == null) R.string.top_add else R.string.top_connect), style = MaterialTheme.typography.labelMedium)
                     }
                 }
                 if (state.isRunning) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
