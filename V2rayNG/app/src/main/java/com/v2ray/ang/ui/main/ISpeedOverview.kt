@@ -70,7 +70,7 @@ internal fun DashboardTitle(title: String, action: String? = null, onClick: () -
 @Composable
 internal fun ISpeedOverview(
     state: MainUiState, rows: List<ServerRowUiModel>, status: String, modifier: Modifier,
-    onServers: () -> Unit, onImport: () -> Unit,
+    onServers: () -> Unit, onPlans: () -> Unit, onImport: () -> Unit,
     onAction: (MainAction) -> Unit, onNavigate: (MainDestination) -> Unit, onMore: (ServerRowUiModel) -> Unit
 ) {
     val plan = dashboardPlan(state)
