@@ -138,6 +138,10 @@ private fun AutoConnectPanel(state: MainUiState, onAction: (MainAction) -> Unit)
 @Composable
 private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> Unit, onRefreshExitIp: () -> Unit, onPower: () -> Unit) {
     val sessionSeconds = rememberSessionSeconds(state.sessionTraffic, state.isRunning)
+    val latestRate = trafficRates(state.trafficHistory).lastOrNull()
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+    val uploadRate = latestRate?.up?.let { formatHistoryTraffic(it.toLong(), locale) + "/s" } ?: stringResource(R.string.ispeed_unavailable)
+    val downloadRate = latestRate?.down?.let { formatHistoryTraffic(it.toLong(), locale) + "/s" } ?: stringResource(R.string.ispeed_unavailable)
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
         Box(Modifier.background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.colorScheme.surfaceContainerLow)))) {
@@ -213,8 +217,8 @@ private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> 
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .4f))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     HeroMetric(stringResource(R.string.top_session), sessionSeconds?.let { formatSessionDuration(it) } ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
-                    HeroMetric(stringResource(R.string.top_upload), state.sessionTraffic?.takeIf { it.available }?.uploaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
-                    HeroMetric(stringResource(R.string.top_download), state.sessionTraffic?.takeIf { it.available }?.downloaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
+                    HeroMetric(stringResource(R.string.top_upload), uploadRate, Modifier.weight(1f))
+                    HeroMetric(stringResource(R.string.top_download), downloadRate, Modifier.weight(1f))
                 }
                 if (state.status !is MainStatus.Disconnected && state.status !is MainStatus.Connected) {
                     Text(status, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
