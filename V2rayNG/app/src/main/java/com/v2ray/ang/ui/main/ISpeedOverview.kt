@@ -8,6 +8,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
+import androidx.compose.foundation.border
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -91,7 +93,7 @@ internal fun ISpeedOverview(
                 }
             }
         }
-        item { ConnectionHero(state, status, onServers) { onAction(MainAction.RefreshExitIp) } }
+        item { ConnectionHero(state, status, onServers, { onAction(MainAction.RefreshExitIp) }) { onAction(MainAction.ToggleService) } }
         item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardTitle(stringResource(R.string.top_plan_quota), stringResource(R.string.top_manage), onPlans) }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
@@ -134,8 +136,12 @@ private fun AutoConnectPanel(state: MainUiState, onAction: (MainAction) -> Unit)
 }
 
 @Composable
-private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> Unit, onRefreshExitIp: () -> Unit) {
+private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> Unit, onRefreshExitIp: () -> Unit, onPower: () -> Unit) {
     val sessionSeconds = rememberSessionSeconds(state.sessionTraffic, state.isRunning)
+    val latestRate = trafficRates(state.trafficHistory).lastOrNull()
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+    val uploadRate = latestRate?.up?.let { formatHistoryTraffic(it.toLong(), locale) + "/s" } ?: stringResource(R.string.ispeed_unavailable)
+    val downloadRate = latestRate?.down?.let { formatHistoryTraffic(it.toLong(), locale) + "/s" } ?: stringResource(R.string.ispeed_unavailable)
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
         Box(Modifier.background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.colorScheme.surfaceContainerLow)))) {
@@ -147,7 +153,8 @@ private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> 
                     MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (light) .25f else .12f),
                     MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = if (light) .5f else .65f)))))
             }
-            GoldWave(Modifier.fillMaxWidth().height(105.dp))
+            NoxMapBackdrop(Modifier.matchParentSize())
+            GoldWave(Modifier.fillMaxWidth().height(145.dp))
             Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -161,6 +168,25 @@ private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> 
                             Text(state.selectedServerName.ifBlank { stringResource(R.string.top_choose) }, style = MaterialTheme.typography.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
                         }
                     }
+                }
+                Button(
+                    onClick = onPower,
+                    modifier = Modifier.align(Alignment.CenterHorizontally).size(108.dp)
+                        .shadow(20.dp, CircleShape)
+                        .border(2.dp, if (state.isRunning) Color(0xFF55D98A) else Color(0xFFFFC45A), CircleShape),
+                    shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (state.isRunning) Color(0xFF116B3B) else Color(0xFF211707),
+                        contentColor = if (state.isRunning) Color(0xFFE8FFF0) else Color(0xFFFFC45A)
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 12.dp, pressedElevation = 3.dp)
+                ) {
+                    Icon(
+                        painterResource(R.drawable.ic_top_power),
+                        stringResource(if (state.isRunning) R.string.top_disconnect else R.string.top_connect),
+                        Modifier.size(48.dp)
+                    )
                 }
                 if (state.isRunning) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.top_exit_ip), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -191,14 +217,39 @@ private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> 
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .4f))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     HeroMetric(stringResource(R.string.top_session), sessionSeconds?.let { formatSessionDuration(it) } ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
-                    HeroMetric(stringResource(R.string.top_upload), state.sessionTraffic?.takeIf { it.available }?.uploaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
-                    HeroMetric(stringResource(R.string.top_download), state.sessionTraffic?.takeIf { it.available }?.downloaded?.toTrafficString() ?: stringResource(R.string.ispeed_unavailable), Modifier.weight(1f))
+                    HeroMetric(stringResource(R.string.top_upload), uploadRate, Modifier.weight(1f))
+                    HeroMetric(stringResource(R.string.top_download), downloadRate, Modifier.weight(1f))
                 }
                 if (state.status !is MainStatus.Disconnected && state.status !is MainStatus.Connected) {
                     Text(status, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun NoxMapBackdrop(modifier: Modifier = Modifier) {
+    val gold = Color(0xFFFFB52E)
+    Canvas(modifier) {
+        val dots = listOf(
+            .08f to .36f, .12f to .25f, .17f to .31f, .20f to .43f, .24f to .52f,
+            .31f to .28f, .35f to .20f, .39f to .34f, .43f to .46f, .47f to .57f,
+            .55f to .29f, .59f to .22f, .63f to .34f, .68f to .43f, .72f to .55f,
+            .78f to .28f, .83f to .35f, .88f to .47f, .92f to .38f
+        )
+        dots.forEachIndexed { index, point ->
+            val radius = if (index % 3 == 0) 2.1f else 1.25f
+            drawCircle(gold.copy(alpha = if (index % 2 == 0) .34f else .19f),
+                radius = radius.dp.toPx(), center = Offset(size.width * point.first, size.height * point.second))
+        }
+        val arc = Path().apply {
+            moveTo(size.width * .12f, size.height * .55f)
+            cubicTo(size.width * .36f, -size.height * .08f, size.width * .65f, -size.height * .08f, size.width * .88f, size.height * .50f)
+        }
+        drawPath(arc, gold.copy(alpha = .22f), style = Stroke(width = 1.dp.toPx()))
+        drawCircle(gold.copy(alpha = .06f), radius = size.minDimension * .48f,
+            center = Offset(size.width * .5f, size.height * .44f), style = Stroke(width = 1.dp.toPx()))
     }
 }
 

@@ -69,10 +69,38 @@ internal fun ProtocolsScreen(state: ProtocolsState, modifier: Modifier, onAction
         confirmButton = { TextButton(onClick = { pendingDelete = null; onAction(ProtocolAction.Delete(deleteTarget.guid)) },
             enabled = canHandleProtocolAction(state, ProtocolAction.Delete(deleteTarget.guid))) { Text(stringResource(R.string.top_delete_short)) } },
         dismissButton = { TextButton(onClick = { pendingDelete = null }) { Text(stringResource(android.R.string.cancel)) } })
-    LazyColumn(modifier.imePadding(), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+    LazyColumn(modifier.imePadding(), contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         item {
-            Text(stringResource(R.string.protocol_title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            OutlinedButton(onClick = { onAction(ProtocolAction.EditSubscription(null)) }, enabled = !state.busy, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .65f)), colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)) { Text(stringResource(R.string.top_add_subscription)) }
+            DashboardPanel {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    ProfileEmblem()
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        Text(
+                            stringResource(R.string.protocol_heading),
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            stringResource(R.string.protocol_sub_hint),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                PremiumButton(
+                    onClick = { onAction(ProtocolAction.EditSubscription(null)) },
+                    enabled = !state.busy,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(painterResource(R.drawable.ic_top_up), null, Modifier.size(19.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.top_add_subscription))
+                }
+            }
         }
         item { ProtocolSubscriptionCard(state, onAction) }
         item {
