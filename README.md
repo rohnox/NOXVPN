@@ -29,4 +29,4 @@
 
 ---
 
-**NOX** is an Android client with Persian/English support, Xray, OpenVPN, embedded OpenConnect and WireGuard. Download the signed universal APK from [Releases](https://github.com/sabialballa/SpecialVPN/releases/latest). Android 7+; bring your own configuration. NOX is a modified v2rayNG fork, GPLv3. See the linked build and validation guides for details.
+**NOX** is an Android client with Persian/English support, Xray, OpenVPN, embedded OpenConnect and WireGuard. Download the signed universal APK from [Releases](https://github.com/rohnox/NOXVPN/releases/latest). Android 7+; bring your own configuration. NOX is a modified v2rayNG fork, GPLv3. See the linked build and validation guides for details.
