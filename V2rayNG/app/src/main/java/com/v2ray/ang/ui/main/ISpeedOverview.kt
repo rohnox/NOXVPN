@@ -153,7 +153,7 @@ private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> 
                     MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (light) .25f else .12f),
                     MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = if (light) .5f else .65f)))))
             }
-            NoxMapBackdrop(Modifier.align(Alignment.TopCenter))
+            NoxMapBackdrop(Modifier.matchParentSize())
             GoldWave(Modifier.fillMaxWidth().height(145.dp))
             Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
