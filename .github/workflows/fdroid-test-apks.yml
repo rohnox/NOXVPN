@@ -1,5 +1,5 @@
 name: F-Droid test APKs
-# Includes NOX dashboard, statistics and navigation changes.
+# Builds the complete NOX Android UI and all supported test APK variants.
 
 on:
   workflow_dispatch:
