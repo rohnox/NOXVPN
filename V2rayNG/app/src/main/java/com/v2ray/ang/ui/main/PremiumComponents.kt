@@ -91,22 +91,21 @@ internal fun DashboardHeader(
 
 @Composable
 internal fun DashboardNavigation(tab: DashboardTab, onSelect: (DashboardTab) -> Unit) {
+    val destinations = listOf(DashboardTab.Overview, DashboardTab.Servers, DashboardTab.Statistics, DashboardTab.Controls)
     Surface(Modifier.navigationBarsPadding().padding(horizontal = 12.dp, vertical = 6.dp),
         shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = .35f))) {
-        Column(Modifier.padding(horizontal = 4.dp, vertical = 4.dp)) {
-            NavigationBar(Modifier.height(64.dp), containerColor = Color.Transparent, tonalElevation = 0.dp,
-                windowInsets = WindowInsets(0, 0, 0, 0)) {
-                DashboardTab.entries.filter { it != DashboardTab.Plans }.forEach { destination ->
-                    if (destination == DashboardTab.Protocols) Spacer(Modifier.weight(0.85f))
-                    NavigationBarItem(selected = destination == tab, onClick = { onSelect(destination) },
-                        icon = { Icon(painterResource(destination.icon), null, Modifier.size(21.dp)) },
-                        label = { Text(stringResource(destination.label), maxLines = 1, style = MaterialTheme.typography.labelSmall) },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = .14f),
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary))
-                }
+        Row(Modifier.fillMaxWidth().height(68.dp).padding(horizontal = 4.dp, vertical = 3.dp),
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
+            destinations.forEachIndexed { index, destination ->
+                if (index == 2) Spacer(Modifier.weight(1f))
+                NavigationBarItem(selected = destination == tab, onClick = { onSelect(destination) },
+                    icon = { Icon(painterResource(destination.icon), null, Modifier.size(21.dp)) },
+                    label = { Text(stringResource(destination.label), maxLines = 1, style = MaterialTheme.typography.labelSmall) },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = .14f),
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        selectedTextColor = MaterialTheme.colorScheme.primary))
             }
         }
     }

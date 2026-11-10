@@ -1,5 +1,6 @@
 package com.v2ray.ang.ui.main
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -214,8 +215,21 @@ internal fun ISpeedControls(modifier: Modifier, onNavigate: (MainDestination) ->
     val routes = listOf(MainDestination.Settings, MainDestination.Routing, MainDestination.PerAppProxy, MainDestination.Subscriptions, MainDestination.UserAssets, MainDestination.BackupRestore, MainDestination.Logcat, MainDestination.CheckUpdate, MainDestination.About)
     LazyColumn(modifier, contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item {
-            Text(stringResource(R.string.top_tools_hint), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-            Text(stringResource(R.string.top_settings_hint), Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Surface(shape = RoundedCornerShape(26.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .32f))) {
+                Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    Image(painterResource(R.drawable.nox_logo_mark), contentDescription = "NOX",
+                        modifier = Modifier.size(58.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("NOX", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.top_tools_hint), style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            }
+            Text(stringResource(R.string.top_settings_hint), Modifier.padding(top = 8.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         items(routes, key = { it.name }) { route ->
             Surface(onClick = { onNavigate(route) }, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainerLow, modifier = Modifier.fillMaxWidth()) {

@@ -1,4 +1,5 @@
 name: F-Droid test APKs
+# Verifies the NOX dashboard, settings, about page and test APK variants.
 
 on:
   workflow_dispatch:
@@ -7,6 +8,8 @@ on:
       - main
       - feature/nox-brand-refresh
       - feature/nox-ui-refresh
+      - feature/nox-full-ui
+      - feature/nox-release-build
     paths:
       - '.github/workflows/fdroid-test-apks.yml'
       - 'scripts/build-ispeed.sh'
@@ -18,7 +21,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: fdroid-test-apks
+  group: fdroid-test-apks-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

@@ -91,7 +91,7 @@ internal fun ISpeedOverview(
                 }
             }
         }
-        item { ConnectionHero(state, status, onServers) { onAction(MainAction.RefreshExitIp) } }
+        item { ConnectionHero(state, status, onServers, { onAction(MainAction.RefreshExitIp) }) { onAction(MainAction.ToggleService) } }
         item { TrafficPanel(plan?.usageInfo, plan?.id) { if (plan == null) onNavigate(MainDestination.Subscriptions) else onAction(MainAction.UpdateGroupSubscription(plan.id)) } }
         item { DashboardTitle(stringResource(R.string.top_plan_quota), stringResource(R.string.top_manage), onPlans) }
         item { DashboardQuotaCard(plan?.usageInfo, plan?.remarks.orEmpty(), compact = true) {
@@ -134,7 +134,7 @@ private fun AutoConnectPanel(state: MainUiState, onAction: (MainAction) -> Unit)
 }
 
 @Composable
-private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> Unit, onRefreshExitIp: () -> Unit) {
+private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> Unit, onRefreshExitIp: () -> Unit, onPower: () -> Unit) {
     val sessionSeconds = rememberSessionSeconds(state.sessionTraffic, state.isRunning)
     val activeColor = if (MaterialTheme.colorScheme.surface.luminance() > .5f) Color(0xFF167B47) else Color(0xFF5BD68B)
     Surface(shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .36f))) {
@@ -161,6 +161,11 @@ private fun ConnectionHero(state: MainUiState, status: String, onServers: () -> 
                             Text(state.selectedServerName.ifBlank { stringResource(R.string.top_choose) }, style = MaterialTheme.typography.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
                         }
                     }
+                }
+                Button(onClick = onPower, modifier = Modifier.align(Alignment.CenterHorizontally).size(84.dp), shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = if (state.isRunning) Color(0xFF15803D) else MaterialTheme.colorScheme.primary)) {
+                    Icon(painterResource(R.drawable.ic_top_power), stringResource(if (state.isRunning) R.string.top_disconnect else R.string.top_connect), Modifier.size(38.dp))
                 }
                 if (state.isRunning) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.top_exit_ip), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

@@ -31,6 +31,7 @@ internal enum class DashboardTab(val label: Int, val icon: Int) {
     Servers(R.string.top_servers, R.drawable.ic_top_servers),
     Plans(R.string.top_plans, R.drawable.ic_subscriptions_24dp),
     Protocols(R.string.protocol_tab, R.drawable.ic_openvpn_menu),
+    Statistics(R.string.top_traffic, R.drawable.ic_top_chart),
     Controls(R.string.top_controls, R.drawable.ic_settings_24dp)
 }
 
@@ -42,12 +43,14 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
     val telegramUrl = stringResource(R.string.nox_telegram_url)
     val state by mainViewModel.uiState.collectAsStateWithLifecycle()
     val loading by mainViewModel.isLoading.collectAsStateWithLifecycle()
-    var selectedTab by rememberSaveable { mutableStateOf(if (connectedProtocolKey != null) DashboardTab.Protocols.name else DashboardTab.Overview.name) }
+    var selectedTab by rememberSaveable { mutableStateOf(if (connectedProtocolKey != null) DashboardTab.Servers.name else DashboardTab.Overview.name) }
+    var showProtocolManager by rememberSaveable { mutableStateOf(connectedProtocolKey != null) }
     var handledProtocol by rememberSaveable { mutableStateOf<String?>(null) }
     LaunchedEffect(connectedProtocolKey, anyProtocolConnected, protocolStatusReady) {
         if (protocolStatusReady) {
             if (connectedProtocolKey != null && connectedProtocolKey != handledProtocol) {
-                selectedTab = DashboardTab.Protocols.name
+                selectedTab = DashboardTab.Servers.name
+                showProtocolManager = true
                 handledProtocol = connectedProtocolKey
             } else if (!anyProtocolConnected) handledProtocol = null
         }
@@ -67,7 +70,10 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
     val group by groupFlow.collectAsStateWithLifecycle()
     val shareRow = group.rows.firstOrNull { it.guid == shareGuid }
     LaunchedEffect(shareGuid, group.rows) { if (shareGuid != null && shareRow == null) shareGuid = null }
-    BackHandler(enabled = tab != DashboardTab.Overview) { selectedTab = DashboardTab.Overview.name }
+    BackHandler(enabled = tab != DashboardTab.Overview || showProtocolManager) {
+        if (tab == DashboardTab.Servers && showProtocolManager) showProtocolManager = false
+        else selectedTab = DashboardTab.Overview.name
+    }
 
     MainDialogs(deleteAll, { deleteAll = false }, { deleteAll = false; onAction(MainAction.RemoveAllServers) },
         deleteDuplicate, { deleteDuplicate = false }, { deleteDuplicate = false; onAction(MainAction.RemoveDuplicateServers) },
@@ -96,7 +102,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
         },
         bottomBar = {
             Box(Modifier.fillMaxWidth()) {
-                DashboardNavigation(tab) { selectedTab = it.name }
+                DashboardNavigation(tab) { selectedTab = it.name; if (it != DashboardTab.Servers) showProtocolManager = false }
                 Button(
                     onClick = {
                         if (state.selectedGuid == null) importOpen = true
@@ -129,8 +135,16 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
             DashboardTab.Overview -> ISpeedOverview(state, group.rows, mainViewModel.formatStatus(state.status), content,
                 onServers = { selectedTab = DashboardTab.Servers.name }, onPlans = { selectedTab = DashboardTab.Plans.name }, onImport = { importOpen = true },
                 onAction = onAction, onNavigate = onNavigate, onMore = { shareGuid = it.guid })
-            DashboardTab.Servers -> ISpeedServers(state, group.rows, content, onAction,
-                onImport = { importOpen = true }, onMore = { shareGuid = it.guid })
+            DashboardTab.Servers -> Column(content) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FilterChip(selected = !showProtocolManager, onClick = { showProtocolManager = false }, label = { Text(stringResource(R.string.top_servers)) })
+                    FilterChip(selected = showProtocolManager, onClick = { showProtocolManager = true }, label = { Text(stringResource(R.string.protocol_tab)) })
+                }
+                if (showProtocolManager) protocolsContent(Modifier.weight(1f))
+                else ISpeedServers(state, group.rows, Modifier.weight(1f), onAction,
+                    onImport = { importOpen = true }, onMore = { shareGuid = it.guid })
+            }
+            DashboardTab.Statistics -> ISpeedStatistics(state, content)
             DashboardTab.Plans -> ISpeedPlans(state, content, onAction, onImport = { importOpen = true })
             DashboardTab.Protocols -> protocolsContent(content)
             DashboardTab.Controls -> ISpeedControls(content, onNavigate)
