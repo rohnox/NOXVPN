@@ -1,8 +1,8 @@
-# Special VPN
+# NOX VPN
 
-کلاینت اندروید با رابط مشکی و طلایی، پشتیبانی از فارسی و انگلیسی و اتصال‌های **Xray، OpenVPN، Cisco-compatible و WireGuard**.
+کلاینت اندروید NOX با رابط مشکی و طلایی، پشتیبانی از فارسی و انگلیسی و اتصال‌های **Xray، OpenVPN، Cisco-compatible و WireGuard**.
 
-[دانلود آخرین نسخه](https://github.com/sabialballa/SpecialVPN/releases/latest) · [کانال تلگرام](https://t.me/iSpeedTopVPN) · [گزارش مشکل](https://github.com/sabialballa/SpecialVPN/issues)
+[دانلود آخرین نسخه](https://github.com/rohnox/NOXVPN/releases/latest) · [کانال تلگرام](https://t.me/iSpeedTopVPN) · [گزارش مشکل](https://github.com/rohnox/NOXVPN/issues)
 
 ## امکانات
 
@@ -29,4 +29,4 @@
 
 ---
 
-**Special VPN** is an Android client with Persian/English support, Xray, OpenVPN, embedded OpenConnect and WireGuard. Download the signed universal APK from [Releases](https://github.com/sabialballa/SpecialVPN/releases/latest). Android 7+; bring your own configuration. Modified v2rayNG fork, GPLv3. See the linked build and validation guides for details.
+**NOX** is an Android client with Persian/English support, Xray, OpenVPN, embedded OpenConnect and WireGuard. Download the signed universal APK from [Releases](https://github.com/rohnox/NOXVPN/releases/latest). Android 7+; bring your own configuration. NOX is a modified v2rayNG fork, GPLv3. See the linked build and validation guides for details.
