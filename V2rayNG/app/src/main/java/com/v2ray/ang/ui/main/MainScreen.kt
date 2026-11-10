@@ -87,12 +87,39 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                 if (loading) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
         },
-        bottomBar = { DashboardNavigation(tab) { selectedTab = it.name } }
+        bottomBar = {
+            Box(Modifier.fillMaxWidth()) {
+                DashboardNavigation(tab) { selectedTab = it.name }
+                Button(
+                    onClick = {
+                        if (state.selectedGuid == null) importOpen = true
+                        else onAction(MainAction.ToggleService)
+                    },
+                    modifier = Modifier.align(Alignment.TopCenter).offset(y = (-32).dp).size(64.dp),
+                    shape = androidx.compose.foundation.shape.CircleShape,
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (state.isRunning) androidx.compose.ui.graphics.Color(0xFF16A34A)
+                            else MaterialTheme.colorScheme.primary,
+                        contentColor = androidx.compose.ui.graphics.Color.White
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 3.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(if (state.selectedGuid == null) R.drawable.ic_add_24dp else R.drawable.ic_top_power),
+                        contentDescription = stringResource(
+                            if (state.isRunning) R.string.top_disconnect
+                            else if (state.selectedGuid == null) R.string.top_add else R.string.top_connect
+                        ),
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+        }
     ) { padding ->
         val content = Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
         when (tab) {
             DashboardTab.Overview -> ISpeedOverview(state, group.rows, mainViewModel.formatStatus(state.status), content,
-                onToggle = { if (state.selectedGuid == null) importOpen = true else onAction(MainAction.ToggleService) },
                 onServers = { selectedTab = DashboardTab.Servers.name }, onImport = { importOpen = true },
                 onAction = onAction, onNavigate = onNavigate, onMore = { shareGuid = it.guid })
             DashboardTab.Servers -> ISpeedServers(state, group.rows, content, onAction,
