@@ -58,7 +58,7 @@ internal fun DashboardHeader(onRefresh: (() -> Unit)?) {
     Box(Modifier.fillMaxWidth()) {
         GoldWave(Modifier.matchParentSize())
         Row(Modifier.fillMaxWidth().heightIn(min = 62.dp).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Image(painterResource(R.drawable.ispeed_logo), null, Modifier.size(32.dp))
+            Image(painterResource(R.drawable.nox_logo), null, Modifier.size(32.dp))
             Text(stringResource(R.string.top_brand), Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontStyle = FontStyle.Italic, fontWeight = FontWeight.Bold, maxLines = 1)
             if (onRefresh != null) OutlinedButton(onClick = onRefresh, modifier = Modifier.heightIn(min = 40.dp),
                 shape = CircleShape, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = .55f)),
