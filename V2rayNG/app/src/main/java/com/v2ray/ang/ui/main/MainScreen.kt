@@ -10,6 +10,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.border
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
@@ -108,13 +110,15 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                         if (state.selectedGuid == null) importOpen = true
                         else onAction(MainAction.ToggleService)
                     },
-                    modifier = Modifier.align(Alignment.TopCenter).offset(y = (-32).dp).size(64.dp),
+                    modifier = Modifier.align(Alignment.TopCenter).offset(y = (-35).dp).size(70.dp).shadow(18.dp, androidx.compose.foundation.shape.CircleShape)
+                        .border(2.dp, if (state.isRunning) androidx.compose.ui.graphics.Color(0xFF55D98A) else androidx.compose.ui.graphics.Color(0xFFFFC45A), androidx.compose.foundation.shape.CircleShape),
                     shape = androidx.compose.foundation.shape.CircleShape,
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (state.isRunning) androidx.compose.ui.graphics.Color(0xFF16A34A)
-                            else MaterialTheme.colorScheme.primary,
-                        contentColor = androidx.compose.ui.graphics.Color.White
+                        containerColor = if (state.isRunning) androidx.compose.ui.graphics.Color(0xFF116B3B)
+                            else androidx.compose.ui.graphics.Color(0xFF211707),
+                        contentColor = if (state.isRunning) androidx.compose.ui.graphics.Color(0xFFE8FFF0)
+                            else androidx.compose.ui.graphics.Color(0xFFFFC45A)
                     ),
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 3.dp)
                 ) {
@@ -124,7 +128,7 @@ fun MainScreen(mainViewModel: MainViewModel, onAction: (MainAction) -> Unit, onN
                             if (state.isRunning) R.string.top_disconnect
                             else if (state.selectedGuid == null) R.string.top_add else R.string.top_connect
                         ),
-                        modifier = Modifier.size(30.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 }
             }
